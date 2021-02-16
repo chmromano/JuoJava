@@ -2,10 +2,13 @@ package fi.metropolia.christro.juo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.util.Calendar;
@@ -13,6 +16,9 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private IntakeList intakeList;
+
+    private static final String PREFERENCES_FILE = "intakeListGSON";
+    private static final String PREFERENCES_INTAKES_KEY = "intakeJsonKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             intakeList.addIntake(250);
             for(IntakeObject intakeObject: intakeList.getAllIntakes()){
                 Log.d("INTAKE_TESTING: ", intakeObject.toString());
+                saveData();
             }
         });
 
@@ -41,11 +48,17 @@ public class MainActivity extends AppCompatActivity {
             intakeList.addIntake(500);
             for(IntakeObject intakeObject: intakeList.getAllIntakes()){
                 Log.d("INTAKE_TESTING: ", intakeObject.toString());
+                saveData();
             }
         });
     }
 
-    private void updateList(){
-        intakeList = IntakeList.getInstance();
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(intakeList);
+        editor.putString(PREFERENCES_INTAKES_KEY, json);
+        editor.apply();
     }
 }

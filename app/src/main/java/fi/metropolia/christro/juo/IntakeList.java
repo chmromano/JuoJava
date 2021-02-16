@@ -1,9 +1,12 @@
 package fi.metropolia.christro.juo;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IntakeList {
+
     private static final IntakeList intakeListInstance = new IntakeList();
 
     public static IntakeList getInstance() {
