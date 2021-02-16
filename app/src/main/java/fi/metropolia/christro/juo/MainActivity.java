@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,10 +16,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        CircularProgressBar circularProgressBar = findViewById(R.id.circularProgressBar);
+
         Button button = findViewById(R.id.button1);
 
-        button.setOnClickListener(view -> {
+        long l = 1000;
 
+        button.setOnClickListener(view -> {
+            circularProgressBar.setProgressWithAnimation(55f, l);
         });
     }
 }
