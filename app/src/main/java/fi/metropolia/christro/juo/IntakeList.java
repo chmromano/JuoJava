@@ -16,6 +16,10 @@ public class IntakeList {
         this.intakes = new ArrayList<>();
     }
 
+    private void addIntake(int amount) {
+        this.intakes.add(new IntakeObject(amount));
+    }
+
     //Method ot save list to file
 
     //Method to read list from file

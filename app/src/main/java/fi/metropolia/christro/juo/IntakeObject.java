@@ -7,7 +7,7 @@ public class IntakeObject {
     private Calendar calendar;
 
     public IntakeObject(int amount) {
-        this.amount = amount;
         this.calendar = Calendar.getInstance();
+        this.amount = amount;
     }
 }
