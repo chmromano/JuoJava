@@ -10,4 +10,9 @@ public class IntakeObject {
         this.calendar = Calendar.getInstance();
         this.amount = amount;
     }
+
+    @Override
+    public String toString(){
+        return this.calendar.toString() + " | " + this.amount;
+    }
 }
