@@ -6,9 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class ListIntakeInputActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<IntakeInput> intakeInputs) {
                 //Update recyclerView
-                adapter.setIntakes(intakeInputs);
+
             }
         });
     }

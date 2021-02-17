@@ -39,14 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
-        /*
-        button2.setOnClickListener(view -> {
-            intakeList.addIntake(500);
-            for(IntakeObject intakeObject: intakeList.getAllIntakes()){
-                Log.d("INTAKE_TESTING: ", intakeObject.toString());
 
-                //saveData();
-            }
-        });*/
+        button2.setOnClickListener(view -> {
+
+        });
     }
 }

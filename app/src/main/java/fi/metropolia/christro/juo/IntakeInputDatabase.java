@@ -49,6 +49,7 @@ public abstract class IntakeInputDatabase extends RoomDatabase {
             intakeInputDao.insert(new IntakeInput((250)));
             intakeInputDao.insert(new IntakeInput((400)));
             intakeInputDao.insert(new IntakeInput((125)));
+            intakeInputDao.insert(new IntakeInput((100)));
             return null;
         }
     }
