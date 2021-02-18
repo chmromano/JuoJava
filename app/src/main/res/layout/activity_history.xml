@@ -9,13 +9,7 @@
     tools:context=".History"
     tools:deviceIds="wear">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all"/>
-
-    <androidx.viewpager.widget.ViewPager
+    <ViewFlipper
         android:id="@+id/chart_slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
