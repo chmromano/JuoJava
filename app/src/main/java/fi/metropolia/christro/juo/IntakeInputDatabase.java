@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = IntakeInput.class, version = 1)
+@Database(entities = IntakeInput.class, version = 1, exportSchema = false)
 public abstract class IntakeInputDatabase extends RoomDatabase {
 
     public static final String DATABASE_FILE_NAME = "intake_input_database";
@@ -17,6 +17,10 @@ public abstract class IntakeInputDatabase extends RoomDatabase {
     private static IntakeInputDatabase instance;
 
     public abstract IntakeInputDao intakeInputDao();
+
+
+    //I don't fully understand this code. I have to evaluate if it is necessary or if it can be
+    //replaced with something better
 
     public static synchronized IntakeInputDatabase getInstance(Context context){
         if (instance == null) {

@@ -1,7 +1,9 @@
 package fi.metropolia.christro.juo;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Calendar;
 
@@ -17,6 +19,7 @@ public class IntakeInput {
 
     private int month;
 
+    @ColumnInfo(name = "day_of_month")
     private int dayOfMonth;
 
     private int hour;

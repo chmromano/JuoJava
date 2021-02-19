@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface IntakeInputDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(IntakeInput intakeInput);
 
     @Update
@@ -24,6 +25,6 @@ public interface IntakeInputDao {
     @Query("DELETE FROM intakes_table")
     void deleteAllIntakes();
 
-    @Query("SELECT * FROM intakes_table ORDER BY year DESC, month DESC, dayOfMonth DESC, hour DESC, minute DESC")
+    @Query("SELECT * FROM intakes_table ORDER BY year DESC, month DESC, day_of_month DESC, hour DESC, minute DESC")
     LiveData<List<IntakeInput>> getAllIntakes();
 }
