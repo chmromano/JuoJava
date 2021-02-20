@@ -1,10 +1,8 @@
 package fi.metropolia.christro.juo;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import java.util.Calendar;
 
 @Entity(tableName = "intakes_table")

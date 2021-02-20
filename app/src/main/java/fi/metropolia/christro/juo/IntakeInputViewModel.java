@@ -33,7 +33,7 @@ public class IntakeInputViewModel extends AndroidViewModel {
         repository.deleteAllIntakes();
     }
 
-    public LiveData<List<IntakeInput>> getAllIntakes() {
+    LiveData<List<IntakeInput>> getAllIntakeInputs() {
         return allIntakes;
     }
 }

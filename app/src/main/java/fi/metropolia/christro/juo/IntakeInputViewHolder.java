@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class IntakeInputViewHolder extends RecyclerView.ViewHolder {
+class IntakeInputViewHolder extends RecyclerView.ViewHolder {
     private final TextView intakeInputItemView;
 
     private IntakeInputViewHolder(View itemView) {
