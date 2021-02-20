@@ -13,4 +13,10 @@
     <string name="feel">How did you feel today?</string>
     <string name="not">Not now</string>
     <string name="submit">Submit</string>
+    <string name="Location">Input Location</string>
+    <string name="Temp">Temperature *C</string>
+    <string name="Humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="windSpeed">WindSpeed</string>
+    <string name="btngo">GO</string>
 </resources>
