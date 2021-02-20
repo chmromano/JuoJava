@@ -19,21 +19,8 @@ public class ListIntakeInputActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_intake_input);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-
-        IntakeInputAdapter adapter = new IntakeInputAdapter();
+        final IntakeInputListAdapter adapter = new IntakeInputListAdapter(new IntakeInputListAdapter.IntakeInputDiff());
         recyclerView.setAdapter(adapter);
-
-        intakeInputViewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(IntakeInputViewModel.class);
-        intakeInputViewModel.getAllIntakes().observe(this, new Observer<List<IntakeInput>>() {
-            @Override
-            public void onChanged(@Nullable List<IntakeInput> intakeInputs) {
-                //Update recyclerView
-
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

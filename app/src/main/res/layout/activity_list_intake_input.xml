@@ -12,4 +12,14 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/intake_input_item"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="add word"
+        android:src="@drawable/ic_round_add_24"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
