@@ -1,16 +1,17 @@
 package fi.metropolia.christro.juo;
 
 import android.app.Application;
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class IntakeInputViewModel extends AndroidViewModel {
-    private IntakeInputRepository repository;
-    private LiveData<List<IntakeInput>> allIntakes;
 
-    public IntakeInputViewModel(@NonNull Application application) {
+    private IntakeInputRepository repository;
+
+    private final LiveData<List<IntakeInput>> allIntakes;
+
+    public IntakeInputViewModel(Application application) {
         super(application);
         repository = new IntakeInputRepository(application);
         allIntakes = repository.getAllIntakeInputs();
