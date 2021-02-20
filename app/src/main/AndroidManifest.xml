@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Juo">
         <activity android:name=".LocalWeatherActivity"/>
         <activity android:name=".MoodActivity2" />
-
+        <activity android:name=".Profile"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
