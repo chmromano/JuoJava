@@ -1,9 +1,9 @@
 package fi.metropolia.christro.juo;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 import java.util.Calendar;
 
@@ -64,30 +64,30 @@ public class IntakeInput {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public int getMonth() {
-        return month;
+        return this.month;
     }
 
     public int getDayOfMonth() {
-        return dayOfMonth;
+        return this.dayOfMonth;
     }
 
     public int getHour() {
-        return hour;
+        return this.hour;
     }
 
     public int getMinute() {
-        return minute;
+        return this.minute;
     }
 }

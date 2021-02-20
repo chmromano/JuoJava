@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface IntakeInputDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(IntakeInput intakeInput);
 
     @Update
