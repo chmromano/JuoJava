@@ -50,9 +50,9 @@ public abstract class IntakeInputDatabase extends RoomDatabase {
                 IntakeInput intakeInput = new IntakeInput(250);
                 dao.insert(intakeInput);
                 Log.d("DATABASE_TESTER", "250 inserted.");
-                intakeInput = new IntakeInput(400);
+                intakeInput = new IntakeInput(500);
                 dao.insert(intakeInput);
-                Log.d("DATABASE_TESTER", "400 inserted.");
+                Log.d("DATABASE_TESTER", "500 inserted.");
 
             });
         }

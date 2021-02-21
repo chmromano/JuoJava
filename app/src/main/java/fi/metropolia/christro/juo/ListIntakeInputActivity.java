@@ -31,8 +31,7 @@ public class ListIntakeInputActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        intakeInputViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(IntakeInputViewModel.class);
+        intakeInputViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(IntakeInputViewModel.class);
 
         intakeInputViewModel.getAllIntakeInputs().observe(this, intakeInputs -> adapter.submitList(intakeInputs));
 

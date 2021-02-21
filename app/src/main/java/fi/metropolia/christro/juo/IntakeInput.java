@@ -11,17 +11,22 @@ public class IntakeInput {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "amount")
     private int amount;
 
+    @ColumnInfo(name = "year")
     private int year;
 
+    @ColumnInfo(name = "month")
     private int month;
 
     @ColumnInfo(name = "day_of_month")
     private int dayOfMonth;
 
+    @ColumnInfo(name = "hour")
     private int hour;
 
+    @ColumnInfo(name = "minute")
     private int minute;
 
     public IntakeInput(int amount) {

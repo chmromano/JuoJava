@@ -27,4 +27,7 @@ public interface IntakeInputDao {
 
     @Query("SELECT * FROM intakes_table ORDER BY year DESC, month DESC, day_of_month DESC, hour DESC, minute DESC")
     LiveData<List<IntakeInput>> getAllIntakes();
+
+    @Query("SELECT SUM(amount) FROM intakes_table WHERE year = :year AND month = :month AND day_of_month = :dayOfMonth")
+    LiveData<Integer> getDailyTotal(int year, int month, int dayOfMonth);
 }
