@@ -11,10 +11,17 @@ public class IntakeInputViewModel extends AndroidViewModel {
 
     private final LiveData<List<IntakeInput>> allIntakes;
 
+    private LiveData<Integer> dailyTotal;
+
     public IntakeInputViewModel(Application application) {
         super(application);
         repository = new IntakeInputRepository(application);
         allIntakes = repository.getAllIntakeInputs();
+        dailyTotal = repository.getDailyTotal();
+    }
+
+    LiveData<Integer> getDailyTotal() {
+        return dailyTotal;
     }
 
     public void insert(IntakeInput intakeInput) {

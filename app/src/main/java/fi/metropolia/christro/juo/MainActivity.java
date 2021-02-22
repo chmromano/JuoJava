@@ -1,5 +1,6 @@
 package fi.metropolia.christro.juo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,9 +24,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DailyTotalViewModel dailyTotalViewModel;
+    private IntakeInputViewModel intakeInputViewModel;
 
     private IntakeInputRepository repository;
+
+    private CircularProgressBar circularProgressBar;
+
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +39,22 @@ public class MainActivity extends AppCompatActivity {
 
         repository = new IntakeInputRepository(this.getApplication());
 
-        long longish = 1000;
+        textView = findViewById(R.id.intakeText);
+        circularProgressBar = findViewById(R.id.circularProgressBar);
 
-        TextView textView = findViewById(R.id.intakeText);
-        CircularProgressBar circularProgressBar = findViewById(R.id.circularProgressBar);
+        intakeInputViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(IntakeInputViewModel.class);
 
-        dailyTotalViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(DailyTotalViewModel.class);
-
-        final Observer<Integer> dailyTotalObserver = newName -> {
+        final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
-            textView.setText(String.valueOf(newName));
-            circularProgressBar.setProgressWithAnimation(newName, longish);
+            textView.setText(String.valueOf(newTotal));
+
+            if(newTotal != null) {
+                circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
+            }
         };
 
-        dailyTotalViewModel.getDailyTotal().observe(this, dailyTotalObserver);
+        intakeInputViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
         Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(view -> {
