@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="100sp"
-            android:text="" />
+            android:text="2" />
 
     </androidx.cardview.widget.CardView>
 
@@ -110,7 +110,7 @@
             android:layout_height="match_parent"
             android:padding="20dp">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/button3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="250 mL" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/button4"
                 app:layout_constraintStart_toEndOf="@id/button1"
@@ -138,7 +138,7 @@
                 android:layout_marginEnd="0dp"
                 android:text="250 mL" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 app:layout_constraintTop_toBottomOf="@id/button1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="250 mL" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 app:layout_constraintTop_toBottomOf="@id/button2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/button3"
