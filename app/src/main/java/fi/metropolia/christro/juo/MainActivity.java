@@ -1,26 +1,12 @@
 package fi.metropolia.christro.juo;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 

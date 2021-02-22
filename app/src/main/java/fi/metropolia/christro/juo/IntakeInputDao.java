@@ -1,15 +1,16 @@
 package fi.metropolia.christro.juo;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
-
 import java.util.List;
+import androidx.lifecycle.LiveData;
 
+//Data access object. Basically "methods" but for the database. We use the DAOs described below to
+//manipulate and access our database.
 @Dao
 public interface IntakeInputDao {
 
