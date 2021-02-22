@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,9 +17,8 @@ class IntakeInputRepository {
         IntakeInputDatabase db = IntakeInputDatabase.getDatabase(application);
         intakeInputDao = db.intakeInputDao();
         allIntakeInputs = intakeInputDao.getAllIntakes();
-        dailyTotal = intakeInputDao.getDailyTotal(Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        dailyTotal = intakeInputDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
+                .format(Calendar.getInstance().getTime()));
     }
 
     LiveData<List<IntakeInput>> getAllIntakeInputs() {
@@ -26,15 +26,9 @@ class IntakeInputRepository {
     }
 
     LiveData<Integer> getDailyTotal() {
-
-        /*dailyTotal = intakeInputDao.getDailyTotal(Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));*/
-
         IntakeInputDatabase.databaseWriteExecutor.execute(() -> {
-            dailyTotal = intakeInputDao.getDailyTotal(Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            dailyTotal = intakeInputDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
+                    .format(Calendar.getInstance().getTime()));
         });
 
         return dailyTotal;

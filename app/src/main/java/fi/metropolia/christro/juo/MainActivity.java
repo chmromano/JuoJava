@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ListIntakeInputActivity.class);
-            startActivity(intent);
+            repository.insert(new IntakeInput(400));
         });
 
         Button button2 = findViewById(R.id.button2);
