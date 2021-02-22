@@ -40,6 +40,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //Custom components
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     implementation "androidx.cardview:cardview:1.0.0" //CardView
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3' //CircularProgressBar
     implementation 'com.google.code.gson:gson:2.8.6' //GSON
@@ -50,4 +53,6 @@ dependencies {
     //Room components
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+
 }
