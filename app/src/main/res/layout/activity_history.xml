@@ -24,16 +24,16 @@
         </com.github.mikephil.charting.charts.BarChart>
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChartmonth"
+            android:id="@+id/barChartMonth"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </com.github.mikephil.charting.charts.BarChart>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChartYear"
-            android:layout_width="235dp"
-            android:layout_height="212dp"></com.github.mikephil.charting.charts.BarChart>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.github.mikephil.charting.charts.BarChart>
     </ViewFlipper>
 
 
