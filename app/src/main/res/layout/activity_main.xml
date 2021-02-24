@@ -90,6 +90,7 @@
         app:layout_constraintGuide_percent="0.075"/>
 
     <ImageButton
+        android:id="@+id/menu_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/ic_menu_white_24dp"
@@ -97,6 +98,7 @@
         app:layout_constraintStart_toEndOf="@id/guidelineMainStart"
         app:layout_constraintEnd_toStartOf="@id/guidelineMenuEnd"
         app:layout_constraintBottom_toTopOf="@id/guidelineMenuBottom"/>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewIntake"
