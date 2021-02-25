@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edtTxtLocation"
         android:layout_width="213dp"
         android:layout_height="47dp"
         android:layout_marginStart="40dp"
@@ -18,13 +18,15 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:hint="@string/Location"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        android:inputType="text"
+        android:autofillHints="@string/Location"
+        app:layout_constraintEnd_toStartOf="@+id/btnGo"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/imageView"
+        android:id="@+id/btnGo"
         android:layout_width="117dp"
         android:layout_height="47sp"
         android:layout_alignParentTop="true"
@@ -33,26 +35,33 @@
         android:layout_marginEnd="16dp"
         android:text="@string/btngo"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/edtTxtLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:layout_width="375dp"
-        android:layout_height="221dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="328dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="379dp"
+        android:layout_height="326dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="228dp"
         android:orientation="vertical"
         android:padding="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText">
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtLocation">
+
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/txtTemperature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -60,25 +69,22 @@
             android:id="@+id/txtHumidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" "
             android:textColor="@color/white"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/txtPressure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
             android:textColor="@color/white"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/txtWind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
             android:textColor="@color/white"
-            android:textSize="30sp"/>
+            android:textSize="30sp" />
 
 
     </LinearLayout>
