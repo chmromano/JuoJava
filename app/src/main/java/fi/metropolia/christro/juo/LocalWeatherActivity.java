@@ -83,16 +83,18 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
         List<String> providers = locationManager.getProviders(true);
         Location bestLocation = null;
+
         for (String provider : providers) {
-            Location l = locationManager.getLastKnownLocation(provider);
-            if (l == null) {
+            Location location = locationManager.getLastKnownLocation(provider);
+            if (location == null) {
                 continue;
             }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
-                bestLocation = l;
+            if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
+                //Found best last known location: %s", l);
+                bestLocation = location;
             }
         }
+
         latitude = bestLocation.getLatitude();
         longitude = bestLocation.getLongitude();
         Log.d(TAG, "lon " + longitude + " lat " + latitude);
@@ -121,7 +123,7 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "lon " + longitude + " lat " + latitude);
-         //getWeather(getLocationByCordinates(latitude,longitude));
+         getWeather(getLocationByCordinates(latitude,longitude));
     }
 
     public String getLocationByCordinates(double lat, double lng) {
@@ -173,7 +175,7 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(LocalWeatherActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
-                //  getWeather(getLocationByCordinates(longitude,latitude));
+                 getWeather(getLocationByCordinates(longitude,latitude));
 
             } else {
                 Toast.makeText(LocalWeatherActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
