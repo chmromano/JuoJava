@@ -2,7 +2,7 @@
 
     <string name="monke">Return to monke</string>
     //
-    <string name="app_name">Juo</string>
+    <string name="app_name">Juo!</string>
     <string name="title_activity_mood">MoodActivity</string>
     <!--
     This string is used for square devices and overridden by hello_world in
@@ -24,4 +24,9 @@
     <string name="search">Search</string>
     <string name="currentLocation">Current Location</string>
     <string name="Notification">Notification</string>
+
+    <!-- For the visually impaired people o know the menu is open-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

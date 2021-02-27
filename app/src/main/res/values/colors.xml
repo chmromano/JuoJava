@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Test. -->
+    <color name="buttonLabel">#FFFFFF</color>
+    <color name="colorPrimary">#3c4043</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#E600BCD4</color>
+    <color name="colorAccentDark">#0092A5</color>
+    <color name="colorFont">#6C6E6E</color>
+    <color name="colorFontLight">#D8D8D8</color>
 </resources>
