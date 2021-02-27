@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="monke">Return to monke</string>
+    //
     <string name="app_name">Juo!</string>
     <string name="title_activity_mood">MoodActivity</string>
     <!--
@@ -13,12 +16,17 @@
     <string name="not">Not now</string>
     <string name="submit">Submit</string>
     <string name="Location">Input Location</string>
-    <string name="Temp">Temperature *C</string>
     <string name="Humidity">Humidity</string>
     <string name="pressure">Pressure</string>
     <string name="windSpeed">WindSpeed</string>
     <string name="btngo">GO</string>
+    <string name="Temp">-</string>
+    <string name="search">Search</string>
+    <string name="currentLocation">Current Location</string>
+    <string name="Notification">Notification</string>
+
     <!-- For the visually impaired people o know the menu is open-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>
