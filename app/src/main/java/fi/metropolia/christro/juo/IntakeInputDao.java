@@ -6,7 +6,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
 import java.util.List;
+
 import androidx.lifecycle.LiveData;
 
 //Data access object. Basically "methods" but for the database. We use the DAOs described below to
@@ -15,13 +17,13 @@ import androidx.lifecycle.LiveData;
 public interface IntakeInputDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(IntakeInput intakeInput);
+    void insertIntake(IntakeInput intakeInput);
 
     @Update
-    void update(IntakeInput intakeInput);
+    void updateIntake(IntakeInput intakeInput);
 
     @Delete
-    void delete(IntakeInput intakeInput);
+    void deleteIntake(IntakeInput intakeInput);
 
     @Query("DELETE FROM intakes_table")
     void deleteAllIntakes();

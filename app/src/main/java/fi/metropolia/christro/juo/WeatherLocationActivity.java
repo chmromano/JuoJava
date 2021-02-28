@@ -20,7 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LocalWeatherActivity extends AppCompatActivity {
+public class WeatherLocationActivity extends AppCompatActivity {
 
     String url;
     Button btnGo;
@@ -35,7 +35,7 @@ public class LocalWeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_localweather);
+        setContentView(R.layout.activity_weather_location);
 
         btnGo = findViewById(R.id.imageView);
         temperature = findViewById(R.id.txtTemperature);
@@ -49,7 +49,7 @@ public class LocalWeatherActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG,"Btn clicked");
 
-                hideSoftKeyboard(LocalWeatherActivity.this);
+                hideSoftKeyboard(WeatherLocationActivity.this);
                 Editable location = locationInput.getText();
 
                 locationInput.clearFocus();
@@ -70,7 +70,7 @@ public class LocalWeatherActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //callling api
+                //calling api
 
                 Log.d(TAG,"RESPONSE "+ response );
                 try {
@@ -101,7 +101,7 @@ public class LocalWeatherActivity extends AppCompatActivity {
             }
         });
 
-     RequestQueue requestQueue =Volley.newRequestQueue(LocalWeatherActivity.this);
+     RequestQueue requestQueue =Volley.newRequestQueue(WeatherLocationActivity.this);
      requestQueue.add(stringRequest);
 
     }

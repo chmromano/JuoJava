@@ -34,21 +34,21 @@ class IntakeInputRepository {
         return dailyTotal;
     }
 
-    void insert(IntakeInput intakeInput) {
+    void insertIntake(IntakeInput intakeInput) {
         IntakeInputDatabase.databaseWriteExecutor.execute(() -> {
-            intakeInputDao.insert(intakeInput);
+            intakeInputDao.insertIntake(intakeInput);
         });
     }
 
-    void update(IntakeInput intakeInput) {
+    void updateIntake(IntakeInput intakeInput) {
         IntakeInputDatabase.databaseWriteExecutor.execute(() -> {
-            intakeInputDao.update(intakeInput);
+            intakeInputDao.updateIntake(intakeInput);
         });
     }
 
-    void delete(IntakeInput intakeInput) {
+    void deleteIntake(IntakeInput intakeInput) {
         IntakeInputDatabase.databaseWriteExecutor.execute(() -> {
-            intakeInputDao.update(intakeInput);
+            intakeInputDao.deleteIntake(intakeInput);
         });
     }
 

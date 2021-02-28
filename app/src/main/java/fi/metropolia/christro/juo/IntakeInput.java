@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 //Create a table called intakes_table containing IntakeInput entities.
 @Entity(tableName = "intakes_table")
@@ -21,10 +22,14 @@ public class IntakeInput {
     @ColumnInfo(name = "date")
     private String date;
 
+    @ColumnInfo(name = "time")
+    private String time;
+
     //Constructor. On creation of an entity date is automatically set as the date at creation.
     public IntakeInput(int amount) {
         this.amount = amount;
-        this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(Calendar.getInstance().getTime());
+        this.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        this.time = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Calendar.getInstance().getTime());
     }
 
     //Getters and setters.
@@ -50,5 +55,13 @@ public class IntakeInput {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

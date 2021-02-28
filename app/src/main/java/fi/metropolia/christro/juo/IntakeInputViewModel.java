@@ -25,15 +25,15 @@ public class IntakeInputViewModel extends AndroidViewModel {
     }
 
     public void insert(IntakeInput intakeInput) {
-        repository.insert(intakeInput);
+        repository.insertIntake(intakeInput);
     }
 
     public void update(IntakeInput intakeInput) {
-        repository.update(intakeInput);
+        repository.updateIntake(intakeInput);
     }
 
     public void delete(IntakeInput intakeInput) {
-        repository.delete(intakeInput);
+        repository.deleteIntake(intakeInput);
     }
 
     public void deleteAllIntakes() {
