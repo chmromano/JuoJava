@@ -3,15 +3,11 @@ package fi.metropolia.christro.juo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.SnapHelper;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -26,19 +22,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
 
-    private IntakeInputViewModel intakeInputViewModel;
-
-    private IntakeInputRepository repository;
+    private JuoRepository repository;
 
     private CircularProgressBar circularProgressBar;
 
     private TextView textView;
 
     private ArrayList<Integer> customButtonList;
-
-    private Button button1;
-
-    private Button button2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         customButtonList = loadButtonList();
 
-        repository = new IntakeInputRepository(this.getApplication());
+        repository = new JuoRepository(this.getApplication());
 
         textView = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
 
-        intakeInputViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(IntakeInputViewModel.class);
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
@@ -70,16 +61,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        intakeInputViewModel.getDailyTotal().observe(this, dailyTotalObserver);
+        juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
-        button1 = findViewById(R.id.button1);
+        Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(view -> {
-            repository.insertIntake(new IntakeInput(400));
+            repository.insertIntake(new IntakeEntity(400));
         });
 
-        button2 = findViewById(R.id.button2);
+        Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(view -> {
-            repository.insertIntake(new IntakeInput(250));
+            repository.insertIntake(new IntakeEntity(250));
         });
     }
 

@@ -10,7 +10,7 @@ import java.util.Locale;
 
 //Create a table called intakes_table containing IntakeInput entities.
 @Entity(tableName = "intakes_table")
-public class IntakeInput {
+public class IntakeEntity {
 
     //Instance variables and associated columns.
     @PrimaryKey(autoGenerate = true)
@@ -26,27 +26,27 @@ public class IntakeInput {
     private String time;
 
     //Constructor. On creation of an entity date is automatically set as the date at creation.
-    public IntakeInput(int amount) {
+    public IntakeEntity(int amount) {
         this.amount = amount;
         this.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
         this.time = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Calendar.getInstance().getTime());
     }
 
     //Getters and setters.
+    public int getId() {
+        return id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
+    public int getAmount() {
+        return amount;
     }
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public int getAmount() {
-        return this.amount;
     }
 
     public String getDate() {
