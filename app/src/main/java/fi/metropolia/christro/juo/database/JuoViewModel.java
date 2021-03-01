@@ -3,6 +3,9 @@ package fi.metropolia.christro.juo.database;
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class JuoViewModel extends AndroidViewModel {
@@ -17,7 +20,8 @@ public class JuoViewModel extends AndroidViewModel {
         super(application);
         repository = new JuoRepository(application);
         allIntakes = repository.getAllIntakeInputs();
-        dailyTotal = repository.getDailyTotal();
+        dailyTotal = repository.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
+                .format(Calendar.getInstance().getTime()));
     }
 
     public LiveData<Integer> getDailyTotal() {
@@ -42,5 +46,9 @@ public class JuoViewModel extends AndroidViewModel {
 
     public LiveData<List<IntakeEntity>> getAllIntakeInputs() {
         return allIntakes;
+    }
+
+    public int getHistoricalDailyTotal(String date) {
+        return repository.getGetHistoricalDailyTotal();
     }
 }

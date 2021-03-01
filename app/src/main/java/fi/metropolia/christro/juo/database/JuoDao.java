@@ -39,5 +39,8 @@ public interface JuoDao {
     void insertMood(MoodEntity moodEntity);
 
     @Query("SELECT mood FROM mood_table WHERE date LIKE :date || '%'")
-    Integer getDailyMood(String date);
+    int getDailyMood(String date);
+
+    @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE :date || '%'")
+    int getHistoricDailyTotal(String date);
 }
