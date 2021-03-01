@@ -1,10 +1,12 @@
 package fi.metropolia.christro.juo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -24,10 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
+    public static final String HYDRATION_GOAL = "fi.metropolia.christro.juo.hydration_goal";
+    public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST";
 
     private CircularProgressBar circularProgressBar;
 
     private TextView textView;
+
+    private int hydrationGoal;
 
     private ArrayList<Integer> customButtonList;
 
@@ -36,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        customButtonList = loadButtonList();
+        hydrationGoal = loadHydrationGoal();
+
+        //customButtonList = loadButtonList();
 
         textView = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
@@ -73,6 +81,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private int loadHydrationGoal(){
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
+
+        int hydrationGoal = sharedPreferences.getInt(HYDRATION_GOAL, -1);
+
+        if (hydrationGoal == -1) {
+            Intent intent = new Intent(this, ProfileSettingsActivity.class);
+            intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
+            startActivity(intent);
+            return -1;
+        }
+
+        return hydrationGoal;
+    }
+
+
+
+
+
+
+
     private ArrayList<Integer> loadButtonList() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
@@ -80,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         String json = sharedPreferences.getString(CUSTOM_BUTTONS_LIST_KEY, null);
 
-        Type type = new TypeToken<ArrayList<Integer>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
 
         if (json == null) {
             ArrayList<Integer> arrayList = new ArrayList<>();

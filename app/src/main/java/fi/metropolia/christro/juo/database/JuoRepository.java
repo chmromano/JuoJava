@@ -25,18 +25,15 @@ class JuoRepository {
                 .format(Calendar.getInstance().getTime()));
     }
 
-
-    int getGetHistoricalDailyTotal() {
+    int getGetHistoricalDailyTotal(String date) {
         return historicalDailyTotal;
     }
-
-
 
     LiveData<List<IntakeEntity>> getAllIntakeInputs() {
         return allIntakeInputs;
     }
 
-    LiveData<Integer> getDailyTotal(String date) {
+    LiveData<Integer> getDailyTotal() {
         return dailyTotal;
     }
 

@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Juo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SetButtonsActivity"></activity>
+        <activity android:name=".ProfileSettingsActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SetButtonsActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".WeatherLocationActivity" />
         <activity android:name=".MoodActivity" />

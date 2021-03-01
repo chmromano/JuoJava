@@ -20,8 +20,7 @@ public class JuoViewModel extends AndroidViewModel {
         super(application);
         repository = new JuoRepository(application);
         allIntakes = repository.getAllIntakeInputs();
-        dailyTotal = repository.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
-                .format(Calendar.getInstance().getTime()));
+        dailyTotal = repository.getDailyTotal();
     }
 
     public LiveData<Integer> getDailyTotal() {
@@ -49,6 +48,6 @@ public class JuoViewModel extends AndroidViewModel {
     }
 
     public int getHistoricalDailyTotal(String date) {
-        return repository.getGetHistoricalDailyTotal();
+        return repository.getGetHistoricalDailyTotal(date);
     }
 }
