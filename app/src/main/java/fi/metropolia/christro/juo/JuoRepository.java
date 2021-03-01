@@ -27,10 +27,6 @@ class JuoRepository {
     }
 
     LiveData<Integer> getDailyTotal() {
-        /*JuoDatabase.databaseWriteExecutor.execute(() -> {
-            dailyTotal = juoDao.getDailyTotal();
-        });*/
-
         return dailyTotal;
     }
 

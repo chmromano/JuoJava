@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
 
-    private JuoRepository repository;
-
     private CircularProgressBar circularProgressBar;
 
     private TextView textView;
@@ -36,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         customButtonList = loadButtonList();
-
-        repository = new JuoRepository(this.getApplication());
 
         textView = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
@@ -65,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(view -> {
-            repository.insertIntake(new IntakeEntity(400));
+            juoViewModel.insertIntake(new IntakeEntity(400));
         });
 
         Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(view -> {
-            repository.insertIntake(new IntakeEntity(250));
+            juoViewModel.insertIntake(new IntakeEntity(250));
         });
     }
 

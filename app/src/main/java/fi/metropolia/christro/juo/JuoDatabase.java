@@ -18,7 +18,7 @@ public abstract class JuoDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "juo_database";
 
     //Database is a singleton.
-    private static volatile JuoDatabase INSTANCE;
+    private static volatile JuoDatabase juoDatabaseInstance;
 
     //Create an ExecutorService to handle database operation on background threads. UI operation
     //won't be affected.
@@ -28,17 +28,17 @@ public abstract class JuoDatabase extends RoomDatabase {
 
     //Return database instance. If there is no database yet creates one.
     static JuoDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
+        if (juoDatabaseInstance == null) {
             synchronized (JuoDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                if (juoDatabaseInstance == null) {
+                    juoDatabaseInstance = Room.databaseBuilder(context.getApplicationContext(),
                             JuoDatabase.class, DATABASE_NAME)
                             .addCallback(roomDatabaseCallback)
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return juoDatabaseInstance;
     }
 
     public abstract JuoDao juoDao();
@@ -52,7 +52,7 @@ public abstract class JuoDatabase extends RoomDatabase {
             super.onCreate(db);
 
             databaseWriteExecutor.execute(() -> {
-                JuoDao dao = INSTANCE.juoDao();
+                JuoDao dao = juoDatabaseInstance.juoDao();
                 dao.deleteAllIntakes();
 
                 IntakeEntity intakeEntity = new IntakeEntity(250);
