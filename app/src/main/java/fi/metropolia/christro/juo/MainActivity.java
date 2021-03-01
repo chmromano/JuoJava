@@ -9,6 +9,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,20 +20,31 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
-public class MainActivity extends AppCompatActivity{
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
+import fi.metropolia.christro.juo.database.IntakeEntity;
+import fi.metropolia.christro.juo.database.JuoViewModel;
+
+public class MainActivity extends AppCompatActivity {
+
+    public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
+    public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
     private IntakeInputViewModel intakeInputViewModel;
-
     private IntakeInputRepository repository;
 
     private CircularProgressBar circularProgressBar;
-
     private TextView textView;
+
+    private ArrayList<Integer> customButtonList;
 
     private DrawerLayout drawer;
     private Toolbar toolbar;
@@ -82,7 +96,6 @@ public class MainActivity extends AppCompatActivity{
                         intent = new Intent(MainActivity.this, Help.class);
                         startActivity(intent);
                         break;
-
                     case R.id.nav_profile:
                         Toast.makeText(MainActivity.this,"Profile",Toast.LENGTH_SHORT).show();
                         //intent = new Intent(context,Profile.class);
@@ -113,34 +126,79 @@ public class MainActivity extends AppCompatActivity{
         toggle.syncState();
         ////
         repository = new IntakeInputRepository(this.getApplication());
+        customButtonList = loadButtonList();
 
         textView = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
 
-        intakeInputViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(IntakeInputViewModel.class);
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
-            textView.setText(String.valueOf(newTotal));
+            if (newTotal != null) {
+                textView.setText(String.valueOf(newTotal));
+            } else {
+                textView.setText(String.valueOf(0));
+            }
 
-            if(newTotal != null) {
+            if (newTotal != null) {
                 circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
+            } else {
+                circularProgressBar.setProgress(0);
             }
         };
 
-        intakeInputViewModel.getDailyTotal().observe(this, dailyTotalObserver);
+        juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
         Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(view -> {
-            repository.insert(new IntakeInput(400));
+            juoViewModel.insertIntake(new IntakeEntity(400));
         });
 
         Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(view -> {
-            repository.insert(new IntakeInput(250));
+            juoViewModel.insertIntake(new IntakeEntity(250));
         });
     }
+
+    private ArrayList<Integer> loadButtonList() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+
+        String json = sharedPreferences.getString(CUSTOM_BUTTONS_LIST_KEY, null);
+
+        Type type = new TypeToken<ArrayList<Integer>>() {
+        }.getType();
+
+        if (json == null) {
+            ArrayList<Integer> arrayList = new ArrayList<>();
+
+            arrayList.add(251);
+            arrayList.add(500);
+            arrayList.add(100);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+            arrayList.add(750);
+
+            return arrayList;
+        }
+
+        return gson.fromJson(json, type);
+    }
+
 
     @Override
     public void onBackPressed(){

@@ -1,4 +1,4 @@
-package fi.metropolia.christro.juo;
+package fi.metropolia.christro.juo.database;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -11,14 +11,14 @@ import android.content.Context;
 import android.util.Log;
 
 //Create database.
-@Database(entities = IntakeInput.class, version = 1, exportSchema = false)
-public abstract class IntakeInputDatabase extends RoomDatabase {
+@Database(entities = {IntakeEntity.class, MoodEntity.class}, version = 1, exportSchema = false)
+public abstract class JuoDatabase extends RoomDatabase {
 
     //Database file name.
-    public static final String DATABASE_NAME = "intake_input_database";
+    public static final String DATABASE_NAME = "juo_database";
 
     //Database is a singleton.
-    private static volatile IntakeInputDatabase INSTANCE;
+    private static volatile JuoDatabase juoDatabaseInstance;
 
     //Create an ExecutorService to handle database operation on background threads. UI operation
     //won't be affected.
@@ -27,24 +27,24 @@ public abstract class IntakeInputDatabase extends RoomDatabase {
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     //Return database instance. If there is no database yet creates one.
-    static IntakeInputDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
-            synchronized (IntakeInputDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            IntakeInputDatabase.class, DATABASE_NAME)
+    static JuoDatabase getDatabase(final Context context) {
+        if (juoDatabaseInstance == null) {
+            synchronized (JuoDatabase.class) {
+                if (juoDatabaseInstance == null) {
+                    juoDatabaseInstance = Room.databaseBuilder(context.getApplicationContext(),
+                            JuoDatabase.class, DATABASE_NAME)
                             .addCallback(roomDatabaseCallback)
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return juoDatabaseInstance;
     }
 
+    public abstract JuoDao juoDao();
 
 
 
-    public abstract IntakeInputDao intakeInputDao();
 
     private static RoomDatabase.Callback roomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
@@ -52,14 +52,14 @@ public abstract class IntakeInputDatabase extends RoomDatabase {
             super.onCreate(db);
 
             databaseWriteExecutor.execute(() -> {
-                IntakeInputDao dao = INSTANCE.intakeInputDao();
+                JuoDao dao = juoDatabaseInstance.juoDao();
                 dao.deleteAllIntakes();
 
-                IntakeInput intakeInput = new IntakeInput(250);
-                dao.insert(intakeInput);
+                IntakeEntity intakeEntity = new IntakeEntity(250);
+                //dao.insert(intakeInput);
                 Log.d("DATABASE_TESTER", "250 inserted.");
-                intakeInput = new IntakeInput(500);
-                dao.insert(intakeInput);
+                intakeEntity = new IntakeEntity(500);
+                //dao.insert(intakeInput);
                 Log.d("DATABASE_TESTER", "500 inserted.");
 
             });

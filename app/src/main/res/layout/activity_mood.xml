@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MoodActivity2"
+    tools:context=".MoodActivity"
     tools:deviceIds="wear">
 
     <androidx.constraintlayout.widget.Guideline
