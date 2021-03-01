@@ -17,6 +17,9 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import fi.metropolia.christro.juo.database.IntakeEntity;
+import fi.metropolia.christro.juo.database.JuoViewModel;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         if (json == null) {
             ArrayList<Integer> arrayList = new ArrayList<>();
 
-            arrayList.add(250);
+            arrayList.add(251);
             arrayList.add(500);
             arrayList.add(100);
             arrayList.add(750);

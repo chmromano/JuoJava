@@ -1,6 +1,5 @@
-package fi.metropolia.christro.juo;
+package fi.metropolia.christro.juo.database;
 
-import androidx.core.util.Pair;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -33,13 +32,12 @@ public interface JuoDao {
     @Query("SELECT * FROM intakes_table ORDER BY date DESC")
     LiveData<List<IntakeEntity>> getAllIntakes();
 
-    @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE DATE()")
-    LiveData<Integer> getDailyTotal();
+    @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE :date || '%'")
+    LiveData<Integer> getDailyTotal(String date);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMood(MoodEntity moodEntity);
 
-    //@Query("SELECT mood_table.mood AS first, SUM(intakes_table.amount) AS second FROM intakes_table " +
-    //        "INNER JOIN mood_table ON intakes_table.date LIKE mood_table.date GROUP BY intakes_table.date")
-    //List<Pair<Integer, Integer>> getGraph();
+    @Query("SELECT mood FROM mood_table WHERE date LIKE :date || '%'")
+    Integer getDailyMood(String date);
 }

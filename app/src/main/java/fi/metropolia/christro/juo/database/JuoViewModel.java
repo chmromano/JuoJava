@@ -1,4 +1,4 @@
-package fi.metropolia.christro.juo;
+package fi.metropolia.christro.juo.database;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,7 +20,7 @@ public class JuoViewModel extends AndroidViewModel {
         dailyTotal = repository.getDailyTotal();
     }
 
-    LiveData<Integer> getDailyTotal() {
+    public LiveData<Integer> getDailyTotal() {
         return dailyTotal;
     }
 
@@ -40,7 +40,7 @@ public class JuoViewModel extends AndroidViewModel {
         repository.deleteAllIntakes();
     }
 
-    LiveData<List<IntakeEntity>> getAllIntakeInputs() {
+    public LiveData<List<IntakeEntity>> getAllIntakeInputs() {
         return allIntakes;
     }
 }

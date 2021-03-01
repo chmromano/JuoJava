@@ -1,4 +1,4 @@
-package fi.metropolia.christro.juo;
+package fi.metropolia.christro.juo.database;
 
 import android.app.Application;
 
@@ -19,7 +19,8 @@ class JuoRepository {
         juoDao = db.juoDao();
 
         allIntakeInputs = juoDao.getAllIntakes();
-        dailyTotal = juoDao.getDailyTotal();
+        dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
+                .format(Calendar.getInstance().getTime()));
     }
 
     LiveData<List<IntakeEntity>> getAllIntakeInputs() {

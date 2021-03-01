@@ -1,4 +1,4 @@
-package fi.metropolia.christro.juo;
+package fi.metropolia.christro.juo.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
