@@ -22,7 +22,8 @@
         <activity android:name=".IntakeListview"/>
         <activity android:name=".About" />
         <activity android:name=".Help" />
-        <activity android:name=".History" />
+        <activity android:name=".History" android:exported="true">
+        </activity>
         <activity android:name=".MainActivity" android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

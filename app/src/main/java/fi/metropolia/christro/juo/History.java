@@ -44,12 +44,13 @@ public class History extends AppCompatActivity {
     }
 
     public ArrayList<BarEntry> getData(){
+        float x = 4;
         barEntries = new ArrayList();
         barEntries.add(new BarEntry(1f,2));
         barEntries.add(new BarEntry(3f,5));
         barEntries.add(new BarEntry(10f,1));
         barEntries.add(new BarEntry(6f,7));
-        barEntries.add(new BarEntry(4f,12));
+        barEntries.add(new BarEntry(x,12));
         return barEntries;
     }
 
