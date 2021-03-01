@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
-    private IntakeInputViewModel intakeInputViewModel;
-    private IntakeInputRepository repository;
+    //private IntakeInputViewModel intakeInputViewModel;
+    //private IntakeInputRepository repository;
 
     private CircularProgressBar circularProgressBar;
     private TextView textView;
@@ -59,12 +59,26 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
+
+        if(savedInstanceState == null){
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        ImageButton menuButton = findViewById(R.id.menu_icon);
+        menuButton.setOnClickListener(view -> {
+            drawer.openDrawer(GravityCompat.START);
+        });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //item = navigationView.getCheckedItem();
                 Intent intent;
-                Context context = getApplicationContext();
+                //Context context = getApplicationContext();
                 switch (item.getItemId()){
                     case R.id.nav_home:
                         Toast.makeText(MainActivity.this,"Home",Toast.LENGTH_SHORT).show();
@@ -74,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_mood:
                         Toast.makeText(MainActivity.this,"Mood",Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, MoodActivity2.class);
+                        intent = new Intent(MainActivity.this, MoodActivity.class);
                         startActivity(intent);
                         break;
 
@@ -110,22 +124,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-
-
-        ImageButton menuButton = findViewById(R.id.menu_icon);
-        menuButton.setOnClickListener(view -> {
-            drawer.openDrawer(GravityCompat.START);
-        });
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
         ////
-        repository = new IntakeInputRepository(this.getApplication());
+        //repository = new IntakeInputRepository(this.getApplication());
         customButtonList = loadButtonList();
 
         textView = findViewById(R.id.intakeText);
