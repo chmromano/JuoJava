@@ -11,125 +11,161 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineMainStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineMainEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.90" />
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutUsername"
+                android:id="@+id/textLayoutName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/hint_name"
                 android:inputType="textPersonName"
-                android:text="Name"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutAge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineMainEnd"
+                app:layout_constraintStart_toStartOf="@+id/guidelineMainStart"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextUsername"
+                    android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:longClickable = "false"/>
+                    android:inputType="text"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutAge"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/hint_age"
                 android:inputType="date"
-                app:layout_constraintBottom_toTopOf="@+id/textLayoutWeight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutUsername">
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutGoal"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineMainEnd"
+                app:layout_constraintStart_toStartOf="@+id/guidelineMainStart"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextAge"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/textLayoutGoal"
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="36dp"
                 android:ems="10"
-
+                android:hint="@string/hint_hydration_goal"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutWeight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutAge"
-                >
+                app:layout_constraintEnd_toEndOf="@+id/guidelineMainEnd"
+                app:layout_constraintStart_toStartOf="@+id/guidelineMainStart"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutAge">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextGoal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/textLayoutWeight"
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="36dp"
                 android:ems="10"
-
+                android:hint="@string/hint_weight"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/menu"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutGoal"
-                >
+                app:layout_constraintEnd_toEndOf="@+id/guidelineMainEnd"
+                app:layout_constraintStart_toStartOf="@+id/guidelineMainStart"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutGoal">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextWeight"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/menu"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint=""
-                app:layout_constraintBottom_toTopOf="@+id/buttonSaveProfileSettings"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutAge"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp">
+                app:boxCornerRadiusTopStart="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonSaveProfileSettings"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineMainEnd"
+                app:layout_constraintStart_toStartOf="@+id/guidelineMainStart"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutWeight">
 
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    />
+                    android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
                 android:id="@+id/buttonSaveProfileSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="@string/save_profile_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

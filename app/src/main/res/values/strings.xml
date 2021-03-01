@@ -20,4 +20,12 @@
     <string name="btngo">GO</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings for ProfileSettingsActivity -->
+    <string name="profile_settings_error_message">Please enter a whole number</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_age">Age</string>
+    <string name="hint_hydration_goal">Hydration goal</string>
+    <string name="hint_weight">weight</string>
+    <string name="save_profile_button">Save profile</string>
 </resources>
