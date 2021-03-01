@@ -21,10 +21,10 @@ public class SetButtonsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_buttons);
 
-        customButtonList = loadButtonList();
+        // customButtonList = loadButtonList();
     }
 
-    private void saveButtonList(){
+/*    private void saveButtonList(){
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -59,5 +59,5 @@ public class SetButtonsActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
 
         return gson.fromJson(json, type);
-    }
+    }*/
 }

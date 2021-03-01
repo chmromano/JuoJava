@@ -25,17 +25,13 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
-    public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
-    public static final String HYDRATION_GOAL = "fi.metropolia.christro.juo.hydration_goal";
-    public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST";
+    public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
 
     private CircularProgressBar circularProgressBar;
 
     private TextView textView;
 
     private int hydrationGoal;
-
-    private ArrayList<Integer> customButtonList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         hydrationGoal = loadHydrationGoal();
 
-        //customButtonList = loadButtonList();
-
         textView = findViewById(R.id.intakeText);
+
         circularProgressBar = findViewById(R.id.circularProgressBar);
+
+        circularProgressBar.setProgressMax((float) hydrationGoal);
 
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
@@ -81,19 +78,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private int loadHydrationGoal(){
+    private int loadHydrationGoal() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
-        int hydrationGoal = sharedPreferences.getInt(HYDRATION_GOAL, -1);
+        int sharedGoal = sharedPreferences.getInt(ProfileSettingsActivity.SHARED_GOAL, -1);
 
-        if (hydrationGoal == -1) {
+        if (sharedGoal == -1) {
             Intent intent = new Intent(this, ProfileSettingsActivity.class);
             intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
             startActivity(intent);
             return -1;
         }
 
-        return hydrationGoal;
+        return sharedGoal;
     }
 
 
@@ -102,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private ArrayList<Integer> loadButtonList() {
+/*    private ArrayList<Integer> loadButtonList() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
         Gson gson = new Gson();
@@ -135,5 +132,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return gson.fromJson(json, type);
-    }
+    }*/
 }
