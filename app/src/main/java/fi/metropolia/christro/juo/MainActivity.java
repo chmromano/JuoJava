@@ -1,23 +1,18 @@
 package fi.metropolia.christro.juo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
@@ -33,12 +28,34 @@ public class MainActivity extends AppCompatActivity {
 
     private int hydrationGoal;
 
+    private Button mainActivityButton1;
+    private Button mainActivityButton2;
+    private Button mainActivityButton3;
+    private Button mainActivityButton4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         hydrationGoal = loadHydrationGoal();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
+
+        int sharedButton1 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_1, 250);
+        int sharedButton2 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_2, 500);
+        int sharedButton3 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_3, 100);
+        int sharedButton4 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_4, 700);
+
+        mainActivityButton1 = findViewById(R.id.mainActivityButton1);
+        mainActivityButton2 = findViewById(R.id.mainActivityButton2);
+        mainActivityButton3 = findViewById(R.id.mainActivityButton3);
+        mainActivityButton4 = findViewById(R.id.mainActivityButton4);
+
+        mainActivityButton1.setText(String.valueOf(sharedButton1));
+        mainActivityButton2.setText(String.valueOf(sharedButton2));
+        mainActivityButton3.setText(String.valueOf(sharedButton3));
+        mainActivityButton4.setText(String.valueOf(sharedButton4));
 
         textView = findViewById(R.id.intakeText);
 
@@ -67,27 +84,46 @@ public class MainActivity extends AppCompatActivity {
 
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
-        Button button1 = findViewById(R.id.button1);
-        button1.setOnClickListener(view -> {
-            juoViewModel.insertIntake(new IntakeEntity(400));
+        mainActivityButton1.setOnClickListener(view -> {
+            int intake = Integer.parseInt(mainActivityButton1.getText().toString());
+            juoViewModel.insertIntake(new IntakeEntity(intake));
         });
 
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(view -> {
-            juoViewModel.insertIntake(new IntakeEntity(250));
+        mainActivityButton2.setOnClickListener(view -> {
+            int intake = Integer.parseInt(mainActivityButton2.getText().toString());
+            juoViewModel.insertIntake(new IntakeEntity(intake));
+        });
+
+        mainActivityButton3.setOnClickListener(view -> {
+            int intake = Integer.parseInt(mainActivityButton3.getText().toString());
+            juoViewModel.insertIntake(new IntakeEntity(intake));
+        });
+
+        mainActivityButton4.setOnClickListener(view -> {
+            int intake = Integer.parseInt(mainActivityButton4.getText().toString());
+            juoViewModel.insertIntake(new IntakeEntity(intake));
         });
     }
 
     private int loadHydrationGoal() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
-        int sharedGoal = sharedPreferences.getInt(ProfileSettingsActivity.SHARED_GOAL, -1);
+        int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
-        if (sharedGoal == -1) {
-            Intent intent = new Intent(this, ProfileSettingsActivity.class);
-            intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
-            startActivity(intent);
-            return -1;
+        if (sharedGoal == 999999) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.main_activity_dialog_title))
+                    .setMessage(getString(R.string.main_activity_dialog_content))
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> {
+                        dialog.cancel();
+                        Intent intent = new Intent(this, SettingsActivity.class);
+                        intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
+                        startActivity(intent);
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            return 999999;
         }
 
         return sharedGoal;
