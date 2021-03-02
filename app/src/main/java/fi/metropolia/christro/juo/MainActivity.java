@@ -10,8 +10,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
@@ -39,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         hydrationGoal = loadHydrationGoal();
+
+
+        //TESTING REMOVE LATER
+        findViewById(R.id.imageButton).setOnClickListener((view) -> {
+            Intent testIntent = new Intent(this, SettingsActivity.class);
+            startActivity(testIntent);
+        });
+        //TESTING REMOVE LATER
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
@@ -111,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
         if (sharedGoal == 999999) {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.main_activity_dialog_title))
                     .setMessage(getString(R.string.main_activity_dialog_content))
                     // A null listener allows the button to dismiss the dialog and take no further action.

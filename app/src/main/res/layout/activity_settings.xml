@@ -72,7 +72,7 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutGoal"
-                app:layout_constraintEnd_toStartOf="@+id/textLayoutWeight"
+                app:layout_constraintEnd_toStartOf="@+id/textLayoutGender"
                 app:layout_constraintStart_toStartOf="@+id/settingsGuidelineMainStart"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutName">
 
@@ -86,37 +86,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutWeight"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:ems="10"
-                android:hint="@string/hint_weight"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="@+id/settingsGuidelineMainEnd"
-                app:layout_constraintStart_toEndOf="@id/textLayoutAge"
-                app:layout_constraintTop_toTopOf="@id/textLayoutAge">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextWeight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutGoal"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="7dp"
                 android:ems="10"
                 android:hint="@string/hint_hydration_goal"
                 app:boxCornerRadiusBottomEnd="20dp"
@@ -125,7 +98,7 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textLayoutSettingsButton1"
-                app:layout_constraintEnd_toStartOf="@+id/menu"
+                app:layout_constraintEnd_toStartOf="@+id/settingsGuidelineMainEnd"
                 app:layout_constraintStart_toStartOf="@+id/settingsGuidelineMainStart"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutAge">
 
@@ -139,24 +112,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu"
+                android:id="@+id/textLayoutGender"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
-                android:hint=""
+                android:hint="@string/hint_gender"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/settingsGuidelineMainEnd"
-                app:layout_constraintStart_toEndOf="@+id/textLayoutGoal"
-                app:layout_constraintTop_toTopOf="@id/textLayoutGoal">
+                app:layout_constraintStart_toEndOf="@+id/textLayoutAge"
+                app:layout_constraintTop_toTopOf="@id/textLayoutAge">
 
                 <AutoCompleteTextView
+                    android:id="@+id/dropdownMenuGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:inputType="text"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

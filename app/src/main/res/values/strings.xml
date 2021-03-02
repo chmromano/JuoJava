@@ -27,13 +27,14 @@
     <string name="profile_settings_error_negative">Enter a positive number or leave blank</string>
     <string name="hint_name">Name</string>
     <string name="hint_age">Age</string>
-    <string name="hint_hydration_goal">Goal</string>
+    <string name="hint_hydration_goal">Hydration goal</string>
     <string name="hint_weight">Weight</string>
+    <string name="hint_gender">Gender</string>
     <string name="hint_profile_settings_button_1">Button 1</string>
     <string name="hint_profile_settings_button_2">Button 2</string>
     <string name="hint_profile_settings_button_3">Button 3</string>
     <string name="hint_profile_settings_button_4">Button 4</string>
-    <string name="save_profile_button">Save profile</string>
+    <string name="save_profile_button">Save settings</string>
     <string name="profile_settings_activity_dialog_title">Set-up</string>
     <string name="profile_settings_activity_dialog_content">Here you can set your name, age,
         hydration goal, weight, and sex. If you don´t feel like inputting anything don\'t worry,
