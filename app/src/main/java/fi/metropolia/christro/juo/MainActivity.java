@@ -1,6 +1,7 @@
 package fi.metropolia.christro.juo;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String CUSTOM_BUTTONS_LIST_KEY = "fi.metropolia.christro.juo.custom_buttons_list_key";
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
-
         if(savedInstanceState == null){
             navigationView.setCheckedItem(R.id.nav_home);
         }
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d(TAG, "onNavigationItemSelected: "+item.getItemId());
                 //item = navigationView.getCheckedItem();
                 Intent intent;
                 //Context context = getApplicationContext();
@@ -199,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
         return gson.fromJson(json, type);
     }
 
-
     @Override
     public void onBackPressed(){
         if(drawer.isDrawerOpen(GravityCompat.START)){
@@ -209,5 +209,4 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 }

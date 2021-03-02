@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn = "navigation_view">
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/activities_group">
         <item android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="Home"/>
@@ -21,14 +22,15 @@
             android:title="Settings"/>
     </group>
 
+    <group android:checkableBehavior="single"
+        android:id="@+id/activities_group2">
     <item android:title="Information">
-        <menu>
-            <item android:id="@+id/nav_about"
-                android:icon="@drawable/ic_help_icon"
-                android:title="Help"/>
-            <item android:id="@+id/nav_help"
-                android:icon="@drawable/ic_about_icon"
-                android:title="About"/>
-        </menu>
+        <item android:id="@+id/nav_about"
+            android:icon="@drawable/ic_help_icon"
+            android:title="Help"/>
+        <item android:id="@+id/nav_help"
+            android:icon="@drawable/ic_about_icon"
+            android:title="About"/>
     </item>
+    </group>
 </menu>

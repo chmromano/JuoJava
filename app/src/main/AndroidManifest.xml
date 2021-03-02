@@ -19,11 +19,8 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".WeatherLocationActivity" />
         <activity android:name=".MoodActivity" />
-        <activity android:name=".MainActivity">
         <activity android:name=".Notification" />
-        <activity android:name=".MoodActivity2" />
-        <activity android:name=".Profile" />
-        <activity android:name=".LocalWeatherActivity" />
+        <!--<activity android:name=".Profile" />-->
         <activity android:name=".IntakeListview"/>
         <activity android:name=".About" />
         <activity android:name=".Help" />

@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class LocalWeatherActivity extends AppCompatActivity implements LocationListener {
+public class WeatherLocationActivity extends AppCompatActivity implements LocationListener {
 
     String url;
     Button btnGo;
@@ -55,7 +55,7 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_localweather);
+        setContentView(R.layout.activity_weather_location);
 
         btnGo = findViewById(R.id.btnGo);
         temperature = findViewById(R.id.txtTemperature);
@@ -104,7 +104,7 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
             public void onClick(View v) {
                 Log.d(TAG, "Btn clicked");
 
-                hideSoftKeyboard(LocalWeatherActivity.this);
+                hideSoftKeyboard(WeatherLocationActivity.this);
                 Editable location = locationInput.getText();
 
                 locationInput.clearFocus();
@@ -173,11 +173,11 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(LocalWeatherActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherLocationActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
                  getWeather(getLocationByCordinates(longitude,latitude));
 
             } else {
-                Toast.makeText(LocalWeatherActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherLocationActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -223,7 +223,7 @@ public class LocalWeatherActivity extends AppCompatActivity implements LocationL
             }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(LocalWeatherActivity.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(WeatherLocationActivity.this);
         requestQueue.add(stringRequest);
 
     }

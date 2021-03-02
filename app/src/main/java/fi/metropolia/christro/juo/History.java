@@ -2,7 +2,10 @@ package fi.metropolia.christro.juo;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ViewFlipper;
 
@@ -10,8 +13,14 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import fi.metropolia.christro.juo.database.IntakeEntity;
+import fi.metropolia.christro.juo.database.JuoViewModel;
 
 
 public class History extends AppCompatActivity {
@@ -19,19 +28,27 @@ public class History extends AppCompatActivity {
     BarData barData;
     public BarDataSet barDataSet;
     ArrayList<BarEntry> barEntries;
+    ArrayList<BarEntry> barEntriesList;
     ViewFlipper vf;
+    private static final String TAG = "fi.metropolia.christro.juo.History";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
-        vf = findViewById(R.id.chart_slider);
-
-        barDataSet = new BarDataSet(getData(),"Day Data set");
-        barChart = findViewById(R.id.barChartDay);
-        barData = new BarData(barDataSet);
-        barChart.setData(barData);
-        flipperChart();
+        int[] charts = new int[]{R.id.barChartDay};//R.id.barChartMonth,R.id.barChartYear};
+        for(int chart: charts) {
+            barEntriesList = getData();
+            barDataSet = new BarDataSet(barEntriesList, chart+" Data set");
+            barChart = findViewById(R.id.barChartDay);
+            barData = new BarData(barDataSet);
+            barChart.setData(barData);
+            barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        }
+        if(barEntriesList == null) {
+            Log.d(TAG, "onCreateCharts: empty bar chart");
+        }else {
+            flipperChart();
+        }
     }
 
     public void flipperChart(){
@@ -44,14 +61,24 @@ public class History extends AppCompatActivity {
     }
 
     public ArrayList<BarEntry> getData(){
-        float x = 4;
         barEntries = new ArrayList();
-        barEntries.add(new BarEntry(1f,2));
-        barEntries.add(new BarEntry(3f,5));
-        barEntries.add(new BarEntry(10f,1));
-        barEntries.add(new BarEntry(6f,7));
-        barEntries.add(new BarEntry(x,12));
-        return barEntries;
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
+        LiveData<List<IntakeEntity>> intakeEntityList = juoViewModel.getAllIntakeInputs();
+        List<IntakeEntity> entriesList = intakeEntityList.getValue();
+        if(entriesList == null){
+            Log.d(TAG, "entry list is empty ");
+            barEntries.add(new BarEntry(0, 0));
+            return barEntries;
+        }else {
+            for (IntakeEntity entry : entriesList) {
+                float x = Float.parseFloat(entry.getDate());
+                int y = entry.getAmount();
+                barEntries.add(new BarEntry(x, y));
+            }
+            return barEntries;
+        }
     }
 
 
