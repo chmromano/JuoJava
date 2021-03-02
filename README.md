@@ -1,1 +1,2 @@
-Why say lot word when few word do trick.
+Documenting:
+Christopher - Added cardview dependency
