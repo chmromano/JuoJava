@@ -1,26 +1,55 @@
 package fi.metropolia.christro.juo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.dialog.MaterialDialogs;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
+
+    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec";
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
@@ -36,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
     private Button mainActivityButton3;
     private Button mainActivityButton4;
 
+    //Views needed for weather
+    private TextView textViewTemperature;
+    private TextView textViewHumidity;
+    private TextView textViewWeatherIcon;
+    private TextView textViewCity;
+
+    private ImageButton buttonGetLocation;
+
+    private double latitude;
+    private double longitude;
+
+    private String weatherUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(testIntent);
         });
         //TESTING REMOVE LATER
-
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
@@ -97,6 +138,46 @@ public class MainActivity extends AppCompatActivity {
 
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
+
+        //For location and weather
+        textViewTemperature = findViewById(R.id.textViewTemperature);
+        textViewHumidity = findViewById(R.id.textViewHumidity);
+        textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
+        textViewCity = findViewById(R.id.textViewCity);
+
+        buttonGetLocation = findViewById(R.id.buttonGetLocation);
+
+        buttonGetLocation.setOnClickListener((view) -> {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission
+                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                    .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
+                    .PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+            List<String> providers = locationManager.getProviders(true);
+            Location bestLocation = null;
+
+            for (String provider : providers) {
+                Location location = locationManager.getLastKnownLocation(provider);
+                if (location == null) {
+                    continue;
+                }
+                if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
+                    //Found best last known location: %s", l);
+                    bestLocation = location;
+                }
+            }
+
+            latitude = bestLocation.getLatitude();
+            longitude = bestLocation.getLongitude();
+            getWeather(getLocationByCoordinates(latitude, longitude));
+        });
+
+
         mainActivityButton1.setOnClickListener(view -> {
             int intake = Integer.parseInt(mainActivityButton1.getText().toString());
             juoViewModel.insertIntake(new IntakeEntity(intake));
@@ -142,44 +223,100 @@ public class MainActivity extends AppCompatActivity {
         return sharedGoal;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWeather(getLocationByCoordinates(latitude, longitude));
+    }
 
-
-
-
-
-
-/*    private ArrayList<Integer> loadButtonList() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
-
-        Gson gson = new Gson();
-
-        String json = sharedPreferences.getString(CUSTOM_BUTTONS_LIST_KEY, null);
-
-        Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
-
-        if (json == null) {
-            ArrayList<Integer> arrayList = new ArrayList<>();
-
-            arrayList.add(251);
-            arrayList.add(500);
-            arrayList.add(100);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-            arrayList.add(750);
-
-            return arrayList;
+    public String getLocationByCoordinates(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+            Log.d("LOCATION", String.valueOf(addresses));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        if (addresses != null && addresses.size() > 0) {
+            String locality = addresses.get(0).getLocality();
+            Log.d("LOCATION", locality);
+            return locality.replaceAll("\\s+","+");
+        }
+        return null;
+    }
 
-        return gson.fromJson(json, type);
-    }*/
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
+                getWeather(getLocationByCoordinates(longitude, latitude));
+
+            } else {
+                Toast.makeText(MainActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void getWeather(String location) {
+
+        weatherUrl = API_URL + "&q=" + location;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
+            try {
+                JSONObject responseObject = new JSONObject(response);
+                //find country
+                JSONObject jsonMain = responseObject.getJSONObject("main");
+                JSONArray jsonWeather = responseObject.getJSONArray("weather");
+
+                String temperature = jsonMain.getString("temp");
+                String humidity = jsonMain.getString("humidity");
+                String weatherId = jsonWeather.getString((int) 0);
+
+                //for(int i = 0; i < jsonWeather.length(); i++){ if }
+
+                textViewCity.setText(location.replaceAll("\\+"," "));
+                textViewTemperature.setText("Temperature " + temperature + " \u2103");
+                textViewHumidity.setText("Humidity " + humidity + " %");
+
+                //Remove
+                int unicode = 0x1F325;
+                String emoji = new String(Character.toChars(unicode));
+
+                textViewWeatherIcon.setText(emoji);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        requestQueue.add(stringRequest);
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

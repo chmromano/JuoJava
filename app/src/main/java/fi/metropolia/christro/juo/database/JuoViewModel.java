@@ -43,6 +43,10 @@ public class JuoViewModel extends AndroidViewModel {
         repository.deleteAllIntakes();
     }
 
+    public IntakeEntity getLatestIntake(){
+        return repository.getLatestIntake();
+    }
+
     public LiveData<List<IntakeEntity>> getAllIntakeInputs() {
         return allIntakes;
     }
