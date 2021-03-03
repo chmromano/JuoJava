@@ -61,14 +61,19 @@ public class MainActivity extends AppCompatActivity{
         //navigation
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if(savedInstanceState == null){
             navigationView.setCheckedItem(R.id.nav_home);
         }
+        navigationView.bringToFront();
+
         ImageButton menuButton = findViewById(R.id.menu_icon);
         menuButton.setOnClickListener(view -> {
             drawer.openDrawer(GravityCompat.START);
         });
+
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);

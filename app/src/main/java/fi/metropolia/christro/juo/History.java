@@ -39,7 +39,7 @@ public class History extends AppCompatActivity {
         for(int chart: charts) {
             barEntriesList = getData();
             barDataSet = new BarDataSet(barEntriesList, chart+" Data set");
-            barChart = findViewById(R.id.barChartDay);
+            barChart = findViewById(chart);
             barData = new BarData(barDataSet);
             barChart.setData(barData);
             barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
@@ -67,13 +67,14 @@ public class History extends AppCompatActivity {
                 .get(JuoViewModel.class);
         LiveData<List<IntakeEntity>> intakeEntityList = juoViewModel.getAllIntakeInputs();
         List<IntakeEntity> entriesList = intakeEntityList.getValue();
-        if(entriesList == null){
+        if(entriesList.isEmpty()){
             Log.d(TAG, "entry list is empty ");
             barEntries.add(new BarEntry(0, 0));
             return barEntries;
         }else {
             for (IntakeEntity entry : entriesList) {
-                float x = Float.parseFloat(entry.getDate());
+                //set a constant number of groups
+                float x = 1;
                 int y = entry.getAmount();
                 barEntries.add(new BarEntry(x, y));
             }
