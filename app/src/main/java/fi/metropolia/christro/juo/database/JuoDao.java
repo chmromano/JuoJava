@@ -43,4 +43,7 @@ public interface JuoDao {
 
     @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE :date || '%'")
     int getHistoricDailyTotal(String date);
+
+    @Query("SELECT * FROM intakes_table ORDER BY date DESC, time DESC LIMIT 1")
+    IntakeEntity getLatestIntake();
 }

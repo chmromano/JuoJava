@@ -13,7 +13,7 @@ class JuoRepository {
 
     private LiveData<List<IntakeEntity>> allIntakeInputs;
     private LiveData<Integer> dailyTotal;
-
+    private IntakeEntity latestIntake;
     private int historicalDailyTotal;
 
     JuoRepository(Application application) {
@@ -35,6 +35,10 @@ class JuoRepository {
 
     LiveData<Integer> getDailyTotal() {
         return dailyTotal;
+    }
+
+    IntakeEntity getLatestIntake() {
+        return latestIntake;
     }
 
     void insertIntake(IntakeEntity intakeEntity) {
