@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 class JuoRepository {
     private JuoDao juoDao;
@@ -21,7 +22,7 @@ class JuoRepository {
         juoDao = db.juoDao();
 
         allIntakeInputs = juoDao.getAllIntakes();
-        dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
+        dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 .format(Calendar.getInstance().getTime()));
     }
 
@@ -41,27 +42,23 @@ class JuoRepository {
         return latestIntake;
     }
 
+    void insertMood(MoodEntity moodEntity){
+        JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.insertMood(moodEntity));
+    }
+
     void insertIntake(IntakeEntity intakeEntity) {
-        JuoDatabase.databaseWriteExecutor.execute(() -> {
-            juoDao.insertIntake(intakeEntity);
-        });
+        JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.insertIntake(intakeEntity));
     }
 
     void updateIntake(IntakeEntity intakeEntity) {
-        JuoDatabase.databaseWriteExecutor.execute(() -> {
-            juoDao.updateIntake(intakeEntity);
-        });
+        JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.updateIntake(intakeEntity));
     }
 
     void deleteIntake(IntakeEntity intakeEntity) {
-        JuoDatabase.databaseWriteExecutor.execute(() -> {
-            juoDao.deleteIntake(intakeEntity);
-        });
+        JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.deleteIntake(intakeEntity));
     }
 
     void deleteAllIntakes() {
-        JuoDatabase.databaseWriteExecutor.execute(() -> {
-            juoDao.deleteAllIntakes();
-        });
+        JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.deleteAllIntakes());
     }
 }

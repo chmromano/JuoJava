@@ -31,6 +31,10 @@ public class JuoViewModel extends AndroidViewModel {
         repository.insertIntake(intakeEntity);
     }
 
+    public void insertMood(MoodEntity moodEntity){
+        repository.insertMood(moodEntity);
+    }
+
     public void updateIntake(IntakeEntity intakeEntity) {
         repository.updateIntake(intakeEntity);
     }

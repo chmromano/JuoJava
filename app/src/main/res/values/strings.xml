@@ -1,27 +1,20 @@
 <resources>
     <string name="app_name">Juo!</string>
     <string name="title_activity_mood">MoodActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
-    <string name="Good">GOOD</string>
-    <string name="Bad">BAD</string>
-    <string name="Normal">NORMAL</string>
-    <string name="feel">How did you feel today?</string>
-    <string name="not">Not now</string>
-    <string name="submit">Submit</string>
-    <string name="Location">Input Location</string>
-    <string name="Temp">Temperature *C</string>
-    <string name="Humidity">Humidity</string>
-    <string name="pressure">Pressure</string>
-    <string name="windSpeed">WindSpeed</string>
-    <string name="btngo">GO</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="button_submit">Submit</string>
+    <string name="button_cancel">Cancel</string>
     <string name="dialog_ok">OK</string>
+
+    <!-- Strings for LocationActivity -->
+    <string name="hint_location">Location</string>
+
+    <!-- Strings for MoodActivity -->
+    <string name="emoji_good">&#x1F603;</string>
+    <string name="emoji_bad">&#x1F641;</string>
+    <string name="emoji_normal">&#x1F610;</string>
+    <string name="mood_activity_message">How did you feel today?</string>
+
     <!-- Strings for ProfileSettingsActivity -->
     <string name="profile_settings_error_exception">Enter a whole number or leave blank</string>
     <string name="profile_settings_error_negative">Enter a positive number or leave blank</string>
@@ -45,10 +38,12 @@
     <string name="main_activity_dialog_content">I can see this is the first time you open Juo!
         Let us guide you through the set-up. We will now take you to the settings page.</string>
     <string name="main_activity_label">Home</string>
+    <string name="main_activity_intake">%d\nof %d</string>
+    <!-- Strings for weather -->
     <string name="text_view_temperature">%.1f °C</string>
     <string name="text_view_humidity">H: %s%%</string>
-    <!-- Strings for weather -->
     <string name="not_available">N/A</string>
+    <string name="location_not_found">Location not found</string>
     <string name="weather_default">&#x1F30D;</string>
     <string name="thunderstorm">&#x1F329;</string>
     <string name="drizzle">&#x1F327;</string>
@@ -58,4 +53,8 @@
     <string name="clear_day">&#x2600;</string>
     <string name="clear_night">&#x1F311;</string>
     <string name="clouds">&#x2601;</string>
+
+    <!-- Content descriptions -->
+    <string name="menu_description">Main hamburger menu</string>
+    <string name="mood_button_description">Mood button takes you to mood input</string>
 </resources>

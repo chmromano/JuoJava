@@ -50,6 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/ic_round_menu_24"
+                android:contentDescription="@string/menu_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +70,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:contentDescription="@string/mood_button_description"
                 android:id="@+id/buttonMoodInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -109,9 +111,11 @@
 
         <TextView
             android:id="@+id/intakeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="50dp"
             android:layout_gravity="center"
+            android:textAlignment="center"
             app:autoSizeTextType="uniform" />
 
     </androidx.cardview.widget.CardView>
@@ -221,6 +225,7 @@
                 app:autoSizeTextType="uniform"
                 android:paddingBottom="10dp"
                 android:paddingEnd="10dp"
+                android:paddingStart="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guidelineWeather"

@@ -25,6 +25,8 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String SHARED_BUTTON_BOTTOM_END = "fi.metropolia.christro.juo.SHARED_BUTTON_4";
     public static final String SHARED_GENDER = "fi.metropolia.christro.juo.SHARED_GENDER";
 
+    private static final String[] GENDER = new String[]{"Female", "Male", "N/A"};
+
     private TextInputEditText editTextName;
     private TextInputEditText editTextAge;
     private TextInputEditText editTextGoal;
@@ -42,8 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private AutoCompleteTextView dropdownMenuGender;
 
-    private static final String[] GENDER = new String[]{"Female", "Male", "N/A"};
-
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
         Button buttonSaveProfileSettings = findViewById(R.id.buttonSaveProfileSettings);
 
@@ -82,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else if (!isFirstStartUp) {
+        } else {
             editTextName.setText(sharedPreferences.getString(SHARED_NAME, ""));
             editTextAge.setText(String.valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
             editTextGoal.setText(String.valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
@@ -93,14 +94,12 @@ public class SettingsActivity extends AppCompatActivity {
             dropdownMenuGender.setText(sharedPreferences.getString(SHARED_GENDER, ""));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, GENDER);
 
         dropdownMenuGender.setAdapter(adapter);
 
-        dropdownMenuGender.setOnClickListener((view) -> {
-            dropdownMenuGender.showDropDown();
-        });
+        dropdownMenuGender.setOnClickListener((view) -> dropdownMenuGender.showDropDown());
 
         buttonSaveProfileSettings.setOnClickListener((view) -> {
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
