@@ -19,6 +19,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,81 +48,62 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
+    public static final String SHARED_LOCATION = "fi.metropolia.christro.juo.SHARED_LOCATION";
+
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
 
-    private CircularProgressBar circularProgressBar;
-
-    private TextView textView;
-
     private int hydrationGoal;
-
-    private Button mainActivityButton1;
-    private Button mainActivityButton2;
-    private Button mainActivityButton3;
-    private Button mainActivityButton4;
-
-    //Views needed for weather
-    private TextView textViewTemperature;
-    private TextView textViewHumidity;
-    private TextView textViewWeatherIcon;
-    private TextView textViewCity;
 
     private double latitude;
     private double longitude;
 
     private String weatherUrl;
 
+    //Intake views
+    private CircularProgressBar circularProgressBar;
+    private TextView textViewIntake;
+    //Weather views
+    private TextView textViewTemperature;
+    private TextView textViewHumidity;
+    private TextView textViewWeatherIcon;
+    private TextView textViewCity;
+    //Button views
+    private Button mainActivityButtonTopStart;
+    private Button mainActivityButtonTopEnd;
+    private Button mainActivityButtonBottomStart;
+    private Button mainActivityButtonBottomEnd;
+
+    //ViewModel
+    private JuoViewModel juoViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        hydrationGoal = loadHydrationGoal();
-
-
-        //TESTING REMOVE LATER
-        findViewById(R.id.buttonNavigationMenu).setOnClickListener((view) -> {
-            Intent testIntent = new Intent(this, SettingsActivity.class);
-            startActivity(testIntent);
-        });
-        //String dateTime = intakeEntity.getDate() + " " + intakeEntity.getTime();
-        //dateTime is in format "yyyy-MM-dd HH:mm:ss.SSS"
-        //TESTING REMOVE LATER
-
+        initialiseViews();
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
-        int sharedButton1 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_1, 250);
-        int sharedButton2 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_2, 500);
-        int sharedButton3 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_3, 100);
-        int sharedButton4 = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_4, 700);
+        hydrationGoal = loadHydrationGoal();
 
-        mainActivityButton1 = findViewById(R.id.mainActivityButton1);
-        mainActivityButton2 = findViewById(R.id.mainActivityButton2);
-        mainActivityButton3 = findViewById(R.id.mainActivityButton3);
-        mainActivityButton4 = findViewById(R.id.mainActivityButton4);
+        int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
+        int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
+        int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
+        int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
 
-        mainActivityButton1.setText(String.valueOf(sharedButton1));
-        mainActivityButton2.setText(String.valueOf(sharedButton2));
-        mainActivityButton3.setText(String.valueOf(sharedButton3));
-        mainActivityButton4.setText(String.valueOf(sharedButton4));
-
-        textView = findViewById(R.id.intakeText);
-
-        circularProgressBar = findViewById(R.id.circularProgressBar);
+        mainActivityButtonTopStart.setText(String.valueOf(sharedButtonTopStart));
+        mainActivityButtonTopEnd.setText(String.valueOf(sharedButtonTopEnd));
+        mainActivityButtonBottomStart.setText(String.valueOf(sharedButtonBottomStart));
+        mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
 
         circularProgressBar.setProgressMax((float) hydrationGoal);
-
-        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
-                .AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(JuoViewModel.class);
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
-                textView.setText(String.valueOf(newTotal));
+                textViewIntake.setText(String.valueOf(newTotal));
             } else {
-                textView.setText(String.valueOf(0));
+                textViewIntake.setText(String.valueOf(0));
             }
 
             if (newTotal != null) {
@@ -133,71 +115,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
-
-        //For location and weather
-        textViewTemperature = findViewById(R.id.textViewTemperature);
-        textViewHumidity = findViewById(R.id.textViewHumidity);
-        textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
-        textViewCity = findViewById(R.id.textViewCity);
-
         textViewWeatherIcon.setOnClickListener((view) -> {
-            Location gpsLocation = null;
-            Location networkLocation = null;
-            Location finalLocation;
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission
-                    .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat
-                    .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
-                    .PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{
-                        android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                return;
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
-            try {
-                gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (gpsLocation != null) {
-                finalLocation = gpsLocation;
-                latitude = finalLocation.getLatitude();
-                longitude = finalLocation.getLongitude();
-            } else if (networkLocation != null) {
-                finalLocation = networkLocation;
-                latitude = finalLocation.getLatitude();
-                longitude = finalLocation.getLongitude();
-            } else {
-                latitude = 0.0;
-                longitude = 0.0;
-            }
             getWeather(getLocationByCoordinates(latitude, longitude));
         });
 
-
-        mainActivityButton1.setOnClickListener(view -> {
-            int intake = Integer.parseInt(mainActivityButton1.getText().toString());
-            juoViewModel.insertIntake(new IntakeEntity(intake));
-        });
-
-        mainActivityButton2.setOnClickListener(view -> {
-            int intake = Integer.parseInt(mainActivityButton2.getText().toString());
-            juoViewModel.insertIntake(new IntakeEntity(intake));
-        });
-
-        mainActivityButton3.setOnClickListener(view -> {
-            int intake = Integer.parseInt(mainActivityButton3.getText().toString());
-            juoViewModel.insertIntake(new IntakeEntity(intake));
-        });
-
-        mainActivityButton4.setOnClickListener(view -> {
-            int intake = Integer.parseInt(mainActivityButton4.getText().toString());
-            juoViewModel.insertIntake(new IntakeEntity(intake));
-        });
+        IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
+        mainActivityButtonTopStart.setOnClickListener(intakeButtonClick);
+        mainActivityButtonTopEnd.setOnClickListener(intakeButtonClick);
+        mainActivityButtonBottomStart.setOnClickListener(intakeButtonClick);
+        mainActivityButtonBottomEnd.setOnClickListener(intakeButtonClick);
     }
 
     private int loadHydrationGoal() {
@@ -245,22 +172,47 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return null;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
-                getWeather(getLocationByCoordinates(longitude, latitude));
+    private String getCurrentLocation() {
+        Location gpsLocation = null;
+        Location networkLocation = null;
+        Location finalLocation;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            } else {
-                Toast.makeText(MainActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
-            }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission
+                .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
+                .PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return null;
         }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+
+        try {
+            gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (gpsLocation != null) {
+            finalLocation = gpsLocation;
+            latitude = finalLocation.getLatitude();
+            longitude = finalLocation.getLongitude();
+        } else if (networkLocation != null) {
+            finalLocation = networkLocation;
+            latitude = finalLocation.getLatitude();
+            longitude = finalLocation.getLongitude();
+        } else {
+            return null;
+        }
+
+        return getLocationByCoordinates(latitude, longitude);
     }
 
     public void getWeather(String location) {
-        if(location == null){
+        if (location == null) {
             return;
         }
 
@@ -292,31 +244,31 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     e.printStackTrace();
                 }
 
-                textViewCity.setText(location.replaceAll("\\+"," "));
+                textViewCity.setText(location.replaceAll("\\+", " "));
                 textViewTemperature.setText(getString(R.string.text_view_temperature, temperature));
                 textViewHumidity.setText(getString(R.string.text_view_humidity, humidity));
 
-                if(weatherId >= 200 && weatherId <= 232){
+                if (weatherId >= 200 && weatherId <= 232) {
                     textViewWeatherIcon.setText(getString(R.string.thunderstorm));
-                }else if (weatherId >= 300 && weatherId <= 321){
+                } else if (weatherId >= 300 && weatherId <= 321) {
                     textViewWeatherIcon.setText(getString(R.string.drizzle));
-                }else if (weatherId >= 500 && weatherId <= 531){
+                } else if (weatherId >= 500 && weatherId <= 531) {
                     textViewWeatherIcon.setText(getString(R.string.rain));
-                }else if (weatherId >= 600 && weatherId <= 622){
+                } else if (weatherId >= 600 && weatherId <= 622) {
                     textViewWeatherIcon.setText(getString(R.string.snow));
-                }else if (weatherId >= 700 && weatherId <= 781){
+                } else if (weatherId >= 700 && weatherId <= 781) {
                     textViewWeatherIcon.setText(getString(R.string.fog));
-                }else if (weatherId == 800){
+                } else if (weatherId == 800) {
                     Calendar cal = Calendar.getInstance();
                     int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    if(hour < 6 || hour > 18){
+                    if (hour < 6 || hour > 18) {
                         textViewWeatherIcon.setText(getString(R.string.clear_night));
                     } else {
                         textViewWeatherIcon.setText(getString(R.string.clear_day));
                     }
-                }else if (weatherId >= 801 && weatherId <= 804){
+                } else if (weatherId >= 801 && weatherId <= 804) {
                     textViewWeatherIcon.setText(getString(R.string.clouds));
-                }else{
+                } else {
                     textViewWeatherIcon.setText(getString(R.string.not_available));
                 }
 
@@ -328,6 +280,58 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
+                getWeather(getLocationByCoordinates(longitude, latitude));
+
+            } else {
+                Toast.makeText(MainActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void initialiseViews() {
+        //Intake view
+        textViewIntake = findViewById(R.id.intakeText);
+        circularProgressBar = findViewById(R.id.circularProgressBar);
+        //Weather views
+        textViewTemperature = findViewById(R.id.textViewTemperature);
+        textViewHumidity = findViewById(R.id.textViewHumidity);
+        textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
+        textViewCity = findViewById(R.id.textViewCity);
+        //Button views
+        mainActivityButtonTopStart = findViewById(R.id.mainActivityButtonTopStart);
+        mainActivityButtonTopEnd = findViewById(R.id.mainActivityButtonTopEnd);
+        mainActivityButtonBottomStart = findViewById(R.id.mainActivityButtonBottomStart);
+        mainActivityButtonBottomEnd = findViewById(R.id.mainActivityButtonBottomEnd);
+        //ViewModel
+        juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
+    }
+
+    private class IntakeButtonClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            int intake = 0;
+            if (view.getId() == R.id.mainActivityButtonTopStart) {
+                intake = Integer.parseInt(mainActivityButtonTopStart.getText().toString());
+            } else if (view.getId() == R.id.mainActivityButtonTopEnd) {
+                intake = Integer.parseInt(mainActivityButtonTopEnd.getText().toString());
+            } else if (view.getId() == R.id.mainActivityButtonBottomStart) {
+                intake = Integer.parseInt(mainActivityButtonBottomStart.getText().toString());
+            } else if (view.getId() == R.id.mainActivityButtonBottomEnd) {
+                intake = Integer.parseInt(mainActivityButtonBottomEnd.getText().toString());
+            }
+            juoViewModel.insertIntake(new IntakeEntity(intake));
+        }
     }
 
     @Override

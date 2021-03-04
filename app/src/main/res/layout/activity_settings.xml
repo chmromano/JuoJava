@@ -97,7 +97,7 @@
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/textLayoutSettingsButton1"
+                app:layout_constraintBottom_toTopOf="@+id/textLayoutSettingsButtonTopStart"
                 app:layout_constraintEnd_toStartOf="@+id/settingsGuidelineMainEnd"
                 app:layout_constraintStart_toStartOf="@+id/settingsGuidelineMainStart"
                 app:layout_constraintTop_toBottomOf="@+id/textLayoutAge">
@@ -137,7 +137,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutSettingsButton1"
+                android:id="@+id/textLayoutSettingsButtonTopStart"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -149,13 +149,13 @@
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@id/textLayoutSettingsButton3"
-                app:layout_constraintEnd_toStartOf="@+id/textLayoutSettingsButton2"
+                app:layout_constraintBottom_toTopOf="@id/textLayoutSettingsButtonBottomStart"
+                app:layout_constraintEnd_toStartOf="@+id/textLayoutSettingsButtonTopEnd"
                 app:layout_constraintStart_toStartOf="@id/settingsGuidelineMainStart"
                 app:layout_constraintTop_toBottomOf="@id/textLayoutGoal">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSettingsButton1"
+                    android:id="@+id/editTextSettingsButtonTopStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -164,7 +164,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutSettingsButton2"
+                android:id="@+id/textLayoutSettingsButtonTopEnd"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -177,11 +177,11 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="@+id/settingsGuidelineMainEnd"
-                app:layout_constraintStart_toEndOf="@id/textLayoutSettingsButton1"
-                app:layout_constraintTop_toTopOf="@id/textLayoutSettingsButton1">
+                app:layout_constraintStart_toEndOf="@id/textLayoutSettingsButtonTopStart"
+                app:layout_constraintTop_toTopOf="@id/textLayoutSettingsButtonTopStart">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSettingsButton2"
+                    android:id="@+id/editTextSettingsButtonTopEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -190,7 +190,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutSettingsButton3"
+                android:id="@+id/textLayoutSettingsButtonBottomStart"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -203,12 +203,12 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@id/buttonSaveProfileSettings"
-                app:layout_constraintEnd_toStartOf="@+id/textLayoutSettingsButton4"
+                app:layout_constraintEnd_toStartOf="@+id/textLayoutSettingsButtonBottomEnd"
                 app:layout_constraintStart_toStartOf="@id/settingsGuidelineMainStart"
-                app:layout_constraintTop_toBottomOf="@id/textLayoutSettingsButton1">
+                app:layout_constraintTop_toBottomOf="@id/textLayoutSettingsButtonTopStart">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSettingsButton3"
+                    android:id="@+id/editTextSettingsButtonBottomStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -217,7 +217,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayoutSettingsButton4"
+                android:id="@+id/textLayoutSettingsButtonBottomEnd"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -230,11 +230,11 @@
                 app:boxCornerRadiusTopStart="20dp"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="@+id/settingsGuidelineMainEnd"
-                app:layout_constraintStart_toEndOf="@id/textLayoutSettingsButton3"
-                app:layout_constraintTop_toTopOf="@id/textLayoutSettingsButton3">
+                app:layout_constraintStart_toEndOf="@id/textLayoutSettingsButtonBottomStart"
+                app:layout_constraintTop_toTopOf="@id/textLayoutSettingsButtonBottomStart">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSettingsButton4"
+                    android:id="@+id/editTextSettingsButtonBottomEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -252,7 +252,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textLayoutSettingsButton3" />
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutSettingsButtonBottomStart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

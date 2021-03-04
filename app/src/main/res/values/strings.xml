@@ -46,7 +46,7 @@
         Let us guide you through the set-up. We will now take you to the settings page.</string>
     <string name="main_activity_label">Home</string>
     <string name="text_view_temperature">%.1f °C</string>
-    <string name="text_view_humidity">%s%%</string>
+    <string name="text_view_humidity">H: %s%%</string>
     <!-- Strings for weather -->
     <string name="not_available">N/A</string>
     <string name="weather_default">&#x1F30D;</string>
