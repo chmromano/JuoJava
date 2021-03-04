@@ -42,5 +42,20 @@
 
     <!-- Strings for MainActivity -->
     <string name="main_activity_dialog_title">Welcome!</string>
-    <string name="main_activity_dialog_content">I can see this is the first time you open Juo! Let us guide you through the set-up. We will now take you to the settings page.</string>
+    <string name="main_activity_dialog_content">I can see this is the first time you open Juo!
+        Let us guide you through the set-up. We will now take you to the settings page.</string>
+    <string name="main_activity_label">Home</string>
+    <string name="text_view_temperature">%.1f °C</string>
+    <string name="text_view_humidity">%s%%</string>
+    <!-- Strings for weather -->
+    <string name="not_available">N/A</string>
+    <string name="weather_default">&#x1F30D;</string>
+    <string name="thunderstorm">&#x1F329;</string>
+    <string name="drizzle">&#x1F327;</string>
+    <string name="rain">&#x1F326;</string>
+    <string name="snow">&#x1F328;</string>
+    <string name="fog">&#x1F32B;</string>
+    <string name="clear_day">&#x2600;</string>
+    <string name="clear_night">&#x1F311;</string>
+    <string name="clouds">&#x2601;</string>
 </resources>

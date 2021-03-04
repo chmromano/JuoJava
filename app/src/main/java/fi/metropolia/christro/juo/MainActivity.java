@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,20 +19,15 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
@@ -41,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +44,7 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
-    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec";
+    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
 
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
@@ -71,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private TextView textViewWeatherIcon;
     private TextView textViewCity;
 
-    private ImageButton buttonGetLocation;
-
     private double latitude;
     private double longitude;
 
@@ -87,10 +80,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
         //TESTING REMOVE LATER
-        findViewById(R.id.imageButton).setOnClickListener((view) -> {
+        findViewById(R.id.buttonNavigationMenu).setOnClickListener((view) -> {
             Intent testIntent = new Intent(this, SettingsActivity.class);
             startActivity(testIntent);
         });
+        //String dateTime = intakeEntity.getDate() + " " + intakeEntity.getTime();
+        //dateTime is in format "yyyy-MM-dd HH:mm:ss.SSS"
         //TESTING REMOVE LATER
 
 
@@ -145,10 +140,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
         textViewCity = findViewById(R.id.textViewCity);
 
-        buttonGetLocation = findViewById(R.id.buttonGetLocation);
-
-        buttonGetLocation.setOnClickListener((view) -> {
+        textViewWeatherIcon.setOnClickListener((view) -> {
+            Location gpsLocation = null;
+            Location networkLocation = null;
+            Location finalLocation;
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission
                     .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat
                     .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
@@ -158,22 +156,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
-            List<String> providers = locationManager.getProviders(true);
-            Location bestLocation = null;
-
-            for (String provider : providers) {
-                Location location = locationManager.getLastKnownLocation(provider);
-                if (location == null) {
-                    continue;
-                }
-                if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
-                    //Found best last known location: %s", l);
-                    bestLocation = location;
-                }
+            try {
+                gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            latitude = bestLocation.getLatitude();
-            longitude = bestLocation.getLongitude();
+            if (gpsLocation != null) {
+                finalLocation = gpsLocation;
+                latitude = finalLocation.getLatitude();
+                longitude = finalLocation.getLongitude();
+            } else if (networkLocation != null) {
+                finalLocation = networkLocation;
+                latitude = finalLocation.getLatitude();
+                longitude = finalLocation.getLongitude();
+            } else {
+                latitude = 0.0;
+                longitude = 0.0;
+            }
             getWeather(getLocationByCoordinates(latitude, longitude));
         });
 
@@ -223,25 +224,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return sharedGoal;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getWeather(getLocationByCoordinates(latitude, longitude));
-    }
-
-    public String getLocationByCoordinates(double lat, double lng) {
+    public String getLocationByCoordinates(double latitude1, double longitude1) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         try {
-            addresses = geocoder.getFromLocation(lat, lng, 1);
+            addresses = geocoder.getFromLocation(latitude1, longitude1, 10);
             Log.d("LOCATION", String.valueOf(addresses));
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (addresses != null && addresses.size() > 0) {
-            String locality = addresses.get(0).getLocality();
-            Log.d("LOCATION", locality);
-            return locality.replaceAll("\\s+","+");
+            for (Address cityName : addresses) {
+                if (cityName.getLocality() != null && cityName.getLocality().length() > 0) {
+                    return cityName.getLocality().replaceAll("\\s+", "+");
+                } else if (cityName.getSubLocality() != null && cityName.getSubLocality().length() > 0) {
+                    return cityName.getSubLocality().replaceAll("\\s+", "+");
+                }
+            }
         }
         return null;
     }
@@ -261,8 +260,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     public void getWeather(String location) {
+        if(location == null){
+            return;
+        }
 
-        weatherUrl = API_URL + "&q=" + location;
+        weatherUrl = API_URL + location;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
             try {
@@ -270,22 +272,55 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 //find country
                 JSONObject jsonMain = responseObject.getJSONObject("main");
                 JSONArray jsonWeather = responseObject.getJSONArray("weather");
+                JSONObject jsonWeatherId = jsonWeather.getJSONObject(0);
 
-                String temperature = jsonMain.getString("temp");
+                String stringTemperature = jsonMain.getString("temp");
                 String humidity = jsonMain.getString("humidity");
-                String weatherId = jsonWeather.getString((int) 0);
+                String stringWeatherId = jsonWeatherId.getString("id");
 
-                //for(int i = 0; i < jsonWeather.length(); i++){ if }
+                double temperature = 0.0;
+                try {
+                    temperature = Double.parseDouble(stringTemperature);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                int weatherId = 0;
+                try {
+                    weatherId = Integer.parseInt(stringWeatherId);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 textViewCity.setText(location.replaceAll("\\+"," "));
-                textViewTemperature.setText("Temperature " + temperature + " \u2103");
-                textViewHumidity.setText("Humidity " + humidity + " %");
+                textViewTemperature.setText(getString(R.string.text_view_temperature, temperature));
+                textViewHumidity.setText(getString(R.string.text_view_humidity, humidity));
 
-                //Remove
-                int unicode = 0x1F325;
-                String emoji = new String(Character.toChars(unicode));
+                if(weatherId >= 200 && weatherId <= 232){
+                    textViewWeatherIcon.setText(getString(R.string.thunderstorm));
+                }else if (weatherId >= 300 && weatherId <= 321){
+                    textViewWeatherIcon.setText(getString(R.string.drizzle));
+                }else if (weatherId >= 500 && weatherId <= 531){
+                    textViewWeatherIcon.setText(getString(R.string.rain));
+                }else if (weatherId >= 600 && weatherId <= 622){
+                    textViewWeatherIcon.setText(getString(R.string.snow));
+                }else if (weatherId >= 700 && weatherId <= 781){
+                    textViewWeatherIcon.setText(getString(R.string.fog));
+                }else if (weatherId == 800){
+                    Calendar cal = Calendar.getInstance();
+                    int hour = cal.get(Calendar.HOUR_OF_DAY);
+                    if(hour < 6 || hour > 18){
+                        textViewWeatherIcon.setText(getString(R.string.clear_night));
+                    } else {
+                        textViewWeatherIcon.setText(getString(R.string.clear_day));
+                    }
+                }else if (weatherId >= 801 && weatherId <= 804){
+                    textViewWeatherIcon.setText(getString(R.string.clouds));
+                }else{
+                    textViewWeatherIcon.setText(getString(R.string.not_available));
+                }
 
-                textViewWeatherIcon.setText(emoji);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -293,11 +328,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         requestQueue.add(stringRequest);
-    }
-
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override
