@@ -20,6 +20,8 @@
     <string name="btngo">GO</string>
     <string name="btnnotification">ON</string>
     <string name="remind">Notify Me</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -45,4 +47,5 @@
     <!-- Strings for MainActivity -->
     <string name="main_activity_dialog_title">Welcome!</string>
     <string name="main_activity_dialog_content">I can see this is the first time you open Juo! Let us guide you through the set-up. We will now take you to the settings page.</string>
+
 </resources>
