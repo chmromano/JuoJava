@@ -12,7 +12,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:background="@color/colorBackgroundLight">
 
             <TextView
                 android:id="@+id/text_view_priority"
@@ -20,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="1"
+                android:textColor="@color/colorFont"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
             <TextView
@@ -27,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Title"
+                android:textColor="@color/colorFont"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:maxLines="1"
                 android:layout_toStartOf="@id/text_view_priority"
@@ -37,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_view_title"
+                android:textColor="@color/colorFont"
                 android:text="Description"/>
         </RelativeLayout>
 </androidx.cardview.widget.CardView>
