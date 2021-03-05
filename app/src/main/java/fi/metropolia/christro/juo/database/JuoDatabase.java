@@ -10,23 +10,30 @@ import java.util.concurrent.Executors;
 import android.content.Context;
 import android.util.Log;
 
-//Create database.
+/**
+ * Database with a table for IntakeEntity and a table for MoodEntity.
+ * @author Christopher Mohan Romano
+ * @version 1.0
+ */
 @Database(entities = {IntakeEntity.class, MoodEntity.class}, version = 1, exportSchema = false)
 public abstract class JuoDatabase extends RoomDatabase {
 
     //Database file name.
     public static final String DATABASE_NAME = "juo_database";
-
     //Database is a singleton.
     private static volatile JuoDatabase juoDatabaseInstance;
-
     //Create an ExecutorService to handle database operation on background threads. UI operation
     //won't be affected.
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     //Return database instance. If there is no database yet creates one.
+
+    /**
+     * Method returns a database instance. If there is no database a database is created.
+     * @param context Context refers to the application.
+     * @return Returns an instance of the database.
+     */
     static JuoDatabase getDatabase(final Context context) {
         if (juoDatabaseInstance == null) {
             synchronized (JuoDatabase.class) {

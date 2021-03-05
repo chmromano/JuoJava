@@ -70,11 +70,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:contentDescription="@string/mood_button_description"
                 android:id="@+id/buttonMoodInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/ic_round_mood_24"
+                android:contentDescription="@string/mood_button_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -113,8 +113,8 @@
             android:id="@+id/intakeText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
             android:layout_gravity="center"
+            android:layout_margin="50dp"
             android:textAlignment="center"
             app:autoSizeTextType="uniform" />
 
@@ -133,6 +133,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/cardViewIntake"
         app:layout_constraintTop_toTopOf="@id/cardViewIntake">
+
+        <TextView
+            android:id="@+id/textViewExtraIntake"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/main_activity_extra_intake_default"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform" />
 
     </androidx.cardview.widget.CardView>
 
@@ -173,8 +184,8 @@
                 android:id="@+id/textViewCity"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:padding="5dp"
                 android:gravity="center"
+                android:padding="5dp"
                 android:text="@string/not_available"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
@@ -187,8 +198,8 @@
                 android:id="@+id/textViewTemperature"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:padding="10dp"
                 android:gravity="center"
+                android:padding="10dp"
                 android:text="@string/not_available"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -201,8 +212,8 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:text="@string/not_available"
                 android:padding="10dp"
+                android:text="@string/not_available"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/guidelineWeather"
@@ -221,11 +232,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/weather_default"
                 app:autoSizeTextType="uniform"
-                android:paddingBottom="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guidelineWeather"
@@ -267,8 +278,8 @@
                 android:id="@+id/mainActivityButtonTopEnd"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:textSize="30sp"
                 android:layout_marginBottom="15dp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@id/mainActivityButtonBottomEnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/mainActivityButtonTopStart"
@@ -279,9 +290,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="15dp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/mainActivityButtonBottomEnd"
-                android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mainActivityButtonTopStart" />
 
@@ -289,8 +300,8 @@
                 android:id="@+id/mainActivityButtonBottomEnd"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/mainActivityButtonBottomStart"
                 app:layout_constraintTop_toBottomOf="@id/mainActivityButtonTopEnd" />

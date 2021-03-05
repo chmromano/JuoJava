@@ -16,20 +16,21 @@
     <string name="mood_activity_message">How did you feel today?</string>
 
     <!-- Strings for ProfileSettingsActivity -->
-    <string name="profile_settings_error_exception">Enter a whole number or leave blank</string>
-    <string name="profile_settings_error_negative">Enter a positive number or leave blank</string>
+    <string name="settings_activity_label">Settings</string>
+    <string name="settings_error_exception">Enter a whole number or leave blank</string>
+    <string name="settings_error_negative">Enter a positive number or leave blank</string>
     <string name="hint_name">Name</string>
     <string name="hint_age">Age</string>
     <string name="hint_hydration_goal">Hydration goal</string>
     <string name="hint_weight">Weight</string>
     <string name="hint_gender">Gender</string>
-    <string name="hint_profile_settings_button_1">Button 1</string>
-    <string name="hint_profile_settings_button_2">Button 2</string>
-    <string name="hint_profile_settings_button_3">Button 3</string>
-    <string name="hint_profile_settings_button_4">Button 4</string>
+    <string name="hint_settings_button_1">Button 1</string>
+    <string name="hint_settings_button_2">Button 2</string>
+    <string name="hint_settings_button_3">Button 3</string>
+    <string name="hint_settings_button_4">Button 4</string>
     <string name="save_profile_button">Save settings</string>
-    <string name="profile_settings_activity_dialog_title">Set-up</string>
-    <string name="profile_settings_activity_dialog_content">Here you can set your name, age,
+    <string name="settings_activity_dialog_title">Set-up</string>
+    <string name="settings_activity_dialog_content">Here you can set your name, age,
         hydration goal, weight, and sex. If you don´t feel like inputting anything don\'t worry,
         we\'ll take care of it for you!</string>
 
@@ -39,6 +40,8 @@
         Let us guide you through the set-up. We will now take you to the settings page.</string>
     <string name="main_activity_label">Home</string>
     <string name="main_activity_intake">%d\nof %d</string>
+    <string name="main_activity_extra_intake_default">0</string>
+    <string name="main_activity_extra_intake">+%d</string>
     <!-- Strings for weather -->
     <string name="text_view_temperature">%.1f °C</string>
     <string name="text_view_humidity">H: %s%%</string>

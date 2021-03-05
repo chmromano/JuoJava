@@ -1,28 +1,16 @@
 package fi.metropolia.christro.juo;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,75 +23,50 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
-
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
-    public static final String SHARED_LOCATION = "fi.metropolia.christro.juo.SHARED_LOCATION";
-
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
-
     private int hydrationGoal;
-
-    private double latitude;
-    private double longitude;
-
-    private String weatherUrl;
 
     //Intake views
     private CircularProgressBar circularProgressBar;
     private TextView textViewIntake;
+    private TextView textViewExtraIntake;
     //Weather views
     private TextView textViewTemperature;
     private TextView textViewHumidity;
-    private TextView textViewWeatherIcon;
     private TextView textViewCity;
+    private TextView textViewWeatherIcon;
     //Button views
     private Button mainActivityButtonTopStart;
     private Button mainActivityButtonTopEnd;
     private Button mainActivityButtonBottomStart;
     private Button mainActivityButtonBottomEnd;
-
     //ViewModel
     private JuoViewModel juoViewModel;
+    //SharedPreferences
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initialiseViews();
-
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
-
-        hydrationGoal = loadHydrationGoal();
-
-        int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
-        int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
-        int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
-        int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
-
-        mainActivityButtonTopStart.setText(String.valueOf(sharedButtonTopStart));
-        mainActivityButtonTopEnd.setText(String.valueOf(sharedButtonTopEnd));
-        mainActivityButtonBottomStart.setText(String.valueOf(sharedButtonBottomStart));
-        mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
-
-        circularProgressBar.setProgressMax((float) hydrationGoal);
+        initialiseAll();
+        updateUI();
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
-                textViewIntake.setText(String.valueOf(newTotal));
+                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal, hydrationGoal));
             } else {
-                textViewIntake.setText(String.valueOf(0));
+                textViewIntake.setText(getString(R.string.main_activity_intake,0, 0));
             }
 
             if (newTotal != null) {
@@ -116,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
         textViewWeatherIcon.setOnClickListener((view) -> {
-
-            getWeather(getLocationByCoordinates(latitude, longitude));
+            String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
+            getWeather(location);
         });
 
         IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
@@ -125,11 +88,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         mainActivityButtonTopEnd.setOnClickListener(intakeButtonClick);
         mainActivityButtonBottomStart.setOnClickListener(intakeButtonClick);
         mainActivityButtonBottomEnd.setOnClickListener(intakeButtonClick);
+
+        Intent returnIntent = new Intent(this, LocationActivity.class);
+        findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> startActivity(returnIntent));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
     }
 
     private int loadHydrationGoal() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
-
         int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
         if (sharedGoal == 999999) {
@@ -151,72 +121,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return sharedGoal;
     }
 
-    public String getLocationByCoordinates(double latitude1, double longitude1) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(latitude1, longitude1, 10);
-            Log.d("LOCATION", String.valueOf(addresses));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (addresses != null && addresses.size() > 0) {
-            for (Address cityName : addresses) {
-                if (cityName.getLocality() != null && cityName.getLocality().length() > 0) {
-                    return cityName.getLocality().replaceAll("\\s+", "+");
-                } else if (cityName.getSubLocality() != null && cityName.getSubLocality().length() > 0) {
-                    return cityName.getSubLocality().replaceAll("\\s+", "+");
-                }
-            }
-        }
-        return null;
-    }
-
-    private String getCurrentLocation() {
-        Location gpsLocation = null;
-        Location networkLocation = null;
-        Location finalLocation;
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission
-                .ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat
-                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
-                .PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return null;
-        }
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
-
-        try {
-            gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (gpsLocation != null) {
-            finalLocation = gpsLocation;
-            latitude = finalLocation.getLatitude();
-            longitude = finalLocation.getLongitude();
-        } else if (networkLocation != null) {
-            finalLocation = networkLocation;
-            latitude = finalLocation.getLatitude();
-            longitude = finalLocation.getLongitude();
-        } else {
-            return null;
-        }
-
-        return getLocationByCoordinates(latitude, longitude);
-    }
-
     public void getWeather(String location) {
+
         if (location == null) {
+            textViewCity.setText(getString(R.string.location_not_found));
             return;
         }
-
-        weatherUrl = API_URL + location;
+        String weatherUrl = API_URL + location;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
             try {
@@ -235,6 +146,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     temperature = Double.parseDouble(stringTemperature);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
+                }
+
+                if(temperature > 24f){
+                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
+                } else if(temperature > 30f){
+                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
+                }else if(temperature > 35f){
+                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
+                }else if (temperature > 40f){
+                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
                 }
 
                 int weatherId = 0;
@@ -271,8 +192,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 } else {
                     textViewWeatherIcon.setText(getString(R.string.not_available));
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -282,24 +201,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         requestQueue.add(stringRequest);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
-                getWeather(getLocationByCoordinates(longitude, latitude));
-
-            } else {
-                Toast.makeText(MainActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void updateUI() {
+        hydrationGoal = loadHydrationGoal();
+        circularProgressBar.setProgressMax((float) hydrationGoal);
+        int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
+        int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
+        int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
+        int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
+        mainActivityButtonTopStart.setText(String.valueOf(sharedButtonTopStart));
+        mainActivityButtonTopEnd.setText(String.valueOf(sharedButtonTopEnd));
+        mainActivityButtonBottomStart.setText(String.valueOf(sharedButtonBottomStart));
+        mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
     }
 
-    private void initialiseViews() {
+    private void initialiseAll() {
         //Intake view
         textViewIntake = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
+        textViewExtraIntake = findViewById(R.id.textViewExtraIntake);
         //Weather views
         textViewTemperature = findViewById(R.id.textViewTemperature);
         textViewHumidity = findViewById(R.id.textViewHumidity);
@@ -314,6 +233,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
+        //SharedPreferences
+        sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
     }
 
     private class IntakeButtonClick implements View.OnClickListener {
@@ -332,25 +253,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
             juoViewModel.insertIntake(new IntakeEntity(intake));
         }
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

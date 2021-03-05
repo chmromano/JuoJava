@@ -77,8 +77,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (isFirstStartUp) {
             new MaterialAlertDialogBuilder(this)
-                    .setTitle(getString(R.string.profile_settings_activity_dialog_title))
-                    .setMessage(getString(R.string.profile_settings_activity_dialog_content))
+                    .setTitle(getString(R.string.settings_activity_dialog_title))
+                    .setMessage(getString(R.string.settings_activity_dialog_content))
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -87,10 +87,14 @@ public class SettingsActivity extends AppCompatActivity {
             editTextName.setText(sharedPreferences.getString(SHARED_NAME, ""));
             editTextAge.setText(String.valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
             editTextGoal.setText(String.valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
-            editTextSettingsButtonTopStart.setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_START, 0)));
-            editTextSettingsButtonTopEnd.setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_END, 0)));
-            editTextSettingsButtonBottomStart.setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_START, 0)));
-            editTextSettingsButtonBottomEnd.setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_END, 0)));
+            editTextSettingsButtonTopStart.setText(String.valueOf(sharedPreferences
+                    .getInt(SHARED_BUTTON_TOP_START, 0)));
+            editTextSettingsButtonTopEnd.setText(String.valueOf(sharedPreferences
+                    .getInt(SHARED_BUTTON_TOP_END, 0)));
+            editTextSettingsButtonBottomStart.setText(String.valueOf(sharedPreferences
+                    .getInt(SHARED_BUTTON_BOTTOM_START, 0)));
+            editTextSettingsButtonBottomEnd.setText(String.valueOf(sharedPreferences
+                    .getInt(SHARED_BUTTON_BOTTOM_END, 0)));
             dropdownMenuGender.setText(sharedPreferences.getString(SHARED_GENDER, ""));
         }
 
@@ -116,13 +120,13 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     age = Integer.parseInt(stringAge);
                     if (age <= 0) {
-                        textLayoutAge.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutAge.setError(getString(R.string.settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_AGE, age);
                     textLayoutAge.setError(null);
                 } catch (Exception e) {
-                    textLayoutAge.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutAge.setError(getString(R.string.settings_error_exception));
                     return;
                 }
             }
@@ -132,13 +136,13 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     int goal = Integer.parseInt(stringGoal);
                     if (goal <= 0) {
-                        textLayoutGoal.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutGoal.setError(getString(R.string.settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_GOAL, goal);
                     textLayoutGoal.setError(null);
                 } catch (NumberFormatException e) {
-                    textLayoutGoal.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutGoal.setError(getString(R.string.settings_error_exception));
                     return;
                 }
             } else {
@@ -166,13 +170,15 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     int button1 = Integer.parseInt(stringButton1);
                     if (button1 <= 0) {
-                        textLayoutSettingsButtonTopStart.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutSettingsButtonTopStart.setError(getString(R.string
+                                .settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_START, button1);
                     textLayoutSettingsButtonTopStart.setError(null);
                 } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonTopStart.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutSettingsButtonTopStart.setError(getString(R.string
+                            .settings_error_exception));
                     return;
                 }
             } else {
@@ -184,13 +190,15 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     int button2 = Integer.parseInt(stringButton2);
                     if (button2 <= 0) {
-                        textLayoutSettingsButtonTopEnd.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                                .settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_END, button2);
                     textLayoutSettingsButtonTopEnd.setError(null);
                 } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonTopEnd.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                            .settings_error_exception));
                     return;
                 }
             } else {
@@ -202,13 +210,15 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     int button3 = Integer.parseInt(stringButton3);
                     if (button3 <= 0) {
-                        textLayoutSettingsButtonBottomStart.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                                .settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_START, button3);
                     textLayoutSettingsButtonBottomStart.setError(null);
                 } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonBottomStart.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                            .settings_error_exception));
                     return;
                 }
             } else {
@@ -220,13 +230,15 @@ public class SettingsActivity extends AppCompatActivity {
                 try {
                     int button4 = Integer.parseInt(stringButton4);
                     if (button4 <= 0) {
-                        textLayoutSettingsButtonBottomEnd.setError(getString(R.string.profile_settings_error_negative));
+                        textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                                .settings_error_negative));
                         return;
                     }
                     sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_END, button4);
                     textLayoutSettingsButtonBottomEnd.setError(null);
                 } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonBottomEnd.setError(getString(R.string.profile_settings_error_exception));
+                    textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                            .settings_error_exception));
                     return;
                 }
             } else {

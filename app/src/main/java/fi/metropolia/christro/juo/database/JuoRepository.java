@@ -22,8 +22,8 @@ class JuoRepository {
         juoDao = db.juoDao();
 
         allIntakeInputs = juoDao.getAllIntakes();
-        dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                .format(Calendar.getInstance().getTime()));
+        dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd",
+                Locale.getDefault()).format(Calendar.getInstance().getTime()));
     }
 
     int getGetHistoricalDailyTotal(String date) {

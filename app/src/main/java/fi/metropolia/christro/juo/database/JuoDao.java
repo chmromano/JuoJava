@@ -7,16 +7,24 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-//Data access object. Basically "methods" but for the database. We use the DAOs described below to
-//manipulate and access our database.
+/**
+ * Represents a data access object (if a method operates on an object, then a DAO operates on a
+ * database).
+ * @author Christopher Romano
+ * @version 1.0
+ */
 @Dao
 public interface JuoDao {
 
+    /**
+     * DAO to insert an IntakeEntity in the database. In case of a conflict the inserted object will
+     * overwrite the old object.
+     * @param intakeEntity An object containing the IntakeEntity.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertIntake(IntakeEntity intakeEntity);
 
