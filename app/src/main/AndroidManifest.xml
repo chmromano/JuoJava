@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Juo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WeatherLocationActivity"></activity>
+        <activity android:name=".LocationActivity"/>
         <activity android:name=".SettingsActivity" />
 
 

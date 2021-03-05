@@ -5,76 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_200"
+    android:padding="10dp"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMainTop"
+        android:id="@+id/guidelineCardViewToolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMainStart"
+        android:id="@+id/guidelineCardViewIntake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.74" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMainEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMenuEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.20" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMenuTop"
+        android:id="@+id/guidelineCardViewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.005" />
+        app:layout_constraintGuide_percent="0.74" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineMenuBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.075" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewToolbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_menu_white_24dp"
-        app:layout_constraintBottom_toTopOf="@id/guidelineMenuBottom"
-        app:layout_constraintEnd_toStartOf="@id/guidelineMenuEnd"
-        app:layout_constraintStart_toEndOf="@id/guidelineMainStart"
-        app:layout_constraintTop_toBottomOf="@id/guidelineMenuTop" />
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineCardViewToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/buttonNavigationMenu"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_round_menu_24"
+                android:contentDescription="@string/menu_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewMainActivityLabel"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="@string/main_activity_label"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/buttonMoodInput"
+                app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/buttonMoodInput"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_round_mood_24"
+                android:contentDescription="@string/mood_button_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewIntake"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toStartOf="@id/cardViewSteps"
-        app:layout_constraintStart_toEndOf="@id/guidelineMainStart"
-        app:layout_constraintTop_toBottomOf="@id/guidelineMainTop">
+        app:layout_constraintEnd_toStartOf="@id/guidelineCardViewIntake"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardViewToolbar">
 
         <!-- https://github.com/lopspower/CircularProgressBar -->
         <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/circularProgressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="40dp"
+            android:layout_margin="20dp"
             app:cpb_background_progressbar_color="#b6bbd8"
             app:cpb_background_progressbar_width="14dp"
             app:cpb_progress_direction="to_right"
@@ -85,161 +111,200 @@
 
         <TextView
             android:id="@+id/intakeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text=""
-            android:textSize="80sp" />
+            android:layout_margin="50dp"
+            android:textAlignment="center"
+            app:autoSizeTextType="uniform" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSteps"
+        android:id="@+id/cardViewExtraIntake"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@id/cardViewExtra"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMainEnd"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@id/cardViewCustomInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/cardViewIntake"
-        app:layout_constraintTop_toBottomOf="@id/guidelineMainTop">
+        app:layout_constraintTop_toTopOf="@id/cardViewIntake">
+
+        <TextView
+            android:id="@+id/textViewExtraIntake"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/main_activity_extra_intake_default"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewExtra"
+        android:id="@+id/cardViewCustomInput"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@id/cardViewWeather"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMainEnd"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/cardViewIntake"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cardViewIntake"
-        app:layout_constraintTop_toBottomOf="@id/cardViewSteps">
+        app:layout_constraintTop_toBottomOf="@id/cardViewExtraIntake">
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewWeather"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/cardViewButtons"
-        app:layout_constraintEnd_toEndOf="@id/guidelineMainEnd"
-        app:layout_constraintStart_toStartOf="@id/cardViewButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardViewIntake">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="7">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textViewCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/not_available"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@id/textViewTemperature"
+                app:layout_constraintEnd_toStartOf="@id/guidelineWeather"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewTemperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Hello" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/not_available"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textViewHumidity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewCity" />
 
             <TextView
                 android:id="@+id/textViewHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="NONONONON" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/not_available"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineWeather"
+                app:layout_constraintStart_toEndOf="@id/textViewTemperature"
+                app:layout_constraintTop_toTopOf="@id/textViewTemperature" />
 
-            <Space
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineWeather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.65" />
 
             <TextView
                 android:id="@+id/textViewWeatherIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Here weather" />
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <ImageButton
-                android:id="@+id/buttonGetLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/weather_default"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guidelineWeather"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewButtons"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guidelineMainEnd"
-        app:layout_constraintStart_toEndOf="@id/guidelineMainStart"
-        app:layout_constraintTop_toBottomOf="@id/cardViewWeather">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineCardViewButton">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp">
+            android:padding="15dp">
 
             <Button
-                android:id="@+id/mainActivityButton1"
+                android:id="@+id/mainActivityButtonTopStart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="50"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/mainActivityButton3"
-                app:layout_constraintEnd_toStartOf="@id/mainActivityButton2"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toTopOf="@id/mainActivityButtonBottomStart"
+                app:layout_constraintEnd_toStartOf="@id/mainActivityButtonTopEnd"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/mainActivityButton2"
+                android:id="@+id/mainActivityButtonTopEnd"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="20dp"
-                android:text="100"
-                app:layout_constraintBottom_toTopOf="@id/mainActivityButton4"
+                android:layout_marginBottom="15dp"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toTopOf="@id/mainActivityButtonBottomEnd"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/mainActivityButton1"
+                app:layout_constraintStart_toEndOf="@id/mainActivityButtonTopStart"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/mainActivityButton3"
+                android:id="@+id/mainActivityButtonBottomStart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginEnd="20dp"
-                android:text="150"
+                android:layout_marginEnd="15dp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/mainActivityButton4"
+                app:layout_constraintEnd_toStartOf="@id/mainActivityButtonBottomEnd"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mainActivityButton1" />
+                app:layout_constraintTop_toBottomOf="@id/mainActivityButtonTopStart" />
 
             <Button
-                android:id="@+id/mainActivityButton4"
+                android:id="@+id/mainActivityButtonBottomEnd"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="200"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/mainActivityButton3"
-                app:layout_constraintTop_toBottomOf="@id/mainActivityButton2" />
+                app:layout_constraintStart_toEndOf="@id/mainActivityButtonBottomStart"
+                app:layout_constraintTop_toBottomOf="@id/mainActivityButtonTopEnd" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

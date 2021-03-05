@@ -25,27 +25,63 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="button_submit">Submit</string>
+    <string name="button_cancel">Cancel</string>
     <string name="dialog_ok">OK</string>
+
+    <!-- Strings for LocationActivity -->
+    <string name="hint_location">Location</string>
+
+    <!-- Strings for MoodActivity -->
+    <string name="emoji_good">&#x1F603;</string>
+    <string name="emoji_bad">&#x1F641;</string>
+    <string name="emoji_normal">&#x1F610;</string>
+    <string name="mood_activity_message">How did you feel today?</string>
+
     <!-- Strings for ProfileSettingsActivity -->
-    <string name="profile_settings_error_exception">Enter a whole number or leave blank</string>
-    <string name="profile_settings_error_negative">Enter a positive number or leave blank</string>
+    <string name="settings_activity_label">Settings</string>
+    <string name="settings_error_exception">Enter a whole number or leave blank</string>
+    <string name="settings_error_negative">Enter a positive number or leave blank</string>
     <string name="hint_name">Name</string>
     <string name="hint_age">Age</string>
     <string name="hint_hydration_goal">Hydration goal</string>
     <string name="hint_weight">Weight</string>
     <string name="hint_gender">Gender</string>
-    <string name="hint_profile_settings_button_1">Button 1</string>
-    <string name="hint_profile_settings_button_2">Button 2</string>
-    <string name="hint_profile_settings_button_3">Button 3</string>
-    <string name="hint_profile_settings_button_4">Button 4</string>
+    <string name="hint_settings_button_1">Button 1</string>
+    <string name="hint_settings_button_2">Button 2</string>
+    <string name="hint_settings_button_3">Button 3</string>
+    <string name="hint_settings_button_4">Button 4</string>
     <string name="save_profile_button">Save settings</string>
-    <string name="profile_settings_activity_dialog_title">Set-up</string>
-    <string name="profile_settings_activity_dialog_content">Here you can set your name, age,
+    <string name="settings_activity_dialog_title">Set-up</string>
+    <string name="settings_activity_dialog_content">Here you can set your name, age,
         hydration goal, weight, and sex. If you don´t feel like inputting anything don\'t worry,
         we\'ll take care of it for you!</string>
 
     <!-- Strings for MainActivity -->
     <string name="main_activity_dialog_title">Welcome!</string>
-    <string name="main_activity_dialog_content">I can see this is the first time you open Juo! Let us guide you through the set-up. We will now take you to the settings page.</string>
+    <string name="main_activity_dialog_content">I can see this is the first time you open Juo!
+        Let us guide you through the set-up. We will now take you to the settings page.</string>
+    <string name="main_activity_label">Home</string>
+    <string name="main_activity_intake">%d\nof %d</string>
+    <string name="main_activity_extra_intake_default">0</string>
+    <string name="main_activity_extra_intake">+%d</string>
+    <!-- Strings for weather -->
+    <string name="text_view_temperature">%.1f °C</string>
+    <string name="text_view_humidity">H: %s%%</string>
+    <string name="not_available">N/A</string>
+    <string name="location_not_found">Location not found</string>
+    <string name="weather_default">&#x1F30D;</string>
+    <string name="thunderstorm">&#x1F329;</string>
+    <string name="drizzle">&#x1F327;</string>
+    <string name="rain">&#x1F326;</string>
+    <string name="snow">&#x1F328;</string>
+    <string name="fog">&#x1F32B;</string>
+    <string name="clear_day">&#x2600;</string>
+    <string name="clear_night">&#x1F311;</string>
+    <string name="clouds">&#x2601;</string>
+
+    <!-- Content descriptions -->
+    <string name="menu_description">Main hamburger menu</string>
+    <string name="mood_button_description">Mood button takes you to mood input</string>
 
 </resources>
