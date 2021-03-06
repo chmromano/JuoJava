@@ -43,8 +43,7 @@
     <string name="main_activity_extra_intake_default">0</string>
     <string name="main_activity_extra_intake">+%d</string>
     <!-- Strings for weather -->
-    <string name="text_view_temperature">%.1f °C</string>
-    <string name="text_view_humidity">H: %s%%</string>
+    <string name="text_view_temperature">%.1f °C\t\t\t\t\t\tH: %s%%</string>
     <string name="not_available">N/A</string>
     <string name="location_not_found">Location not found</string>
     <string name="weather_default">&#x1F30D;</string>

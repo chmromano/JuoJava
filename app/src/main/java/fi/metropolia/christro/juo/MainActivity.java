@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
     private int hydrationGoal;
+    private String location;
 
     //Intake views
     private CircularProgressBar circularProgressBar;
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewExtraIntake;
     //Weather views
     private TextView textViewTemperature;
-    private TextView textViewHumidity;
     private TextView textViewCity;
     private TextView textViewWeatherIcon;
     //Button views
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private JuoViewModel juoViewModel;
     //SharedPreferences
     private SharedPreferences sharedPreferences;
+    //Weather singleton
+    private Weather weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (newTotal != null) {
                 textViewIntake.setText(getString(R.string.main_activity_intake, newTotal, hydrationGoal));
             } else {
-                textViewIntake.setText(getString(R.string.main_activity_intake,0, 0));
+                textViewIntake.setText(getString(R.string.main_activity_intake, 0, 0));
             }
 
             if (newTotal != null) {
@@ -80,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
         textViewWeatherIcon.setOnClickListener((view) -> {
             String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
-            getWeather(location);
+            weather.getWeather(location, this);
+            updateWeatherUI(weather);
         });
 
         IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
@@ -121,84 +124,51 @@ public class MainActivity extends AppCompatActivity {
         return sharedGoal;
     }
 
-    public void getWeather(String location) {
-
-        if (location == null) {
+    private void updateWeatherUI(Weather weather) {
+        if (weather.getHumidity() == null) {
             textViewCity.setText(getString(R.string.location_not_found));
             return;
         }
-        String weatherUrl = API_URL + location;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
-            try {
-                JSONObject responseObject = new JSONObject(response);
-                //find country
-                JSONObject jsonMain = responseObject.getJSONObject("main");
-                JSONArray jsonWeather = responseObject.getJSONArray("weather");
-                JSONObject jsonWeatherId = jsonWeather.getJSONObject(0);
 
-                String stringTemperature = jsonMain.getString("temp");
-                String humidity = jsonMain.getString("humidity");
-                String stringWeatherId = jsonWeatherId.getString("id");
+        if (weather.getTemperature() > 24f) {
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
+        } else if (weather.getTemperature() > 30f) {
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
+        } else if (weather.getTemperature() > 35f) {
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
+        } else if (weather.getTemperature() > 40f) {
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
+        }
 
-                double temperature = 0.0;
-                try {
-                    temperature = Double.parseDouble(stringTemperature);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
+        location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
+        textViewCity.setText(location.replaceAll("\\+", " "));
+        textViewTemperature.setText(getString(R.string.text_view_temperature,
+                weather.getTemperature(), weather.getHumidity()));
 
-                if(temperature > 24f){
-                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
-                } else if(temperature > 30f){
-                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
-                }else if(temperature > 35f){
-                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
-                }else if (temperature > 40f){
-                    textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
-                }
-
-                int weatherId = 0;
-                try {
-                    weatherId = Integer.parseInt(stringWeatherId);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-
-                textViewCity.setText(location.replaceAll("\\+", " "));
-                textViewTemperature.setText(getString(R.string.text_view_temperature, temperature));
-                textViewHumidity.setText(getString(R.string.text_view_humidity, humidity));
-
-                if (weatherId >= 200 && weatherId <= 232) {
-                    textViewWeatherIcon.setText(getString(R.string.thunderstorm));
-                } else if (weatherId >= 300 && weatherId <= 321) {
-                    textViewWeatherIcon.setText(getString(R.string.drizzle));
-                } else if (weatherId >= 500 && weatherId <= 531) {
-                    textViewWeatherIcon.setText(getString(R.string.rain));
-                } else if (weatherId >= 600 && weatherId <= 622) {
-                    textViewWeatherIcon.setText(getString(R.string.snow));
-                } else if (weatherId >= 700 && weatherId <= 781) {
-                    textViewWeatherIcon.setText(getString(R.string.fog));
-                } else if (weatherId == 800) {
-                    Calendar cal = Calendar.getInstance();
-                    int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    if (hour < 6 || hour > 18) {
-                        textViewWeatherIcon.setText(getString(R.string.clear_night));
-                    } else {
-                        textViewWeatherIcon.setText(getString(R.string.clear_day));
-                    }
-                } else if (weatherId >= 801 && weatherId <= 804) {
-                    textViewWeatherIcon.setText(getString(R.string.clouds));
-                } else {
-                    textViewWeatherIcon.setText(getString(R.string.not_available));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if (weather.getWeatherId() >= 200 && weather.getWeatherId() <= 232) {
+            textViewWeatherIcon.setText(getString(R.string.thunderstorm));
+        } else if (weather.getWeatherId() >= 300 && weather.getWeatherId() <= 321) {
+            textViewWeatherIcon.setText(getString(R.string.drizzle));
+        } else if (weather.getWeatherId() >= 500 && weather.getWeatherId() <= 531) {
+            textViewWeatherIcon.setText(getString(R.string.rain));
+        } else if (weather.getWeatherId() >= 600 && weather.getWeatherId() <= 622) {
+            textViewWeatherIcon.setText(getString(R.string.snow));
+        } else if (weather.getWeatherId() >= 700 && weather.getWeatherId() <= 781) {
+            textViewWeatherIcon.setText(getString(R.string.fog));
+        } else if (weather.getWeatherId() == 800) {
+            Calendar cal = Calendar.getInstance();
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            if (hour < 6 || hour > 18) {
+                textViewWeatherIcon.setText(getString(R.string.clear_night));
+            } else {
+                textViewWeatherIcon.setText(getString(R.string.clear_day));
             }
-        }, error -> {
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        requestQueue.add(stringRequest);
+        } else if (weather.getWeatherId() >= 801 && weather.getWeatherId() <= 804) {
+            textViewWeatherIcon.setText(getString(R.string.clouds));
+        } else {
+            textViewWeatherIcon.setText(getString(R.string.not_available));
+        }
     }
 
     private void updateUI() {
@@ -221,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
         textViewExtraIntake = findViewById(R.id.textViewExtraIntake);
         //Weather views
         textViewTemperature = findViewById(R.id.textViewTemperature);
-        textViewHumidity = findViewById(R.id.textViewHumidity);
         textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
         textViewCity = findViewById(R.id.textViewCity);
         //Button views
@@ -235,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
                 .get(JuoViewModel.class);
         //SharedPreferences
         sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        //Weather singleton
+        weather = Weather.getInstance();
     }
 
     private class IntakeButtonClick implements View.OnClickListener {

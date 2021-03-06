@@ -201,24 +201,12 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/not_available"
+                app:autoSizeTextType="uniform"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/textViewHumidity"
+                app:layout_constraintEnd_toStartOf="@id/textViewWeatherIcon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewCity" />
-
-            <TextView
-                android:id="@+id/textViewHumidity"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/not_available"
-                android:textSize="30sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/guidelineWeather"
-                app:layout_constraintStart_toEndOf="@id/textViewTemperature"
-                app:layout_constraintTop_toTopOf="@id/textViewTemperature" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineWeather"
