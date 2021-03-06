@@ -20,8 +20,7 @@ public class JuoViewModel extends AndroidViewModel {
         super(application);
         repository = new JuoRepository(application);
         allIntakes = repository.getAllIntakeInputs();
-        dailyTotal = repository.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd")
-                .format(Calendar.getInstance().getTime()));
+        dailyTotal = repository.getDailyTotal();
     }
 
     public LiveData<Integer> getDailyTotal() {
@@ -30,6 +29,10 @@ public class JuoViewModel extends AndroidViewModel {
 
     public void insertIntake(IntakeEntity intakeEntity) {
         repository.insertIntake(intakeEntity);
+    }
+
+    public void insertMood(MoodEntity moodEntity){
+        repository.insertMood(moodEntity);
     }
 
     public void updateIntake(IntakeEntity intakeEntity) {
@@ -44,11 +47,15 @@ public class JuoViewModel extends AndroidViewModel {
         repository.deleteAllIntakes();
     }
 
+    public IntakeEntity getLatestIntake(){
+        return repository.getLatestIntake();
+    }
+
     public LiveData<List<IntakeEntity>> getAllIntakeInputs() {
         return allIntakes;
     }
 
     public int getHistoricalDailyTotal(String date) {
-        return repository.getGetHistoricalDailyTotal();
+        return repository.getGetHistoricalDailyTotal(date);
     }
 }
