@@ -5,9 +5,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,12 +31,10 @@ import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
     private int hydrationGoal;
-    private String location;
 
     //Intake views
     private CircularProgressBar circularProgressBar;
@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private JuoViewModel juoViewModel;
     //SharedPreferences
     private SharedPreferences sharedPreferences;
-    //Weather singleton
-    private Weather weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initialiseAll();
         updateUI();
+        getWeather();
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
@@ -80,11 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
-        textViewWeatherIcon.setOnClickListener((view) -> {
-            String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
-            weather.getWeather(location, this);
-            updateWeatherUI(weather);
-        });
+        textViewWeatherIcon.setOnClickListener((view) -> getWeather());
 
         IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
         mainActivityButtonTopStart.setOnClickListener(intakeButtonClick);
@@ -100,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateUI();
+        getWeather();
     }
 
     private int loadHydrationGoal() {
@@ -124,39 +120,77 @@ public class MainActivity extends AppCompatActivity {
         return sharedGoal;
     }
 
-    private void updateWeatherUI(Weather weather) {
-        if (weather.getHumidity() == null) {
-            textViewCity.setText(getString(R.string.location_not_found));
-            return;
-        }
+    public void getWeather() {
+        String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
+        String weatherUrl = API_URL + location;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
+            try {
+                JSONObject responseObject = new JSONObject(response);
+                //find country
+                JSONObject jsonMain = responseObject.getJSONObject("main");
+                JSONArray jsonWeather = responseObject.getJSONArray("weather");
+                JSONObject jsonWeatherId = jsonWeather.getJSONObject(0);
 
+                String humidity = jsonMain.getString("humidity");
 
-        if (weather.getTemperature() > 24f) {
+                String stringTemperature = jsonMain.getString("temp");
+                double temperature = 0;
+                try {
+                    temperature = Double.parseDouble(stringTemperature);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                String stringWeatherId = jsonWeatherId.getString("id");
+                int weatherId = 0;
+                try {
+                    weatherId = Integer.parseInt(stringWeatherId);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                updateWeatherUI(location, temperature, humidity, weatherId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> updateWeatherUI());
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void updateWeatherUI() {
+        textViewWeatherIcon.setText(getString(R.string.not_available));
+        textViewCity.setText((getString(R.string.location_not_found)));
+        textViewTemperature.setText(getString(R.string.not_available));
+    }
+
+    private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
+
+        if (temperature > 24f) {
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
-        } else if (weather.getTemperature() > 30f) {
+        } else if (temperature > 30f) {
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
-        } else if (weather.getTemperature() > 35f) {
+        } else if (temperature > 35f) {
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
-        } else if (weather.getTemperature() > 40f) {
+        } else if (temperature > 40f) {
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
         }
 
-        location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
         textViewCity.setText(location.replaceAll("\\+", " "));
         textViewTemperature.setText(getString(R.string.text_view_temperature,
-                weather.getTemperature(), weather.getHumidity()));
+                temperature, humidity));
 
-        if (weather.getWeatherId() >= 200 && weather.getWeatherId() <= 232) {
+        if (weatherId >= 200 && weatherId <= 232) {
             textViewWeatherIcon.setText(getString(R.string.thunderstorm));
-        } else if (weather.getWeatherId() >= 300 && weather.getWeatherId() <= 321) {
+        } else if (weatherId >= 300 && weatherId <= 321) {
             textViewWeatherIcon.setText(getString(R.string.drizzle));
-        } else if (weather.getWeatherId() >= 500 && weather.getWeatherId() <= 531) {
+        } else if (weatherId >= 500 && weatherId <= 531) {
             textViewWeatherIcon.setText(getString(R.string.rain));
-        } else if (weather.getWeatherId() >= 600 && weather.getWeatherId() <= 622) {
+        } else if (weatherId >= 600 && weatherId <= 622) {
             textViewWeatherIcon.setText(getString(R.string.snow));
-        } else if (weather.getWeatherId() >= 700 && weather.getWeatherId() <= 781) {
+        } else if (weatherId >= 700 && weatherId <= 781) {
             textViewWeatherIcon.setText(getString(R.string.fog));
-        } else if (weather.getWeatherId() == 800) {
+        } else if (weatherId == 800) {
             Calendar cal = Calendar.getInstance();
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             if (hour < 6 || hour > 18) {
@@ -164,23 +198,29 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 textViewWeatherIcon.setText(getString(R.string.clear_day));
             }
-        } else if (weather.getWeatherId() >= 801 && weather.getWeatherId() <= 804) {
+        } else if (weatherId >= 801 && weatherId <= 804) {
             textViewWeatherIcon.setText(getString(R.string.clouds));
         } else {
             textViewWeatherIcon.setText(getString(R.string.not_available));
         }
+
     }
 
     private void updateUI() {
         hydrationGoal = loadHydrationGoal();
+
         circularProgressBar.setProgressMax((float) hydrationGoal);
+
         int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
-        int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
-        int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
-        int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
         mainActivityButtonTopStart.setText(String.valueOf(sharedButtonTopStart));
+
+        int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
         mainActivityButtonTopEnd.setText(String.valueOf(sharedButtonTopEnd));
+
+        int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
         mainActivityButtonBottomStart.setText(String.valueOf(sharedButtonBottomStart));
+
+        int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
         mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
     }
 
@@ -204,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 .get(JuoViewModel.class);
         //SharedPreferences
         sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
-        //Weather singleton
-        weather = Weather.getInstance();
     }
 
     private class IntakeButtonClick implements View.OnClickListener {
