@@ -1,6 +1,12 @@
 package fi.metropolia.christro.juo;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -8,13 +14,19 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import android.content.Context;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.KeyEvent;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,12 +36,18 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
@@ -52,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewExtraIntake;
     //Weather views
     private TextView textViewTemperature;
+    private TextView textViewHumidity;
     private TextView textViewCity;
     private TextView textViewWeatherIcon;
     //Button views
@@ -67,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
     //SharedPreferences
     private SharedPreferences sharedPreferences;
 
+
+    private DrawerLayout drawer;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private static final String TAG = "Selected Menu Item";
+
+
     /**
      *
      * @param savedInstanceState
@@ -77,15 +103,83 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initialiseAll();
         updateUI();
-        getWeather();
 
-        final Observer<String> latestIntakeObserver = latestIntake -> {
-            // Update the UI, in this case, a TextView.
-            if (latestIntake != null) {
-                Log.d("TRY_THIS_DATE_TIME", latestIntake);
+
+        //navigation
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(savedInstanceState == null){
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        navigationView.bringToFront();
+
+        ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
+        menuButton.setOnClickListener(view -> {
+            drawer.openDrawer(GravityCompat.START);
+        });
+
+
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d(TAG, "onNavigationItemSelected: "+item.getItemId());
+                //item = navigationView.getCheckedItem();
+                Intent intent;
+                //Context context = getApplicationContext();
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        Toast.makeText(MainActivity.this,"Home",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_mood:
+                        Toast.makeText(MainActivity.this,"Mood",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, MoodActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_history:
+                        Toast.makeText(MainActivity.this,"Charts",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, History.class);
+                        Log.d(TAG, "onNavigationItemSelected: history");
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_about:
+                        Toast.makeText(MainActivity.this,"About",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, About.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.nav_help:
+                        Toast.makeText(MainActivity.this,"Help",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, Help.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_profile:
+                        Toast.makeText(MainActivity.this,"Profile",Toast.LENGTH_SHORT).show();
+                        //intent = new Intent(context,Profile.class);
+                        break;
+
+                    case R.id.nav_settings:
+                        Toast.makeText(MainActivity.this,"Settings",Toast.LENGTH_SHORT).show();
+                        //intent = new Intent(context, Settings.class);
+                        break;
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
             }
-        };
-        juoViewModel.getLatestIntake().observe(this, latestIntakeObserver);
+        });
+
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
@@ -184,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
     public void getWeather() {
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
         String weatherUrl = API_URL + location;
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
             try {
                 JSONObject responseObject = new JSONObject(response);
@@ -307,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
         textViewExtraIntake = findViewById(R.id.textViewExtraIntake);
         //Weather views
         textViewTemperature = findViewById(R.id.textViewTemperature);
+        textViewHumidity = findViewById(R.id.textViewHumidity);
         textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
         textViewCity = findViewById(R.id.textViewCity);
         //Button views
@@ -362,4 +458,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onBackPressed(){
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            //means the drawer is open
+            drawer.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
 }
