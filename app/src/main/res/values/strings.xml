@@ -58,6 +58,20 @@
         hydration goal, weight, and sex. If you don´t feel like inputting anything don\'t worry,
         we\'ll take care of it for you!</string>
 
+    <!-- Strings for AboutActivity -->
+    <string name="about_activity_label">About</string>
+    <string name="about_activity_text">This application uses the library
+        <a href="https://github.com/lopspower/CircularProgressBar">CircularProgressBar</a> by
+        <a href="https://github.com/lopspower">Lopez Mikhael.</a> This library is available under
+        the Apache 2.0 license, which can be obtained
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.\n\nThis application uses the
+        library
+        <a href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a> by
+        <a href="https://github.com/PhilJay">Philipp Jahoda</a>. This library is available under
+        the Apache 2.0 license, which can be obtained
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.
+    </string>
+
     <!-- Strings for MainActivity -->
     <string name="main_activity_dialog_title">Welcome!</string>
     <string name="main_activity_dialog_content">I can see this is the first time you open Juo!

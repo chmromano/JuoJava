@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
     private int hydrationGoal;
+    private int extraHydrationGoal;
 
     //Intake views
     private CircularProgressBar circularProgressBar;
@@ -173,7 +174,8 @@ public class MainActivity extends AppCompatActivity {
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
-                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal, hydrationGoal));
+                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal,
+                        hydrationGoal + extraHydrationGoal));
                 circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
             } else {
                 textViewIntake.setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
@@ -322,15 +324,20 @@ public class MainActivity extends AppCompatActivity {
      * @param weatherId   Integer containing the weather ID.
      */
     private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
-        if (temperature > 24f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
-        } else if (temperature > 30f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
-        } else if (temperature > 35f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
-        } else if (temperature > 40f) {
+        if (temperature > 40f) {
+            extraHydrationGoal = 1000;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
+        }else if (temperature > 35f) {
+            extraHydrationGoal = 500;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
+        }else if (temperature > 30f) {
+            extraHydrationGoal = 250;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
+        } else if (temperature > 24f) {
+            extraHydrationGoal = 100;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
         }
+        circularProgressBar.setProgressMax((float) hydrationGoal + extraHydrationGoal);
 
         textViewCity.setText(location.replaceAll("\\+", " "));
         textViewTemperature.setText(getString(R.string.text_view_temperature,
