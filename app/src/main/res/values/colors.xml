@@ -10,7 +10,10 @@
 
     <!-- Test. -->
     <color name="buttonLabel">#FFFFFF</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3c4043</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#E600BCD4</color>
+    <color name="colorAccentDark">#0092A5</color>
+    <color name="colorFont">#6C6E6E</color>
+    <color name="colorFontLight">#D8D8D8</color>
 </resources>

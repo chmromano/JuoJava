@@ -57,7 +57,7 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
-     *
+     *notification method when user forgets to drink in 2 hrs and when goal is not achieved.
      * @return
      * @throws ParseException
      */
@@ -90,7 +90,7 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
-     *
+     * method to convert string to date
      * @return
      * @throws ParseException
      */
@@ -113,7 +113,7 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
-     *
+     * method for users total daily intake.
      * @return
      */
 
@@ -129,6 +129,7 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
+     * method to get users targeted goal.
      * @return int
      */
     private int getGoalAmount() {
