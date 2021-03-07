@@ -1,9 +1,5 @@
 package fi.metropolia.christro.juo;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
-
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,21 +8,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.Toast;
-import fi.metropolia.christro.juo.database.IntakeEntity;
-import fi.metropolia.christro.juo.database.JuoViewModel;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import fi.metropolia.christro.juo.database.IntakeEntity;
+import fi.metropolia.christro.juo.database.JuoViewModel;
 
 
 public class Notification extends AppCompatActivity {
@@ -66,29 +57,23 @@ public class Notification extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(notificationChannel);
 
             Log.i("HERE_TO_SET","SET_ME");
-            dateIntake();
+            setModel();
         }
     }
 
-    public void dateIntake() {
+    public void setModel() {
 
-        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+        viewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
-
-        viewModel = juoViewModel;
 
         IntakeEntity intakeEntity = viewModel.getLatestIntake();
 
        if(intakeEntity == null){
 
-           Log.i("NULL_HERE_TOO", "INTENET");
+           Log.i("CHECK_NULL_INTAKE", "NULL");
        }
-        //dateTime is in format "yyyy-MM-dd HH:mm:ss.SSS"
 
-   //     String dateTime = intakeEntity.getDate() + " " + intakeEntity.getTime();
-     //   SimpleDateFormat date  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-       // date.parse(dateTime);
     }
 
 

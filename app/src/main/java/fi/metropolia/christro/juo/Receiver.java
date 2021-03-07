@@ -1,31 +1,27 @@
 package fi.metropolia.christro.juo;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.util.DateInterval;
+import android.content.SharedPreferences;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-
+import androidx.lifecycle.LiveData;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
-
 import fi.metropolia.christro.juo.database.IntakeEntity;
-import fi.metropolia.christro.juo.database.JuoDatabase_Impl;
-import fi.metropolia.christro.juo.database.JuoViewModel;
 
 
 public class Receiver extends BroadcastReceiver {
 
     Application application;
+
+    Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -35,9 +31,10 @@ public class Receiver extends BroadcastReceiver {
         // check current time
         // get the difference
         // if the difference is 2 hours then fire event
-        // if the user has already drank 5 litres - meet goal - no notification
+        // if the user has already drank  meet goal - no notification
 
-         this.application = (Application) context.getApplicationContext();
+        this.context = context;
+        this.application = (Application) context.getApplicationContext();
 
         try {
             if (this.fireNotification()) {
@@ -54,26 +51,37 @@ public class Receiver extends BroadcastReceiver {
                 notificationManager.notify(1, builder.build());
             }
         } catch (ParseException e) {
-            Log.i("ERROR_BROADCAST",e.getMessage());
+            Log.i("ERROR_BROADCAST", e.getMessage());
         }
 
     }
+
+    /**
+     *
+     * @return
+     * @throws ParseException
+     */
+
 
 
     private boolean fireNotification() throws ParseException {
 
         Date lastTimeDrink = this.getLastTimeDrink();
+
         Date currentTime = Calendar.getInstance().getTime();
+
+        if (lastTimeDrink == null) {
+            return false;
+        }
 
         long timeDifference = currentTime.getTime() - lastTimeDrink.getTime();
 
-        long differenceInHours =  timeDifference / (1000 * 60 * 60) % 24;
+        long differenceInHours = timeDifference / (1000 * 60 * 60);
 
-
-        long totalIntakeToday =this.getTotalDrinkToday();
+        long totalIntakeToday = this.getTotalDrinkToday();
         long goalAmount = this.getGoalAmount();
 
-        if(goalAmount <= totalIntakeToday){
+        if (goalAmount <= totalIntakeToday) {
             return false;
         }
 
@@ -81,44 +89,54 @@ public class Receiver extends BroadcastReceiver {
 
     }
 
+    /**
+     *
+     * @return
+     * @throws ParseException
+     */
+
 
     private Date getLastTimeDrink() throws ParseException {
 
-
-
-
         IntakeEntity intakeEntity = Notification.viewModel.getLatestIntake();
 
-
-
-        if(intakeEntity == null){
-
-
-
-            Log.i("DATE_LAST", "NULL");
-            return Calendar.getInstance().getTime();
+        if (intakeEntity == null) {
+            return null;
         }
 
-        SimpleDateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
         Log.i("DATE_DRINK", dateFormat.parse(intakeEntity.getDate()).toString());
 
-      return dateFormat.parse(intakeEntity.getDate());
+        return dateFormat.parse(intakeEntity.getDate());
 
     }
 
-    private int getTotalDrinkToday(){
+    /**
+     *
+     * @return
+     */
 
+    private int getTotalDrinkToday() {
 
-        return 1;
+        LiveData<Integer> liveData = Notification.viewModel.getDailyTotal();
+
+        if (liveData.getValue() != null) {
+            return liveData.getValue();
+        }
+
+        return 0;
     }
 
-    private int getGoalAmount(){
+    /**
+     * @return int
+     */
+    private int getGoalAmount() {
 
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
-        return 1;
+        return (sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 0));
     }
-
 
 
 }
