@@ -98,31 +98,22 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
                     intent = new Intent(LocationActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_mood:
-                    intent = new Intent(LocationActivity.this, MoodActivity.class);
-                    startActivity(intent);
-                    break;
-
                 case R.id.nav_history:
                     intent = new Intent(LocationActivity.this, History.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_about:
-                    intent = new Intent(LocationActivity.this, AboutActivity.class);
+                case R.id.nav_mood:
+                    intent = new Intent(LocationActivity.this, MoodActivity.class);
                     startActivity(intent);
                     break;
-
                 case R.id.nav_location:
                     break;
-
-                case R.id.nav_profile:
-                    //intent = new Intent(context,Profile.class);
-                    break;
-
                 case R.id.nav_settings:
                     intent = new Intent(LocationActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_about:
+                    intent = new Intent(LocationActivity.this, AboutActivity.class);
                     startActivity(intent);
                     break;
             }

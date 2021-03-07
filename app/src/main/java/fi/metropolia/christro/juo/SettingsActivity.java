@@ -104,32 +104,23 @@ public class SettingsActivity extends AppCompatActivity {
                     intent = new Intent(SettingsActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_mood:
-                    intent = new Intent(SettingsActivity.this, MoodActivity.class);
-                    startActivity(intent);
-                    break;
-
                 case R.id.nav_history:
                     intent = new Intent(SettingsActivity.this, History.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_about:
-                    intent = new Intent(SettingsActivity.this, AboutActivity.class);
+                case R.id.nav_mood:
+                    intent = new Intent(SettingsActivity.this, MoodActivity.class);
                     startActivity(intent);
                     break;
-
                 case R.id.nav_location:
                     intent = new Intent(SettingsActivity.this, LocationActivity.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_profile:
-                    //intent = new Intent(context,Profile.class);
-                    break;
-
                 case R.id.nav_settings:
+                    break;
+                case R.id.nav_about:
+                    intent = new Intent(SettingsActivity.this, AboutActivity.class);
+                    startActivity(intent);
                     break;
             }
             drawerLayoutSettings.closeDrawer(GravityCompat.START);

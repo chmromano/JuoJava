@@ -67,32 +67,23 @@ public class AboutActivity extends AppCompatActivity {
                     intent = new Intent(AboutActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_mood:
-                    intent = new Intent(AboutActivity.this, MoodActivity.class);
-                    startActivity(intent);
-                    break;
-
                 case R.id.nav_history:
                     intent = new Intent(AboutActivity.this, History.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_about:
+                case R.id.nav_mood:
+                    intent = new Intent(AboutActivity.this, MoodActivity.class);
+                    startActivity(intent);
                     break;
-
                 case R.id.nav_location:
                     intent = new Intent(AboutActivity.this, LocationActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.nav_profile:
-                    Toast.makeText(AboutActivity.this, "Profile", Toast.LENGTH_SHORT).show();
-                    //intent = new Intent(context,Profile.class);
-                    break;
-
                 case R.id.nav_settings:
                     intent = new Intent(AboutActivity.this, SettingsActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.nav_about:
                     break;
             }
             drawer.closeDrawer(GravityCompat.START);

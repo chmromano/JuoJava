@@ -18,7 +18,6 @@
         android:theme="@style/Theme.Juo">
         <activity android:name=".LocationActivity"/>
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".MoodActivity" />
         <activity android:name=".Notification" />
         <!--<activity android:name=".Profile" />-->

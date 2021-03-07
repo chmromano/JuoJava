@@ -51,6 +51,7 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 /**
  * Main activity of the application.
+ *
  * @author Christopher Mohan Romano, Taranath Pokhrel, Itale Tabaksmane
  * @version 1.0
  */
@@ -120,47 +121,28 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(item -> {
-            Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
-            //item = navigationView.getCheckedItem();
             Intent intent;
-            //Context context = getApplicationContext();
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
                     break;
-
+                case R.id.nav_history:
+                    intent = new Intent(MainActivity.this, History.class);
+                    startActivity(intent);
+                    break;
                 case R.id.nav_mood:
-                    Toast.makeText(MainActivity.this, "Mood", Toast.LENGTH_SHORT).show();
                     intent = new Intent(MainActivity.this, MoodActivity.class);
                     startActivity(intent);
                     break;
-
-                case R.id.nav_history:
-                    Toast.makeText(MainActivity.this, "Charts", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(MainActivity.this, History.class);
-                    Log.d(TAG, "onNavigationItemSelected: history");
-                    startActivity(intent);
-                    break;
-
-                case R.id.nav_about:
-                    Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
-
                 case R.id.nav_location:
-                    Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_SHORT).show();
                     intent = new Intent(MainActivity.this, LocationActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.nav_profile:
-                    Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
-                    //intent = new Intent(context,Profile.class);
-                    break;
-
                 case R.id.nav_settings:
-                    Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
                     intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_about:
+                    intent = new Intent(MainActivity.this, AboutActivity.class);
                     startActivity(intent);
                     break;
             }
@@ -327,10 +309,10 @@ public class MainActivity extends AppCompatActivity {
         if (temperature > 40f) {
             extraHydrationGoal = 1000;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
-        }else if (temperature > 35f) {
+        } else if (temperature > 35f) {
             extraHydrationGoal = 500;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
-        }else if (temperature > 30f) {
+        } else if (temperature > 30f) {
             extraHydrationGoal = 250;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
         } else if (temperature > 24f) {
