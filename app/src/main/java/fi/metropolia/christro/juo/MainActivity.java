@@ -1,7 +1,6 @@
 package fi.metropolia.christro.juo;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,14 +14,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.KeyEvent;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -36,8 +32,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -47,7 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
@@ -55,7 +48,7 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 /**
  * Main activity of the application.
- * @author Christopher Mohan Romano
+ * @author Christopher Mohan Romano, Taranath Pokhrel, Itale Tabaksmane
  * @version 1.0
  */
 public class MainActivity extends AppCompatActivity {
@@ -70,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewExtraIntake;
     //Weather views
     private TextView textViewTemperature;
-    private TextView textViewHumidity;
     private TextView textViewCity;
     private TextView textViewWeatherIcon;
     //Button views
@@ -87,10 +79,31 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private static final String TAG = "Selected Menu Item";
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -103,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initialiseAll();
         updateUI();
+
+
+
+
+
+
+
 
 
         //navigation
@@ -119,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
         menuButton.setOnClickListener(view -> {
             drawer.openDrawer(GravityCompat.START);
         });
-
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -172,13 +190,20 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_settings:
                         Toast.makeText(MainActivity.this,"Settings",Toast.LENGTH_SHORT).show();
-                        //intent = new Intent(context, Settings.class);
+                        intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
+
+
+
+
+
+
 
 
         final Observer<Integer> dailyTotalObserver = newTotal -> {
@@ -215,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
      * @param event The event (key was pressed).
      * @return Returns a boolean.
      */
-
     private boolean onKeyEnter(View v, int keyCode, KeyEvent event){
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
             String stringCustomInput = editTextCustomInput.getText().toString();
@@ -402,7 +426,6 @@ public class MainActivity extends AppCompatActivity {
         textViewExtraIntake = findViewById(R.id.textViewExtraIntake);
         //Weather views
         textViewTemperature = findViewById(R.id.textViewTemperature);
-        textViewHumidity = findViewById(R.id.textViewHumidity);
         textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
         textViewCity = findViewById(R.id.textViewCity);
         //Button views
@@ -457,6 +480,11 @@ public class MainActivity extends AppCompatActivity {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+
+
+
+
 
 
     @Override
