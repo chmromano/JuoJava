@@ -29,13 +29,13 @@ public class Notification extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification2);
+        setContentView(R.layout.activity_notification);
 
         btnGo = findViewById(R.id.btnOn);
 
         btnGo.setOnClickListener(v -> {
             createNotificationChannel();
-            Toast.makeText(Notification.this, "Notification Allowed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Notification.this, "Notification Allowed", Toast.LENGTH_SHORT).show();
 
             // AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();
@@ -44,7 +44,7 @@ public class Notification extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(Notification.this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
         });
     }
     private void createNotificationChannel() {

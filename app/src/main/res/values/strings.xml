@@ -23,6 +23,8 @@
     <string name="btngo">GO</string>
     <string name="btnnotification">ON</string>
     <string name="remind">Notify Me</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
 
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>

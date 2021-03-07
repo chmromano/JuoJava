@@ -17,6 +17,7 @@ class JuoRepository {
     private IntakeEntity latestIntake;
     private int historicalDailyTotal;
 
+
     JuoRepository(Application application) {
         JuoDatabase db = JuoDatabase.getDatabase(application);
         juoDao = db.juoDao();
