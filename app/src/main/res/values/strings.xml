@@ -16,16 +16,13 @@
     <string name="not">Not now</string>
     <string name="submit">Submit</string>
     <string name="Location">Input Location</string>
+    <string name="Temp">Temperature *C</string>
     <string name="Humidity">Humidity</string>
     <string name="pressure">Pressure</string>
     <string name="windSpeed">WindSpeed</string>
     <string name="btngo">GO</string>
     <string name="btnnotification">ON</string>
     <string name="remind">Notify Me</string>
-    <string name="off">OFF</string>
-    <string name="on">ON</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
@@ -68,7 +65,8 @@
     <string name="main_activity_extra_intake_default">0</string>
     <string name="main_activity_extra_intake">+%d</string>
     <!-- Strings for weather -->
-    <string name="text_view_temperature">%.1f °C\t\t\t\t\t\tH: %s%%</string>
+    <string name="text_view_temperature">%.1f °C</string>
+    <string name="text_view_humidity">H: %s%%</string>
     <string name="not_available">N/A</string>
     <string name="location_not_found">Location not found</string>
     <string name="weather_default">&#x1F30D;</string>
@@ -84,14 +82,9 @@
     <!-- Content descriptions -->
     <string name="menu_description">Main hamburger menu</string>
     <string name="mood_button_description">Mood button takes you to mood input</string>
-
-    <string name="Temp">-</string>
-    <string name="search">Search</string>
-    <string name="currentLocation">Current Location</string>
-    <string name="Notification">Notification</string>
+    <string name="Notification">notification</string>
 
     <!-- For the visually impaired people o know the menu is open-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
 </resources>

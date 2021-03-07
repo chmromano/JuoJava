@@ -16,4 +16,6 @@
     <color name="colorAccentDark">#0092A5</color>
     <color name="colorFont">#6C6E6E</color>
     <color name="colorFontLight">#D8D8D8</color>
+    <color name="colorBackgroundLight">#EFEFEF</color>
+
 </resources>
