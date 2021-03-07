@@ -31,15 +31,17 @@
     <string name="dialog_ok">OK</string>
 
     <!-- Strings for LocationActivity -->
+    <string name="location_activity_label">Location</string>
     <string name="hint_location">Location</string>
 
     <!-- Strings for MoodActivity -->
+    <string name="mood_activity_label">Mood</string>
     <string name="emoji_good">&#x1F603;</string>
     <string name="emoji_bad">&#x1F641;</string>
     <string name="emoji_normal">&#x1F610;</string>
     <string name="mood_activity_message">How did you feel today?</string>
 
-    <!-- Strings for ProfileSettingsActivity -->
+    <!-- Strings for SettingsActivity -->
     <string name="settings_activity_label">Settings</string>
     <string name="settings_error_exception">Enter a whole number or leave blank</string>
     <string name="settings_error_negative">Enter a positive number or leave blank</string>
@@ -57,6 +59,20 @@
     <string name="settings_activity_dialog_content">Here you can set your name, age,
         hydration goal, weight, and sex. If you don´t feel like inputting anything don\'t worry,
         we\'ll take care of it for you!</string>
+
+    <!-- Strings for AboutActivity -->
+    <string name="about_activity_label">About</string>
+    <string name="about_activity_text">This application uses the library
+        <a href="https://github.com/lopspower/CircularProgressBar">CircularProgressBar</a> by
+        <a href="https://github.com/lopspower">Lopez Mikhael.</a> This library is available under
+        the Apache 2.0 license, which can be obtained
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.\n\nThis application uses the
+        library
+        <a href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a> by
+        <a href="https://github.com/PhilJay">Philipp Jahoda</a>. This library is available under
+        the Apache 2.0 license, which can be obtained
+        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.
+    </string>
 
     <!-- Strings for MainActivity -->
     <string name="main_activity_dialog_title">Welcome!</string>

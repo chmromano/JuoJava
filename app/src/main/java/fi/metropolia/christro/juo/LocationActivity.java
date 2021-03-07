@@ -44,7 +44,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_weather);
+        setContentView(R.layout.activity_location);
 
         initialiseAll();
         updateUI();
@@ -58,6 +58,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
         buttonLocationSubmit.setOnClickListener((view) -> {
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            location = editTextLocation.getText().toString();
             sharedPreferencesEditor.putString(SHARED_LOCATION, location);
             sharedPreferencesEditor.apply();
             startActivity(intent);

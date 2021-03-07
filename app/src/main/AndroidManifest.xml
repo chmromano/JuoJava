@@ -23,8 +23,7 @@
         <activity android:name=".MainActivity" />
         <!--<activity android:name=".Profile" />-->
         <activity android:name=".IntakeListview" android:exported="true" android:parentActivityName=".History"/>
-        <activity android:name=".About" />
-        <activity android:name=".Help" />
+        <activity android:name=".AboutActivity" />
         <activity android:name=".History" android:exported="true">
         </activity>
         <activity android:name=".Notification" android:theme="@style/NoActionBar">

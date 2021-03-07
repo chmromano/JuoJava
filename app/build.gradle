@@ -45,13 +45,14 @@ dependencies {
     //Custom components
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//Chart generator
+    //Chart generator https://github.com/PhilJay/MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0" //ViewPager2
     implementation "androidx.cardview:cardview:1.0.0" //CardView
-    implementation 'com.mikhaellopez:circularprogressbar:3.0.3' //CircularProgressBar
+    //CircularProgressBar https://github.com/lopspower/CircularProgressBar
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'com.google.code.gson:gson:2.8.6' //GSON
     //Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"

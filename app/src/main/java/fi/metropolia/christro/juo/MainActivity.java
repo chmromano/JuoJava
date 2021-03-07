@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
     private int hydrationGoal;
+    private int extraHydrationGoal;
 
     //Intake views
     private CircularProgressBar circularProgressBar;
@@ -79,35 +81,13 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private static final String TAG = "Selected Menu Item";
 
 
-
-
-
-
-
-
-
-
-
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -118,19 +98,12 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
 
 
-
-
-
-
-
-
-
         //navigation
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.nav_home);
         }
         navigationView.bringToFront();
@@ -141,55 +114,53 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d(TAG, "onNavigationItemSelected: "+item.getItemId());
+                Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
                 //item = navigationView.getCheckedItem();
                 Intent intent;
                 //Context context = getApplicationContext();
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Toast.makeText(MainActivity.this,"Home",Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_mood:
-                        Toast.makeText(MainActivity.this,"Mood",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Mood", Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, MoodActivity.class);
                         startActivity(intent);
                         break;
 
                     case R.id.nav_history:
-                        Toast.makeText(MainActivity.this,"Charts",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Charts", Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, History.class);
                         Log.d(TAG, "onNavigationItemSelected: history");
                         startActivity(intent);
                         break;
 
                     case R.id.nav_about:
-                        Toast.makeText(MainActivity.this,"About",Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, About.class);
+                        Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, AboutActivity.class);
                         startActivity(intent);
                         break;
 
-                    case R.id.nav_help:
-                        Toast.makeText(MainActivity.this,"Help",Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, Help.class);
+                    case R.id.nav_location:
+                        Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, LocationActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.nav_profile:
-                        Toast.makeText(MainActivity.this,"Profile",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
                         //intent = new Intent(context,Profile.class);
                         break;
 
                     case R.id.nav_settings:
-                        Toast.makeText(MainActivity.this,"Settings",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, SettingsActivity.class);
                         startActivity(intent);
                         break;
@@ -200,16 +171,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
-                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal, hydrationGoal));
+                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal,
+                        hydrationGoal + extraHydrationGoal));
                 circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
             } else {
                 textViewIntake.setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
@@ -235,18 +201,19 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to validate custom input, add it to the database, and close the keyboard and lose focus.
-     * @param v The given view.
+     *
+     * @param v       The given view.
      * @param keyCode The code of the pressed key.
-     * @param event The event (key was pressed).
+     * @param event   The event (key was pressed).
      * @return Returns a boolean.
      */
-    private boolean onKeyEnter(View v, int keyCode, KeyEvent event){
+    private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
             String stringCustomInput = editTextCustomInput.getText().toString();
             int customInput = 0;
             try {
                 customInput = Integer.parseInt(stringCustomInput);
-                if( customInput <= 0) {
+                if (customInput <= 0) {
                     textLayoutLCustomInput.setError(" ");
                     textLayoutLCustomInput.setErrorIconDrawable(0);
                     return false;
@@ -257,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 textLayoutLCustomInput.setErrorIconDrawable(0);
             }
             juoViewModel.insertIntake(new IntakeEntity(customInput));
+            editTextCustomInput.setText("");
             MainActivity.this.hideSoftKeyboard(v);
             editTextCustomInput.clearFocus();
             return true;
@@ -349,21 +317,27 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to update the weather UI (text and icon) when weather request is successful.
-     * @param location String containing the name of the location.
+     *
+     * @param location    String containing the name of the location.
      * @param temperature Double containing the temperature value.
-     * @param humidity String containing humidity value.
-     * @param weatherId Integer containing the weather ID.
+     * @param humidity    String containing humidity value.
+     * @param weatherId   Integer containing the weather ID.
      */
     private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
-        if (temperature > 24f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
-        } else if (temperature > 30f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
-        } else if (temperature > 35f) {
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
-        } else if (temperature > 40f) {
+        if (temperature > 40f) {
+            extraHydrationGoal = 1000;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
+        }else if (temperature > 35f) {
+            extraHydrationGoal = 500;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
+        }else if (temperature > 30f) {
+            extraHydrationGoal = 250;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
+        } else if (temperature > 24f) {
+            extraHydrationGoal = 100;
+            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
         }
+        circularProgressBar.setProgressMax((float) hydrationGoal + extraHydrationGoal);
 
         textViewCity.setText(location.replaceAll("\\+", " "));
         textViewTemperature.setText(getString(R.string.text_view_temperature,
@@ -446,12 +420,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Custom private OnClickListener class for intake buttons.
+     *
      * @author Christopher Mohan Romano
      * @version 1.0
      */
     private class IntakeButtonClick implements View.OnClickListener {
         /**
          * Custom OnClick method.
+         *
          * @param view Parameter containing the pressed view.
          */
         @Override
@@ -472,27 +448,23 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to hide the keyboard.
+     *
      * @param view Parameter containing the given view.
      */
     private void hideSoftKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null){
+        if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
 
-
-
-
-
-
     @Override
-    public void onBackPressed(){
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
             drawer.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -44,38 +46,187 @@ public class SettingsActivity extends AppCompatActivity {
 
     private AutoCompleteTextView dropdownMenuGender;
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+
+    private Button buttonSaveProfileSettings;
+    private boolean isFirstStartUp;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        initialiseAll();
+        updateUI(isFirstStartUp);
 
-        Intent intent = getIntent();
-        boolean isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, GENDER);
+        dropdownMenuGender.setAdapter(adapter);
+        dropdownMenuGender.setOnClickListener((view) -> dropdownMenuGender.showDropDown());
 
-        sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        buttonSaveProfileSettings.setOnClickListener((view) -> {
+            Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
+            saveSettings();
+        });
+    }
 
-        Button buttonSaveProfileSettings = findViewById(R.id.buttonSaveProfileSettings);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI(isFirstStartUp);
+    }
 
-        editTextName = findViewById(R.id.editTextName);
-        editTextAge = findViewById(R.id.editTextAge);
-        editTextGoal = findViewById(R.id.editTextGoal);
-        editTextSettingsButtonTopStart = findViewById(R.id.editTextSettingsButtonTopStart);
-        editTextSettingsButtonTopEnd = findViewById(R.id.editTextSettingsButtonTopEnd);
-        editTextSettingsButtonBottomStart = findViewById(R.id.editTextSettingsButtonBottomStart);
-        editTextSettingsButtonBottomEnd = findViewById(R.id.editTextSettingsButtonBottomEnd);
+    private void saveSettings(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        dropdownMenuGender = findViewById(R.id.dropdownMenuGender);
+        String username = editTextName.getText().toString();
+        editor.putString(SHARED_NAME, username);
 
-        textLayoutAge = findViewById(R.id.textLayoutAge);
-        textLayoutGoal = findViewById(R.id.textLayoutGoal);
-        textLayoutSettingsButtonTopStart = findViewById(R.id.textLayoutSettingsButtonTopStart);
-        textLayoutSettingsButtonTopEnd = findViewById(R.id.textLayoutSettingsButtonTopEnd);
-        textLayoutSettingsButtonBottomStart = findViewById(R.id.textLayoutSettingsButtonBottomStart);
-        textLayoutSettingsButtonBottomEnd = findViewById(R.id.textLayoutSettingsButtonBottomEnd);
+        String gender = dropdownMenuGender.getText().toString();
+        editor.putString(SHARED_GENDER, gender);
+
+        String stringAge = editTextAge.getText().toString().trim();
+        int age = 20;
+        if (!stringAge.equals("")) {
+            try {
+                age = Integer.parseInt(stringAge);
+                if (age < 0) {
+                    textLayoutAge.setError(getString(R.string.settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_AGE, age);
+                textLayoutAge.setError(null);
+            } catch (Exception e) {
+                textLayoutAge.setError(getString(R.string.settings_error_exception));
+                return;
+            }
+        }
+
+        String stringGoal = editTextGoal.getText().toString().trim();
+        if (!stringGoal.equals("")) {
+            try {
+                int goal = Integer.parseInt(stringGoal);
+                if (goal <= 0) {
+                    textLayoutGoal.setError(getString(R.string.settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_GOAL, goal);
+                textLayoutGoal.setError(null);
+            } catch (NumberFormatException e) {
+                textLayoutGoal.setError(getString(R.string.settings_error_exception));
+                return;
+            }
+        } else {
+            if (age >= 18) {
+                if (gender.toLowerCase().equals("male")) {
+                    editor.putInt(SHARED_GOAL, 3700);
+                } else if (gender.toLowerCase().equals(("female"))) {
+                    editor.putInt(SHARED_GOAL, 2700);
+                } else {
+                    editor.putInt(SHARED_GOAL, 3200);
+                }
+            } else {
+                if (gender.toLowerCase().equals("male")) {
+                    editor.putInt(SHARED_GOAL, 3300);
+                } else if (gender.toLowerCase().equals("female")) {
+                    editor.putInt(SHARED_GOAL, 2300);
+                } else {
+                    editor.putInt(SHARED_GOAL, 2800);
+                }
+            }
+        }
+
+        String stringButton1 = editTextSettingsButtonTopStart.getText().toString().trim();
+        if (!stringButton1.equals("")) {
+            try {
+                int button1 = Integer.parseInt(stringButton1);
+                if (button1 <= 0) {
+                    textLayoutSettingsButtonTopStart.setError(getString(R.string
+                            .settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_BUTTON_TOP_START, button1);
+                textLayoutSettingsButtonTopStart.setError(null);
+            } catch (NumberFormatException e) {
+                textLayoutSettingsButtonTopStart.setError(getString(R.string
+                        .settings_error_exception));
+                return;
+            }
+        } else {
+            editor.putInt(SHARED_BUTTON_TOP_START, 250);
+        }
+
+        String stringButton2 = editTextSettingsButtonTopEnd.getText().toString().trim();
+        if (!stringButton2.equals("")) {
+            try {
+                int button2 = Integer.parseInt(stringButton2);
+                if (button2 <= 0) {
+                    textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                            .settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_BUTTON_TOP_END, button2);
+                textLayoutSettingsButtonTopEnd.setError(null);
+            } catch (NumberFormatException e) {
+                textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                        .settings_error_exception));
+                return;
+            }
+        } else {
+            editor.putInt(SHARED_BUTTON_TOP_END, 500);
+        }
+
+        String stringButton3 = editTextSettingsButtonBottomStart.getText().toString().trim();
+        if (!stringButton3.equals("")) {
+            try {
+                int button3 = Integer.parseInt(stringButton3);
+                if (button3 <= 0) {
+                    textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                            .settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_BUTTON_BOTTOM_START, button3);
+                textLayoutSettingsButtonBottomStart.setError(null);
+            } catch (NumberFormatException e) {
+                textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                        .settings_error_exception));
+                return;
+            }
+        } else {
+            editor.putInt(SHARED_BUTTON_BOTTOM_START, 100);
+        }
+
+        String stringButton4 = editTextSettingsButtonBottomEnd.getText().toString().trim();
+        if (!stringButton4.equals("")) {
+            try {
+                int button4 = Integer.parseInt(stringButton4);
+                if (button4 <= 0) {
+                    textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                            .settings_error_negative));
+                    return;
+                }
+                editor.putInt(SHARED_BUTTON_BOTTOM_END, button4);
+                textLayoutSettingsButtonBottomEnd.setError(null);
+            } catch (NumberFormatException e) {
+                textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                        .settings_error_exception));
+                return;
+            }
+        } else {
+            editor.putInt(SHARED_BUTTON_BOTTOM_END, 750);
+        }
+
+        editor.apply();
 
         if (isFirstStartUp) {
+            isFirstStartUp = false;
+            Intent returnIntent = new Intent(this, MainActivity.class);
+            startActivity(returnIntent);
+        }
+    }
+
+    private void updateUI(boolean isFirstStartupVariable) {
+        if (isFirstStartupVariable) {
             new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.settings_activity_dialog_title))
                     .setMessage(getString(R.string.settings_activity_dialog_content))
@@ -97,160 +248,31 @@ public class SettingsActivity extends AppCompatActivity {
                     .getInt(SHARED_BUTTON_BOTTOM_END, 0)));
             dropdownMenuGender.setText(sharedPreferences.getString(SHARED_GENDER, ""));
         }
+    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, GENDER);
+    private void initialiseAll() {
+        sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
-        dropdownMenuGender.setAdapter(adapter);
+        buttonSaveProfileSettings = findViewById(R.id.buttonSaveProfileSettings);
 
-        dropdownMenuGender.setOnClickListener((view) -> dropdownMenuGender.showDropDown());
+        editTextName = findViewById(R.id.editTextName);
+        editTextAge = findViewById(R.id.editTextAge);
+        editTextGoal = findViewById(R.id.editTextGoal);
+        editTextSettingsButtonTopStart = findViewById(R.id.editTextSettingsButtonTopStart);
+        editTextSettingsButtonTopEnd = findViewById(R.id.editTextSettingsButtonTopEnd);
+        editTextSettingsButtonBottomStart = findViewById(R.id.editTextSettingsButtonBottomStart);
+        editTextSettingsButtonBottomEnd = findViewById(R.id.editTextSettingsButtonBottomEnd);
 
-        buttonSaveProfileSettings.setOnClickListener((view) -> {
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        dropdownMenuGender = findViewById(R.id.dropdownMenuGender);
 
-            String username = editTextName.getText().toString();
-            sharedPreferencesEditor.putString(SHARED_NAME, username);
+        textLayoutAge = findViewById(R.id.textLayoutAge);
+        textLayoutGoal = findViewById(R.id.textLayoutGoal);
+        textLayoutSettingsButtonTopStart = findViewById(R.id.textLayoutSettingsButtonTopStart);
+        textLayoutSettingsButtonTopEnd = findViewById(R.id.textLayoutSettingsButtonTopEnd);
+        textLayoutSettingsButtonBottomStart = findViewById(R.id.textLayoutSettingsButtonBottomStart);
+        textLayoutSettingsButtonBottomEnd = findViewById(R.id.textLayoutSettingsButtonBottomEnd);
 
-            String gender = dropdownMenuGender.getText().toString();
-            sharedPreferencesEditor.putString(SHARED_GENDER, gender);
-
-            String stringAge = editTextAge.getText().toString().trim();
-            int age = 20;
-            if (!stringAge.equals("")) {
-                try {
-                    age = Integer.parseInt(stringAge);
-                    if (age <= 0) {
-                        textLayoutAge.setError(getString(R.string.settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_AGE, age);
-                    textLayoutAge.setError(null);
-                } catch (Exception e) {
-                    textLayoutAge.setError(getString(R.string.settings_error_exception));
-                    return;
-                }
-            }
-
-            String stringGoal = editTextGoal.getText().toString().trim();
-            if (!stringGoal.equals("")) {
-                try {
-                    int goal = Integer.parseInt(stringGoal);
-                    if (goal <= 0) {
-                        textLayoutGoal.setError(getString(R.string.settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_GOAL, goal);
-                    textLayoutGoal.setError(null);
-                } catch (NumberFormatException e) {
-                    textLayoutGoal.setError(getString(R.string.settings_error_exception));
-                    return;
-                }
-            } else {
-                if (age >= 18) {
-                    if (gender.toLowerCase().equals("male")) {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 3700);
-                    } else if (gender.toLowerCase().equals(("female"))) {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 2700);
-                    } else {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 3200);
-                    }
-                } else {
-                    if (gender.toLowerCase().equals("male")) {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 3300);
-                    } else if (gender.toLowerCase().equals("female")) {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 2300);
-                    } else {
-                        sharedPreferencesEditor.putInt(SHARED_GOAL, 2800);
-                    }
-                }
-            }
-
-            String stringButton1 = editTextSettingsButtonTopStart.getText().toString().trim();
-            if (!stringButton1.equals("")) {
-                try {
-                    int button1 = Integer.parseInt(stringButton1);
-                    if (button1 <= 0) {
-                        textLayoutSettingsButtonTopStart.setError(getString(R.string
-                                .settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_START, button1);
-                    textLayoutSettingsButtonTopStart.setError(null);
-                } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonTopStart.setError(getString(R.string
-                            .settings_error_exception));
-                    return;
-                }
-            } else {
-                sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_START, 250);
-            }
-
-            String stringButton2 = editTextSettingsButtonTopEnd.getText().toString().trim();
-            if (!stringButton2.equals("")) {
-                try {
-                    int button2 = Integer.parseInt(stringButton2);
-                    if (button2 <= 0) {
-                        textLayoutSettingsButtonTopEnd.setError(getString(R.string
-                                .settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_END, button2);
-                    textLayoutSettingsButtonTopEnd.setError(null);
-                } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonTopEnd.setError(getString(R.string
-                            .settings_error_exception));
-                    return;
-                }
-            } else {
-                sharedPreferencesEditor.putInt(SHARED_BUTTON_TOP_END, 500);
-            }
-
-            String stringButton3 = editTextSettingsButtonBottomStart.getText().toString().trim();
-            if (!stringButton3.equals("")) {
-                try {
-                    int button3 = Integer.parseInt(stringButton3);
-                    if (button3 <= 0) {
-                        textLayoutSettingsButtonBottomStart.setError(getString(R.string
-                                .settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_START, button3);
-                    textLayoutSettingsButtonBottomStart.setError(null);
-                } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonBottomStart.setError(getString(R.string
-                            .settings_error_exception));
-                    return;
-                }
-            } else {
-                sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_START, 100);
-            }
-
-            String stringButton4 = editTextSettingsButtonBottomEnd.getText().toString().trim();
-            if (!stringButton4.equals("")) {
-                try {
-                    int button4 = Integer.parseInt(stringButton4);
-                    if (button4 <= 0) {
-                        textLayoutSettingsButtonBottomEnd.setError(getString(R.string
-                                .settings_error_negative));
-                        return;
-                    }
-                    sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_END, button4);
-                    textLayoutSettingsButtonBottomEnd.setError(null);
-                } catch (NumberFormatException e) {
-                    textLayoutSettingsButtonBottomEnd.setError(getString(R.string
-                            .settings_error_exception));
-                    return;
-                }
-            } else {
-                sharedPreferencesEditor.putInt(SHARED_BUTTON_BOTTOM_END, 750);
-            }
-
-            sharedPreferencesEditor.apply();
-
-            if (isFirstStartUp) {
-                Intent returnIntent = new Intent(this, MainActivity.class);
-                startActivity(returnIntent);
-            }
-        });
+        intent = getIntent();
+        isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
     }
 }
