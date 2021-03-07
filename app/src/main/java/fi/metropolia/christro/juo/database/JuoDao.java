@@ -28,23 +28,47 @@ public interface JuoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertIntake(IntakeEntity intakeEntity);
 
-    @Update
-    void updateIntake(IntakeEntity intakeEntity);
-
+    /**
+     * DAO to delete an IntakeEntity from the database.
+     * @param intakeEntity Object containing the IntakeEntity to be deleted.
+     */
     @Delete
     void deleteIntake(IntakeEntity intakeEntity);
 
+    /**
+     * DAO to delete all IntakeEntity from the database.
+     */
     @Query("DELETE FROM intakes_table")
     void deleteAllIntakes();
 
+    /**
+     * DAO to get all IntakeEntity from the database as a LiveData list.
+     * @return The list of all intakes.
+     */
     @Query("SELECT * FROM intakes_table ORDER BY date DESC")
     LiveData<List<IntakeEntity>> getAllIntakes();
 
+    /**
+     * DAO to get daily total from a given date. Automatically sums al intakes.
+     * @param date String containing the date of the total.
+     * @return Returns a LiveData Integer.
+     */
     @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE :date || '%'")
     LiveData<Integer> getDailyTotal(String date);
 
+    /**
+     * DAO to get the date and time of the last inputted intake.
+     * @return Returns LiveData String containg date and time.
+     */
+    @Query("SELECT date || ' ' || time FROM intakes_table ORDER BY date DESC, time DESC LIMIT 1")
+    LiveData<String> getLatestIntake();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMood(MoodEntity moodEntity);
+
+
+
+
 
     @Query("SELECT mood FROM mood_table WHERE date LIKE :date || '%'")
     int getDailyMood(String date);
@@ -52,6 +76,6 @@ public interface JuoDao {
     @Query("SELECT SUM(amount) FROM intakes_table WHERE date LIKE :date || '%'")
     int getHistoricDailyTotal(String date);
 
-    @Query("SELECT * FROM intakes_table ORDER BY date DESC, time DESC LIMIT 1")
-    IntakeEntity getLatestIntake();
+    @Update
+    void updateIntake(IntakeEntity intakeEntity);
 }

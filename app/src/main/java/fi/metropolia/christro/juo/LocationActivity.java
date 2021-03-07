@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -139,20 +140,17 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         intent = new Intent(this, MainActivity.class);
     }
 
-    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Location Granted", Toast.LENGTH_SHORT).show();
-                getWeather(getLocationByCoordinates(longitude, latitude));
-
+                Toast.makeText(this, "Location Granted", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Location not granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location not granted", Toast.LENGTH_SHORT).show();
             }
         }
-    }*/
+    }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
