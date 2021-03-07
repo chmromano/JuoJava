@@ -82,6 +82,7 @@
     <!-- Content descriptions -->
     <string name="menu_description">Main hamburger menu</string>
     <string name="mood_button_description">Mood button takes you to mood input</string>
+    <string name="Notification">notification</string>
 
     <!-- For the visually impaired people o know the menu is open-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

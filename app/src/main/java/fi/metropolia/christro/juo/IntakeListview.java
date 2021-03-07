@@ -2,12 +2,14 @@ package fi.metropolia.christro.juo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -54,5 +56,11 @@ public class IntakeListview extends AppCompatActivity {
                 Toast.makeText(IntakeListview.this,"record deleted",Toast.LENGTH_SHORT);
             }
         }).attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(IntakeListview.this,History.class);
+        startActivity(intent);
     }
 }

@@ -22,7 +22,7 @@
         <activity android:name=".MoodActivity" />
         <activity android:name=".Notification" />
         <!--<activity android:name=".Profile" />-->
-        <activity android:name=".IntakeListview" android:exported="true"/>
+        <activity android:name=".IntakeListview" android:exported="true" android:parentActivityName=".History"/>
         <activity android:name=".About" />
         <activity android:name=".Help" />
         <activity android:name=".History" android:exported="true">

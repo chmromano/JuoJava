@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity{
         }
         navigationView.bringToFront();
 
-        ImageButton menuButton = findViewById(R.id.menu_icon);
+        ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> {
             drawer.openDrawer(GravityCompat.START);
         });
@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity{
         });
         ////
         //repository = new IntakeInputRepository(this.getApplication());
-        customButtonList = loadButtonList();
+        //customButtonList = loadButtonList();
 
-        textView = findViewById(R.id.intakeText);
+        //textView = findViewById(R.id.intakeText);
         circularProgressBar = findViewById(R.id.circularProgressBar);
 
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider

@@ -1,12 +1,21 @@
 package fi.metropolia.christro.juo;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -35,19 +44,41 @@ public class History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        int[] charts = new int[]{R.id.barChartDay};//R.id.barChartMonth,R.id.barChartYear};
-        for(int chart: charts) {
+
+        Toolbar toolbar = findViewById(R.id.toolbar_history);
+        setSupportActionBar(toolbar);
+        //int[] charts = new int[]{R.id.barChartDay};//R.id.barChartMonth,R.id.barChartYear};
+        //for(int chart: charts) {
             barEntriesList = getData();
-            barDataSet = new BarDataSet(barEntriesList, chart+" Data set");
-            barChart = findViewById(chart);
+            barDataSet = new BarDataSet(barEntriesList, "day Data set");
+            barChart = findViewById(R.id.barChartDay);
             barData = new BarData(barDataSet);
             barChart.setData(barData);
             barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        }
+        //}
         if(barEntriesList == null) {
             Log.d(TAG, "onCreateCharts: empty bar chart");
         }else {
-            flipperChart();
+            //flipperChart();
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.options_menu_intake_list) {
+            Toast.makeText(this, "swipe to delete record", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(History.this, IntakeListview.class);
+            startActivity(intent);
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -65,25 +96,20 @@ public class History extends AppCompatActivity {
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
-        LiveData<List<IntakeEntity>> intakeEntityList = juoViewModel.getAllIntakeInputs();
-        List<IntakeEntity> entriesList = intakeEntityList.getValue();
-        if(entriesList.isEmpty()){
-            Log.d(TAG, "entry list is empty ");
-            barEntries.add(new BarEntry(0, 0));
-            return barEntries;
-        }else {
-            for (IntakeEntity entry : entriesList) {
-                //set a constant number of groups
-                float x = 1;
-                int y = entry.getAmount();
-                barEntries.add(new BarEntry(x, y));
+
+        juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
+            @Override
+            public void onChanged(List<IntakeEntity> intakeEntities) {
+                for(IntakeEntity intake : intakeEntities){
+                    Log.d(TAG, "onChanged: "+intake.getTime()+","+intake.getAmount());
+                    String intakeTime = intake.getTime();
+                    char[] x = new char[5];
+                    intakeTime.replace(":",".").getChars(0,4,x,0);
+                    int y = intake.getAmount();
+                    barEntries.add(new BarEntry(Float.parseFloat(String.valueOf(x)), Float.parseFloat(String.valueOf(y))));
+                }
             }
-            return barEntries;
-        }
+        });
+        return barEntries;
     }
-
-
-
-
-
 }

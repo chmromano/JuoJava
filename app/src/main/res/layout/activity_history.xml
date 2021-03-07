@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".History"
+    tools:showIn="@layout/activity_history"
+    tools:menu="@menu/options_menu"
     android:background="@color/colorFontLight">
 
+    <include
+        android:id="@+id/toolbar_history"
+        layout="@layout/toolbar"/>
     <ViewFlipper
         android:id="@+id/chart_slider"
         android:layout_width="371dp"
