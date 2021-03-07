@@ -16,6 +16,8 @@ public class JuoViewModel extends AndroidViewModel {
 
     private LiveData<Integer> dailyTotal;
 
+    private LiveData<String> latestIntake;
+
     public JuoViewModel(Application application) {
         super(application);
         repository = new JuoRepository(application);
@@ -47,7 +49,7 @@ public class JuoViewModel extends AndroidViewModel {
         repository.deleteAllIntakes();
     }
 
-    public IntakeEntity getLatestIntake(){
+    public LiveData<String> getLatestIntake(){
         return repository.getLatestIntake();
     }
 

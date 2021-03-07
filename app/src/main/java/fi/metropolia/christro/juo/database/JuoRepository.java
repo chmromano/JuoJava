@@ -14,7 +14,7 @@ class JuoRepository {
 
     private LiveData<List<IntakeEntity>> allIntakeInputs;
     private LiveData<Integer> dailyTotal;
-    private IntakeEntity latestIntake;
+    private LiveData<String> latestIntake;
     private int historicalDailyTotal;
 
     JuoRepository(Application application) {
@@ -24,6 +24,7 @@ class JuoRepository {
         allIntakeInputs = juoDao.getAllIntakes();
         dailyTotal = juoDao.getDailyTotal(new SimpleDateFormat("yyyy-MM-dd",
                 Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        latestIntake = juoDao.getLatestIntake();
     }
 
     int getGetHistoricalDailyTotal(String date) {
@@ -38,11 +39,11 @@ class JuoRepository {
         return dailyTotal;
     }
 
-    IntakeEntity getLatestIntake() {
+    LiveData<String> getLatestIntake() {
         return latestIntake;
     }
 
-    void insertMood(MoodEntity moodEntity){
+    void insertMood(MoodEntity moodEntity) {
         JuoDatabase.databaseWriteExecutor.execute(() -> juoDao.insertMood(moodEntity));
     }
 
