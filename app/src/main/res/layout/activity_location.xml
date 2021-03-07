@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/teal_200"
     android:padding="10dp"
-    tools:context=".MoodActivity">
+    tools:context=".LocationActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineCardViewToolbar"
@@ -47,7 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:text="@string/mood_activity_label"
+                android:text="@string/location_activity_label"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -55,11 +55,10 @@
                 app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Space
+            <TextView
                 android:id="@+id/buttonMoodInput"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:contentDescription="@string/mood_button_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,85 +82,64 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textViewMoodMessage"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayoutLocation"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/mood_activity_message"
-                android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toTopOf="@id/radioGroupMood"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="@string/hint_location"
+                android:inputType="text"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:layout_constraintBottom_toTopOf="@id/buttonLocationCancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <RadioGroup
-                android:id="@+id/radioGroupMood"
-                android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/imageButtonLocation"
+                android:layout_width="60dp"
                 android:layout_height="0dp"
-                android:checkedButton="@+id/radioButtonGood"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/buttonMoodCancel"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_round_my_location_24"
+                app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewMoodMessage">
-
-                <RadioButton
-                    android:id="@+id/radioButtonGood"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="bottom"
-                    android:text="@string/emoji_good"
-                    android:textSize="70sp" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="bottom"
-                    android:text="@string/emoji_normal"
-                    android:textSize="70sp" />
-
-                <RadioButton
-                    android:id="@+id/radioButtonBad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:gravity="bottom"
-                    android:text="@string/emoji_bad"
-                    android:textSize="70sp" />
-            </RadioGroup>
+                app:layout_constraintTop_toBottomOf="@id/textLayoutLocation" />
 
             <Button
-                android:id="@+id/buttonMoodCancel"
+                android:id="@+id/buttonLocationCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:text="@string/button_cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/buttonMoodSubmit"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radioGroupMood" />
+                app:layout_constraintEnd_toStartOf="@id/buttonLocationSubmit"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/buttonMoodSubmit"
+                android:id="@+id/buttonLocationSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_submit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/buttonMoodCancel"
-                app:layout_constraintTop_toTopOf="@id/buttonMoodCancel" />
+                app:layout_constraintStart_toEndOf="@id/buttonLocationCancel"
+                app:layout_constraintTop_toTopOf="@id/buttonLocationCancel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

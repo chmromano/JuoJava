@@ -29,15 +29,17 @@
     <string name="dialog_ok">OK</string>
 
     <!-- Strings for LocationActivity -->
+    <string name="location_activity_label">Location</string>
     <string name="hint_location">Location</string>
 
     <!-- Strings for MoodActivity -->
+    <string name="mood_activity_label">Mood</string>
     <string name="emoji_good">&#x1F603;</string>
     <string name="emoji_bad">&#x1F641;</string>
     <string name="emoji_normal">&#x1F610;</string>
     <string name="mood_activity_message">How did you feel today?</string>
 
-    <!-- Strings for ProfileSettingsActivity -->
+    <!-- Strings for SettingsActivity -->
     <string name="settings_activity_label">Settings</string>
     <string name="settings_error_exception">Enter a whole number or leave blank</string>
     <string name="settings_error_negative">Enter a positive number or leave blank</string>

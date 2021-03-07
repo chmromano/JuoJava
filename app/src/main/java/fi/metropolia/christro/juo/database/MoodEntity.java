@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+//Guide used: https://developer.android.com/codelabs/android-room-with-a-view#4
+
 /**
  * Represents a MoodEntity entity and corresponding table in the database with a date and a mood.
  * @author Christopher Mohan Romano
@@ -16,7 +18,6 @@ import java.util.Locale;
  */
 @Entity(tableName = "mood_table")
 public class MoodEntity {
-
     //Instance variables and associated columns.
     @PrimaryKey
     @NonNull
