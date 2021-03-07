@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,6 +22,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.json.JSONArray;
@@ -30,6 +35,11 @@ import java.util.Calendar;
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
+/**
+ * Main activity of the application.
+ * @author Christopher Mohan Romano
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
@@ -49,11 +59,18 @@ public class MainActivity extends AppCompatActivity {
     private Button mainActivityButtonTopEnd;
     private Button mainActivityButtonBottomStart;
     private Button mainActivityButtonBottomEnd;
+    //Custom input views
+    private TextInputEditText editTextCustomInput;
+    private TextInputLayout textLayoutLCustomInput;
     //ViewModel
     private JuoViewModel juoViewModel;
     //SharedPreferences
     private SharedPreferences sharedPreferences;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,17 +79,21 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
         getWeather();
 
+        final Observer<String> latestIntakeObserver = latestIntake -> {
+            // Update the UI, in this case, a TextView.
+            if (latestIntake != null) {
+                Log.d("TRY_THIS_DATE_TIME", latestIntake);
+            }
+        };
+        juoViewModel.getLatestIntake().observe(this, latestIntakeObserver);
+
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
                 textViewIntake.setText(getString(R.string.main_activity_intake, newTotal, hydrationGoal));
-            } else {
-                textViewIntake.setText(getString(R.string.main_activity_intake, 0, 0));
-            }
-
-            if (newTotal != null) {
                 circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
             } else {
+                textViewIntake.setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
                 circularProgressBar.setProgress(0);
             }
         };
@@ -89,6 +110,43 @@ public class MainActivity extends AppCompatActivity {
 
         Intent returnIntent = new Intent(this, LocationActivity.class);
         findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> startActivity(returnIntent));
+
+        editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
+    }
+
+    /**
+     * Method to validate custom input, add it to the database, and close the keyboard and lose focus.
+     * @param v The given view.
+     * @param keyCode The code of the pressed key.
+     * @param event The event (key was pressed).
+     * @return Returns a boolean.
+     */
+
+    private boolean onKeyEnter(View v, int keyCode, KeyEvent event){
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            String stringCustomInput = editTextCustomInput.getText().toString();
+            int customInput = 0;
+            try {
+                customInput = Integer.parseInt(stringCustomInput);
+                if( customInput <= 0) {
+                    textLayoutLCustomInput.setError(" ");
+                    textLayoutLCustomInput.setErrorIconDrawable(0);
+                    return false;
+                }
+                textLayoutLCustomInput.setError(null);
+            } catch (Exception e) {
+                textLayoutLCustomInput.setError(" ");
+                textLayoutLCustomInput.setErrorIconDrawable(0);
+            }
+            juoViewModel.insertIntake(new IntakeEntity(customInput));
+            MainActivity.this.hideSoftKeyboard(v);
+            editTextCustomInput.clearFocus();
+            return true;
+        } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            editTextCustomInput.clearFocus();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -120,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
         return sharedGoal;
     }
 
+    /**
+     * Method to get the weather.
+     */
     public void getWeather() {
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
         String weatherUrl = API_URL + location;
@@ -158,14 +219,23 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * Method to update the weather UI (text and icon) when weather request is unsuccessful.
+     */
     private void updateWeatherUI() {
         textViewWeatherIcon.setText(getString(R.string.not_available));
         textViewCity.setText((getString(R.string.location_not_found)));
         textViewTemperature.setText(getString(R.string.not_available));
     }
 
+    /**
+     * Method to update the weather UI (text and icon) when weather request is successful.
+     * @param location String containing the name of the location.
+     * @param temperature Double containing the temperature value.
+     * @param humidity String containing humidity value.
+     * @param weatherId Integer containing the weather ID.
+     */
     private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
-
         if (temperature > 24f) {
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
         } else if (temperature > 30f) {
@@ -206,6 +276,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to update the UI.
+     */
     private void updateUI() {
         hydrationGoal = loadHydrationGoal();
 
@@ -224,6 +297,9 @@ public class MainActivity extends AppCompatActivity {
         mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
     }
 
+    /**
+     * Method to initialise all views needed by the activity.
+     */
     private void initialiseAll() {
         //Intake view
         textViewIntake = findViewById(R.id.intakeText);
@@ -238,6 +314,9 @@ public class MainActivity extends AppCompatActivity {
         mainActivityButtonTopEnd = findViewById(R.id.mainActivityButtonTopEnd);
         mainActivityButtonBottomStart = findViewById(R.id.mainActivityButtonBottomStart);
         mainActivityButtonBottomEnd = findViewById(R.id.mainActivityButtonBottomEnd);
+        //Custom input views
+        editTextCustomInput = findViewById(R.id.editTextCustomInput);
+        textLayoutLCustomInput = findViewById(R.id.textLayoutCustomInput);
         //ViewModel
         juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
@@ -246,8 +325,16 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
     }
 
+    /**
+     * Custom private OnClickListener class for intake buttons.
+     * @author Christopher Mohan Romano
+     * @version 1.0
+     */
     private class IntakeButtonClick implements View.OnClickListener {
-
+        /**
+         * Custom OnClick method.
+         * @param view Parameter containing the pressed view.
+         */
         @Override
         public void onClick(View view) {
             int intake = 0;
@@ -263,4 +350,16 @@ public class MainActivity extends AppCompatActivity {
             juoViewModel.insertIntake(new IntakeEntity(intake));
         }
     }
+
+    /**
+     * Method to hide the keyboard.
+     * @param view Parameter containing the given view.
+     */
+    private void hideSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null){
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

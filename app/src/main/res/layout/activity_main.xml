@@ -160,6 +160,34 @@
         app:layout_constraintStart_toEndOf="@id/cardViewIntake"
         app:layout_constraintTop_toBottomOf="@id/cardViewExtraIntake">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutCustomInput"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:hint="Input"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/textLayoutSettingsButtonTopStart"
+            app:layout_constraintEnd_toStartOf="@+id/settingsGuidelineMainEnd"
+            app:layout_constraintStart_toStartOf="@+id/settingsGuidelineMainStart"
+            app:layout_constraintTop_toBottomOf="@+id/textLayoutAge">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextCustomInput"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
