@@ -7,14 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import fi.metropolia.christro.juo.database.IntakeEntity;
+
+import fi.metropolia.christro.juo.database.JuoViewModel;
 
 
 public class Receiver extends BroadcastReceiver {
@@ -26,7 +31,6 @@ public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
         // check the last time the user drank water - database
         // check current time
         // get the difference
@@ -36,32 +40,34 @@ public class Receiver extends BroadcastReceiver {
         this.context = context;
         this.application = (Application) context.getApplicationContext();
 
-        try {
-            if (this.fireNotification()) {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification")
-                        .setSmallIcon(R.drawable.ic_baseline_circle_notifications_24)
-                        .setContentTitle("Alert")
-                        .setContentText("Time to drink")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+        /**
+         *   get notification between 7 and 21
+         */
 
+        if (hourOfDay > 7 && hourOfDay < 21) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification")
+                    .setSmallIcon(R.drawable.ic_baseline_circle_notifications_24)
+                    .setContentTitle("Juo! reminder")
+                    .setContentText("Time to drink")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.notify(1, builder.build());
-            }
-        } catch (ParseException e) {
-            Log.i("ERROR_BROADCAST", e.getMessage());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.notify(1, builder.build());
         }
-
     }
 
     /**
-     *notification method when user forgets to drink in 2 hrs and when goal is not achieved.
+     * notification method when user forgets to drink in 2 hrs and when goal is not achieved.
+     *
      * @return
      * @throws ParseException
      */
-
 
 
     private boolean fireNotification() throws ParseException {
@@ -90,7 +96,8 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
-     * method to convert string to date
+     * Get the last time the user hydrated
+     *
      * @return
      * @throws ParseException
      */
@@ -98,22 +105,28 @@ public class Receiver extends BroadcastReceiver {
 
     private Date getLastTimeDrink() throws ParseException {
 
-        IntakeEntity intakeEntity = Notification.viewModel.getLatestIntake();
+        JuoViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.application))
+                .get(JuoViewModel.class);
+        ;
 
-        if (intakeEntity == null) {
+        LiveData<String> mLiveData = Notification.viewModel.getLatestIntake();
+
+        if (mLiveData.getValue() == null) {
             return null;
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-        Log.i("DATE_DRINK", dateFormat.parse(intakeEntity.getDate()).toString());
+        Log.i("DATE_DRINK", dateFormat.parse(mLiveData.getValue()).toString());
 
-        return dateFormat.parse(intakeEntity.getDate());
+        return dateFormat.parse(mLiveData.getValue());
 
     }
 
     /**
-     * method for users total daily intake.
+     * get total daily intake.
+     *
      * @return
      */
 
@@ -130,6 +143,7 @@ public class Receiver extends BroadcastReceiver {
 
     /**
      * method to get users targeted goal.
+     *
      * @return int
      */
     private int getGoalAmount() {
