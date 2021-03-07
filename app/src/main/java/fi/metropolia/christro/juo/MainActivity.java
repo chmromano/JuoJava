@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import android.content.Intent;
@@ -43,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @param savedInstanceState
      */
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //navigation
-        drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawerLayoutMain);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -109,65 +112,60 @@ public class MainActivity extends AppCompatActivity {
         navigationView.bringToFront();
 
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
-        menuButton.setOnClickListener(view -> {
-            drawer.openDrawer(GravityCompat.START);
-        });
+        menuButton.setOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
-                //item = navigationView.getCheckedItem();
-                Intent intent;
-                //Context context = getApplicationContext();
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
-                        break;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
+            //item = navigationView.getCheckedItem();
+            Intent intent;
+            //Context context = getApplicationContext();
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                    break;
 
-                    case R.id.nav_mood:
-                        Toast.makeText(MainActivity.this, "Mood", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, MoodActivity.class);
-                        startActivity(intent);
-                        break;
+                case R.id.nav_mood:
+                    Toast.makeText(MainActivity.this, "Mood", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, MoodActivity.class);
+                    startActivity(intent);
+                    break;
 
-                    case R.id.nav_history:
-                        Toast.makeText(MainActivity.this, "Charts", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, History.class);
-                        Log.d(TAG, "onNavigationItemSelected: history");
-                        startActivity(intent);
-                        break;
+                case R.id.nav_history:
+                    Toast.makeText(MainActivity.this, "Charts", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, History.class);
+                    Log.d(TAG, "onNavigationItemSelected: history");
+                    startActivity(intent);
+                    break;
 
-                    case R.id.nav_about:
-                        Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent);
-                        break;
+                case R.id.nav_about:
+                    Toast.makeText(MainActivity.this, "About", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+                    break;
 
-                    case R.id.nav_location:
-                        Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, LocationActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_profile:
-                        Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
-                        //intent = new Intent(context,Profile.class);
-                        break;
+                case R.id.nav_location:
+                    Toast.makeText(MainActivity.this, "Help", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_profile:
+                    Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                    //intent = new Intent(context,Profile.class);
+                    break;
 
-                    case R.id.nav_settings:
-                        Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(MainActivity.this, SettingsActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
+                case R.id.nav_settings:
+                    Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    break;
             }
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
         });
 
 
@@ -193,8 +191,10 @@ public class MainActivity extends AppCompatActivity {
         mainActivityButtonBottomStart.setOnClickListener(intakeButtonClick);
         mainActivityButtonBottomEnd.setOnClickListener(intakeButtonClick);
 
-        Intent returnIntent = new Intent(this, LocationActivity.class);
-        findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> startActivity(returnIntent));
+        findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> {
+            Intent intent = new Intent(MainActivity.this, MoodActivity.class);
+            startActivity(intent);
+        });
 
         editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
     }
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-            String stringCustomInput = editTextCustomInput.getText().toString();
+            String stringCustomInput = Objects.requireNonNull(editTextCustomInput.getText()).toString();
             int customInput = 0;
             try {
                 customInput = Integer.parseInt(stringCustomInput);

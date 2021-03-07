@@ -1,7 +1,12 @@
 package fi.metropolia.christro.juo;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +15,15 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -50,8 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button buttonSaveProfileSettings;
     private boolean isFirstStartUp;
-    private Intent intent;
 
+    private DrawerLayout drawerLayoutSettings;
+    private Toolbar toolbarSettings;
+    private NavigationView navigationViewSettings;
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +81,60 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
             saveSettings();
         });
+
+        //This code is used to implement the navigation bar.
+        setSupportActionBar(toolbarSettings);
+        if (savedInstanceState == null) {
+            navigationViewSettings.setCheckedItem(R.id.nav_settings);
+        }
+        navigationViewSettings.bringToFront();
+
+        ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
+        menuButton.setOnClickListener(view -> drawerLayoutSettings.openDrawer(GravityCompat.START));
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutSettings,
+                toolbarSettings, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayoutSettings.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationViewSettings.setNavigationItemSelectedListener(item -> {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_mood:
+                    intent = new Intent(SettingsActivity.this, MoodActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_history:
+                    intent = new Intent(SettingsActivity.this, History.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_about:
+                    intent = new Intent(SettingsActivity.this, AboutActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_location:
+                    intent = new Intent(SettingsActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.nav_profile:
+                    //intent = new Intent(context,Profile.class);
+                    break;
+
+                case R.id.nav_settings:
+                    break;
+            }
+            drawerLayoutSettings.closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 
     @Override
@@ -79,13 +146,13 @@ public class SettingsActivity extends AppCompatActivity {
     private void saveSettings(){
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        String username = editTextName.getText().toString();
+        String username = Objects.requireNonNull(editTextName.getText()).toString();
         editor.putString(SHARED_NAME, username);
 
         String gender = dropdownMenuGender.getText().toString();
         editor.putString(SHARED_GENDER, gender);
 
-        String stringAge = editTextAge.getText().toString().trim();
+        String stringAge = Objects.requireNonNull(editTextAge.getText()).toString().trim();
         int age = 20;
         if (!stringAge.equals("")) {
             try {
@@ -102,7 +169,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-        String stringGoal = editTextGoal.getText().toString().trim();
+        String stringGoal = Objects.requireNonNull(editTextGoal.getText()).toString().trim();
         if (!stringGoal.equals("")) {
             try {
                 int goal = Integer.parseInt(stringGoal);
@@ -136,7 +203,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-        String stringButton1 = editTextSettingsButtonTopStart.getText().toString().trim();
+        String stringButton1 = Objects.requireNonNull(editTextSettingsButtonTopStart.getText()).toString().trim();
         if (!stringButton1.equals("")) {
             try {
                 int button1 = Integer.parseInt(stringButton1);
@@ -156,7 +223,7 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_TOP_START, 250);
         }
 
-        String stringButton2 = editTextSettingsButtonTopEnd.getText().toString().trim();
+        String stringButton2 = Objects.requireNonNull(editTextSettingsButtonTopEnd.getText()).toString().trim();
         if (!stringButton2.equals("")) {
             try {
                 int button2 = Integer.parseInt(stringButton2);
@@ -176,7 +243,7 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_TOP_END, 500);
         }
 
-        String stringButton3 = editTextSettingsButtonBottomStart.getText().toString().trim();
+        String stringButton3 = Objects.requireNonNull(editTextSettingsButtonBottomStart.getText()).toString().trim();
         if (!stringButton3.equals("")) {
             try {
                 int button3 = Integer.parseInt(stringButton3);
@@ -196,7 +263,7 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_BOTTOM_START, 100);
         }
 
-        String stringButton4 = editTextSettingsButtonBottomEnd.getText().toString().trim();
+        String stringButton4 = Objects.requireNonNull(editTextSettingsButtonBottomEnd.getText()).toString().trim();
         if (!stringButton4.equals("")) {
             try {
                 int button4 = Integer.parseInt(stringButton4);
@@ -271,8 +338,12 @@ public class SettingsActivity extends AppCompatActivity {
         textLayoutSettingsButtonTopEnd = findViewById(R.id.textLayoutSettingsButtonTopEnd);
         textLayoutSettingsButtonBottomStart = findViewById(R.id.textLayoutSettingsButtonBottomStart);
         textLayoutSettingsButtonBottomEnd = findViewById(R.id.textLayoutSettingsButtonBottomEnd);
+        //Navigation views
+        drawerLayoutSettings = findViewById(R.id.drawerLayoutSettings);
+        navigationViewSettings = findViewById(R.id.navigationViewSettings);
+        toolbarSettings = findViewById(R.id.toolbarSettings);
 
-        intent = getIntent();
+        Intent intent = getIntent();
         isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
+    android:background="@color/colorFontLight"
     android:padding="10dp"
     tools:context=".MoodActivity">
 
@@ -32,10 +32,10 @@
             android:padding="10dp">
 
             <ImageButton
-                android:id="@+id/buttonNavigationMenu"
+                android:id="@+id/buttonNavigationBack"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/ic_round_menu_24"
+                android:background="@drawable/ic_round_arrow_back_ios_24"
                 android:contentDescription="@string/menu_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
@@ -52,7 +52,7 @@
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/buttonMoodInput"
-                app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
+                app:layout_constraintStart_toEndOf="@id/buttonNavigationBack"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Space

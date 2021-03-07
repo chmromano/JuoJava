@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import fi.metropolia.christro.juo.database.JuoViewModel;
@@ -23,6 +25,7 @@ public class MoodActivity extends AppCompatActivity {
 
     private Button buttonMoodCancel;
     private Button buttonMoodSubmit;
+    private ImageButton buttonNavigationBack;
 
     Intent intent;
 
@@ -35,6 +38,8 @@ public class MoodActivity extends AppCompatActivity {
         initialiseViews();
 
         intent = new Intent(this, MainActivity.class);
+
+        buttonNavigationBack.setOnClickListener((view) -> startActivity(intent));
 
         buttonMoodCancel.setOnClickListener((view) -> startActivity(intent));
 
@@ -53,6 +58,7 @@ public class MoodActivity extends AppCompatActivity {
 
     private void initialiseViews() {
         radioGroupMood = findViewById(R.id.radioGroupMood);
+        buttonNavigationBack = findViewById(R.id.buttonNavigationBack);
         buttonMoodCancel = findViewById(R.id.buttonMoodCancel);
         buttonMoodSubmit = findViewById(R.id.buttonMoodSubmit);
         juoViewModel = new ViewModelProvider(this, ViewModelProvider
