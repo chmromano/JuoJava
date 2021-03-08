@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
     //Drawer
     private DrawerLayout drawerLayoutMainActivity;
 
-    //https://developer.android.com/reference/android/app/Activity#onCreate(android.os.Bundle)
-
     /**
      * onCreate() method creates the activity.
      *
