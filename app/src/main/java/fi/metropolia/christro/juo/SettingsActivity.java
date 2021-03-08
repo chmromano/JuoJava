@@ -418,7 +418,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNotificationManager.createNotificationChannel(notificationChannel);
-            Toast.makeText(SettingsActivity.this, "Notifications on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, "Notifications active", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(SettingsActivity.this, "Notifications not supported", Toast.LENGTH_SHORT).show();
         }
     }
 

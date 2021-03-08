@@ -135,7 +135,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     }
 
     /**
-     * Gets current location.
+     * Gets current coordinates. Requires Google Play services.
      *
      * @return String of current location.
      */
@@ -181,13 +181,18 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     }
 
     /**
-     * Gets current location based on coordinates.
+     * Gets current location based on coordinates. Requires Google Play services.
      *
      * @param latitude  Double containing latitude.
      * @param longitude Double containing longitude.
      * @return City name as String or null.
      */
     public String getLocationByCoordinates(double latitude, double longitude) {
+        /*
+        PLEASE READ!
+        Geocoder can be buggy on Android Studio emulator. If it does not work please test on a real
+        device. On a real device it always worked!
+         */
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         try {

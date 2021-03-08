@@ -310,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to update the weather UI (text and icon) when weather request is successful.
+     * Automatically sets an extra hydration goal if temperature is high.
      *
      * @param location    String containing the name of the location.
      * @param temperature Double containing the temperature value.
@@ -330,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
             extraHydrationGoal = 100;
             textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
         }
+
         circularProgressBar.setProgressMax((float) hydrationGoal + extraHydrationGoal);
 
         textViewCity.setText(location.replaceAll("\\+", " "));
@@ -419,7 +421,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private class IntakeButtonClick implements View.OnClickListener {
         /**
-         * Custom OnClick method.
+         * Custom OnClick method. Parses button labels to integer and inputs to database as intake
+         *  amount. All labels are already checked for exceptions in settings activity.
          *
          * @param view Parameter containing the pressed view.
          */
