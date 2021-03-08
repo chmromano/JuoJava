@@ -22,7 +22,7 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
                 .inflate(R.layout.list_view_item, parent,false);
         return new IntakeListHolder(itemView);
     }
-
+    
     public void setIntakeList(List<IntakeEntity> intakeList){
         this.intakeList = intakeList;
         notifyDataSetChanged();
