@@ -2,24 +2,24 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayoutHistory"
+    android:id="@+id/drawerLayoutMoodListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_200"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MoodListActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/toolbarHistory"
+            android:id="@+id/toolbarMoodList"
             layout="@layout/toolbar" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationViewHistory"
+        android:id="@+id/navigationViewMoodList"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -68,24 +68,22 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textViewHistoryActivityLabel"
+                    android:id="@+id/textViewMainActivityLabel"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:text="@string/menu_label_history"
+                    android:text="@string/about_activity_label"
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/buttonHistoryList"
+                    app:layout_constraintEnd_toStartOf="@id/textViewToolbar"
                     app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/buttonHistoryList"
+                <TextView
+                    android:id="@+id/textViewToolbar"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@drawable/ic_baseline_more_vert_24"
-                    android:contentDescription="@string/button_list_intake_description"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,35 +92,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMoodList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardViewToolbar">
+            app:layout_constraintTop_toBottomOf="@id/cardViewToolbar"
+            tools:listitem="@layout/mood_list_item" />
 
-            <ViewFlipper
-                android:layout_margin="10dp"
-                android:id="@+id/chart_slider"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintVertical_bias="1.0">
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChartDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChartMood"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </ViewFlipper>
-        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

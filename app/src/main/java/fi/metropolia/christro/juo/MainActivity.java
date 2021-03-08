@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.nav_mood:
-                    intent = new Intent(MainActivity.this, MoodActivity.class);
+                    intent = new Intent(MainActivity.this, MoodListActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_location:

@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -22,6 +26,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,13 +46,19 @@ public class History extends AppCompatActivity {
     BarDataSet barDataSet;
     ArrayList<BarEntry> barEntries;
     private static final String TAG = "fi.metropolia.christro.juo.History";
+    private DrawerLayout drawerLayoutHistory;
+    private NavigationView navigationViewHistory;
+    private Toolbar toolbarHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_history);
-        setSupportActionBar(toolbar);
+        toolbarHistory = findViewById(R.id.toolbarHistory);
+        navigationViewHistory = findViewById(R.id.navigationViewHistory);
+        drawerLayoutHistory = findViewById(R.id.drawerLayoutHistory);
+        setSupportActionBar(toolbarHistory);
 
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
@@ -58,6 +69,57 @@ public class History extends AppCompatActivity {
         if(barEntries == null) {
             Log.d(TAG, "onCreateCharts: empty bar chart");
         }
+
+        ImageButton buttonHistoryList = findViewById(R.id.buttonHistoryList);
+        buttonHistoryList.setOnClickListener((view) -> {
+            Intent intent = new Intent(History.this, IntakeListview.class);
+            startActivity(intent);
+        });
+
+        //This code is used to implement the navigation bar.
+        setSupportActionBar(toolbarHistory);
+        if (savedInstanceState == null) {
+            navigationViewHistory.setCheckedItem(R.id.nav_history);
+        }
+        navigationViewHistory.bringToFront();
+
+        ImageButton buttonNavigationMenu = findViewById(R.id.buttonNavigationMenu);
+        buttonNavigationMenu.setOnClickListener(view -> drawerLayoutHistory.openDrawer(GravityCompat.START));
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutHistory, toolbarHistory,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayoutHistory.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationViewHistory.setNavigationItemSelectedListener(item -> {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    intent = new Intent(History.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_history:
+                    break;
+                case R.id.nav_mood:
+                    intent = new Intent(History.this, MoodActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_location:
+                    intent = new Intent(History.this, LocationActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_settings:
+                    intent = new Intent(History.this, SettingsActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.nav_about:
+                    intent = new Intent(History.this, AboutActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+            drawerLayoutHistory.closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 
     @Override
@@ -114,10 +176,12 @@ public class History extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        Intent intent = new Intent(History.this, MainActivity.class);
-        startActivity(intent);
-
+    public void onBackPressed() {
+        if (drawerLayoutHistory.isDrawerOpen(GravityCompat.START)) {
+            //means the drawer is open
+            drawerLayoutHistory.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
-
 }

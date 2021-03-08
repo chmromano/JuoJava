@@ -56,6 +56,4 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
             textViewPriority = itemView.findViewById(R.id.text_view_priority);
         }
     }
-
-
 }
