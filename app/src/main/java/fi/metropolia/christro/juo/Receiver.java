@@ -1,25 +1,16 @@
 package fi.metropolia.christro.juo;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import fi.metropolia.christro.juo.database.JuoViewModel;
 
 
 public class Receiver extends BroadcastReceiver {
@@ -55,7 +46,9 @@ public class Receiver extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_baseline_circle_notifications_24)
                     .setContentTitle("Juo! reminder")
                     .setContentText("Time to drink")
-                    .setPriority(NotificationCompat.PRIORITY_HIGH);
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                    .setAutoCancel(true);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.notify(1, builder.build());
@@ -70,7 +63,7 @@ public class Receiver extends BroadcastReceiver {
      */
 
 
-    private boolean fireNotification() throws ParseException {
+  /*  private boolean fireNotification() throws ParseException {
 
         Date lastTimeDrink = this.getLastTimeDrink();
 
@@ -103,7 +96,7 @@ public class Receiver extends BroadcastReceiver {
      */
 
 
-    private Date getLastTimeDrink() throws ParseException {
+  /*  private Date getLastTimeDrink() throws ParseException {
 
         JuoViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.application))
@@ -130,7 +123,7 @@ public class Receiver extends BroadcastReceiver {
      * @return
      */
 
-    private int getTotalDrinkToday() {
+   /* private int getTotalDrinkToday() {
 
         LiveData<Integer> liveData = Notification.viewModel.getDailyTotal();
 
@@ -146,12 +139,13 @@ public class Receiver extends BroadcastReceiver {
      *
      * @return int
      */
-    private int getGoalAmount() {
+  /* private int getGoalAmount() {
 
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
         return (sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 0));
     }
+*/
 
 
 }
