@@ -84,6 +84,9 @@ public class History extends AppCompatActivity {
         String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
         Log.d(TAG, "getData: "+sDate);
 
+       LiveData<String> data= juoViewModel.getLatestIntake();
+
+
         juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
             public void onChanged(List<IntakeEntity> intakeEntities) {
