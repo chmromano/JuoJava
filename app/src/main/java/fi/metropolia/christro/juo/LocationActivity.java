@@ -22,6 +22,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -34,10 +37,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import fi.metropolia.christro.juo.database.IntakeEntity;
+
 /**
  * Location activity of the application.
  *
  * @author Taranath Pokhrel
+ * @author Itale Tabaksmane
  * @version 1.0
  */
 //Itale Tabaksmane - Implemented navigation menu and all related methods.
@@ -72,6 +78,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
         initialiseAll();
         updateUI();
+
+        //When enter is pressed
+        editTextLocation.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
 
         imageButtonLocation.setOnClickListener((view) -> {
             location = getCurrentLocation();
@@ -266,6 +275,35 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             } else {
                 Toast.makeText(this, "Location not granted", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    /**
+     * Method to validate custom input, add it to the database, close the keyboard, and lose focus
+     * when the enter key is pressed.
+     *
+     * @param v       The view on which to operate.
+     * @param keyCode The code of the pressed key.
+     * @param event   The event (key was pressed).
+     * @return Returns a true if the event happened, otherwise false.
+     */
+    private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            hideSoftKeyboard(v);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method to hide the keyboard.
+     *
+     * @param view Parameter containing the given view.
+     */
+    private void hideSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
