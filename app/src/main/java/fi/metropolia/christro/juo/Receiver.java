@@ -12,6 +12,10 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * @author Taranath Pokhrel
+ *
+ */
 
 public class Receiver extends BroadcastReceiver {
 
