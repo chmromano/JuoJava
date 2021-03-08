@@ -55,18 +55,21 @@ public class History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
+        // Hooking widgets to local variables
         toolbarHistory = findViewById(R.id.toolbarHistory);
         navigationViewHistory = findViewById(R.id.navigationViewHistory);
         drawerLayoutHistory = findViewById(R.id.drawerLayoutHistory);
+
         setSupportActionBar(toolbarHistory);
 
+        // Calling the instance of JuoViewModel
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
-
+        // This function constructs the bar char using live data about water intakes
         getData(juoViewModel);
 
+        // A safety measure for no records of intakes
         if (barEntries == null) {
             Log.d(TAG, "onCreateCharts: empty bar chart");
         }
@@ -82,16 +85,19 @@ public class History extends AppCompatActivity {
         if (savedInstanceState == null) {
             navigationViewHistory.setCheckedItem(R.id.nav_history);
         }
-        navigationViewHistory.bringToFront();
 
+        // Without this statement many devices will not show the menu as clickable
+        navigationViewHistory.bringToFront();
+        // making a menu icon click open the side navigation drawer
         ImageButton buttonNavigationMenu = findViewById(R.id.buttonNavigationMenu);
         buttonNavigationMenu.setOnClickListener(view -> drawerLayoutHistory.openDrawer(GravityCompat.START));
-
+        // using animation whenever the menu opens, by swiping or clicking
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutHistory, toolbarHistory,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutHistory.addDrawerListener(toggle);
         toggle.syncState();
 
+        // creates an intent for the appropriate activity by matching with item ID
         navigationViewHistory.setNavigationItemSelectedListener(item -> {
             Intent intent;
             switch (item.getItemId()) {
@@ -123,24 +129,6 @@ public class History extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.options_menu_intake_list) {
-            Toast.makeText(this, "swipe to delete record", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(History.this, IntakeListview.class);
-            startActivity(intent);
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
     public void getData(JuoViewModel juoViewModel) {
         barEntries = new ArrayList<BarEntry>();
         Date date = new Date();
@@ -149,18 +137,21 @@ public class History extends AppCompatActivity {
 
        LiveData<String> data= juoViewModel.getLatestIntake();
 
-
+        // Using the observe method to get the live data from the database
         juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
+            // The chart will update every time a change in records will occur
             public void onChanged(List<IntakeEntity> intakeEntities) {
-
                 for (IntakeEntity intake : intakeEntities) {
+                    // Taking only the intakes from today
                     if (intake.getDate().equals(sDate)) {
                         Log.d(TAG, "onChanged: " + intake.getTime() + "," + intake.getAmount());
+                        // data manipulation for the chart
                         String intakeTime = intake.getTime();
                         char[] hour = new char[3];
                         intakeTime.getChars(0, 2, hour, 0);
                         String sHour = String.valueOf(hour);
+                        //
                         float x = Float.valueOf(sHour);
                         Log.d(TAG, "onChanged: x value is" + x);
                         float y = intake.getAmount();
@@ -178,14 +169,15 @@ public class History extends AppCompatActivity {
         });
 
     }
-
+    // Sets the course of action when the user presses the 'back' button on his phone
     @Override
     public void onBackPressed() {
         if (drawerLayoutHistory.isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
             drawerLayoutHistory.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(History.this,MainActivity.class);
+            startActivity(intent);
         }
     }
 

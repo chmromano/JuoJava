@@ -25,24 +25,28 @@ public class IntakeListview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intake_listview);
-
+        // This sets the list of records under a flexible view without the limitation on data
         RecyclerView recyclerView = findViewById(R.id.recycler_view_intake_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
-
+        //
+        // Setting the adapter for the list of records
         IntakeListAdapter intakeListAdapter = new IntakeListAdapter();
         recyclerView.setAdapter(intakeListAdapter);
-
+        // Calling the JuoViewModel instance
         viewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
+        // Using the live data inputs from the user
         viewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
+            // Every change in the records will trigger it
             public void onChanged(List<IntakeEntity> intakeEntities) {
                 intakeListAdapter.setIntakeList(intakeEntities);
             }
         });
 
+        // This function allows swiping to delete the record
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
