@@ -54,7 +54,14 @@ public class MoodListActivity extends AppCompatActivity {
         juoViewModel.getAllMoodInputs().observe(this, moodEntities ->
                 moodListAdapter.setMoodList(moodEntities));
 
-        //This code is used to implement the navigation bar.
+        /*
+        This code is used to implement the navigation menu.
+        https://www.youtube.com/watch?v=HwYENW0RyY4
+        https://www.youtube.com/watch?v=fGcMLu1GJEc
+        https://www.youtube.com/watch?v=zYVEMCiDcmY
+        https://www.youtube.com/watch?v=bjYstsO1PgI
+        https://www.youtube.com/watch?v=lt6xbth-yQo
+         */
         drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodListActivity);
         NavigationView navigationViewMoodList = findViewById(R.id.navigationViewMoodList);
         Toolbar toolbarMoodList = findViewById(R.id.toolbarMoodList);
@@ -62,16 +69,18 @@ public class MoodListActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             navigationViewMoodList.setCheckedItem(R.id.nav_mood);
         }
+        // Without this statement many devices will not show the menu as clickable
         navigationViewMoodList.bringToFront();
-
+        // making a menu icon click open the side navigation drawer
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> drawerLayoutMoodListActivity.openDrawer(GravityCompat.START));
-
+        // using animation whenever the menu opens, by swiping or clicking
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMoodListActivity, toolbarMoodList,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutMoodListActivity.addDrawerListener(toggle);
         toggle.syncState();
 
+        // creates an intent for the appropriate activity by matching with item ID
         navigationViewMoodList.setNavigationItemSelectedListener(item -> {
             Intent intent;
             switch (item.getItemId()) {

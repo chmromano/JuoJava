@@ -132,7 +132,14 @@ public class MainActivity extends AppCompatActivity {
         //What to do when enter is pressed in custom input TextView.
         editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
 
-        //This code is used to implement the navigation menu.
+        /*
+        This code is used to implement the navigation menu.
+        https://www.youtube.com/watch?v=HwYENW0RyY4
+        https://www.youtube.com/watch?v=fGcMLu1GJEc
+        https://www.youtube.com/watch?v=zYVEMCiDcmY
+        https://www.youtube.com/watch?v=bjYstsO1PgI
+        https://www.youtube.com/watch?v=lt6xbth-yQo
+         */
         drawerLayoutMainActivity = findViewById(R.id.drawerLayoutMainActivity);
         NavigationView navigationViewMain = findViewById(R.id.navigationViewMain);
         Toolbar toolbarMain = findViewById(R.id.toolbarMain);
@@ -140,16 +147,19 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             navigationViewMain.setCheckedItem(R.id.nav_home);
         }
-        navigationViewMain.bringToFront();
 
+        // Without this statement many devices will not show the menu as clickable
+        navigationViewMain.bringToFront();
+        // making a menu icon click open the side navigation drawer
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> drawerLayoutMainActivity.openDrawer(GravityCompat.START));
-
+        // using animation whenever the menu opens, by swiping or clicking
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity, toolbarMain,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutMainActivity.addDrawerListener(toggle);
         toggle.syncState();
 
+        // creates an intent for the appropriate activity by matching with item ID
         navigationViewMain.setNavigationItemSelectedListener(item -> {
             Intent intent;
             switch (item.getItemId()) {
@@ -422,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
     private class IntakeButtonClick implements View.OnClickListener {
         /**
          * Custom OnClick method. Parses button labels to integer and inputs to database as intake
-         *  amount. All labels are already checked for exceptions in settings activity.
+         * amount. All labels are already checked for exceptions in settings activity.
          *
          * @param view Parameter containing the pressed view.
          */

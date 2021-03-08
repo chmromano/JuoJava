@@ -42,6 +42,8 @@ import fi.metropolia.christro.juo.database.MoodEntity;
 
 
 public class History extends AppCompatActivity {
+
+    //MPAndroid chart library: https://github.com/PhilJay/MPAndroidChart
     BarChart barChart;
     BarData barData;
     BarDataSet barDataSet;
@@ -80,7 +82,14 @@ public class History extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //This code is used to implement the navigation bar.
+        /*
+        This code is used to implement the navigation menu.
+        https://www.youtube.com/watch?v=HwYENW0RyY4
+        https://www.youtube.com/watch?v=fGcMLu1GJEc
+        https://www.youtube.com/watch?v=zYVEMCiDcmY
+        https://www.youtube.com/watch?v=bjYstsO1PgI
+        https://www.youtube.com/watch?v=lt6xbth-yQo
+         */
         setSupportActionBar(toolbarHistory);
         if (savedInstanceState == null) {
             navigationViewHistory.setCheckedItem(R.id.nav_history);
@@ -169,7 +178,10 @@ public class History extends AppCompatActivity {
         });
 
     }
-    // Sets the course of action when the user presses the 'back' button on his phone
+
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutHistory.isDrawerOpen(GravityCompat.START)) {
