@@ -13,6 +13,10 @@ import java.util.List;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 
+/*
+https://www.youtube.com/watch?v=reSPN7mgshI&list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118&index=8
+https://www.youtube.com/watch?v=QJUCD32dzHE&list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118&index=9
+*/
 public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.IntakeListHolder> {
     private List<IntakeEntity> intakeList = new ArrayList<>();
     @NonNull

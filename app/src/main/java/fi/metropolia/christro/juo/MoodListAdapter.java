@@ -19,6 +19,7 @@ import fi.metropolia.christro.juo.database.MoodEntity;
  * @author Christopher Mohan Romano
  * @version 1.0
  */
+//https://www.youtube.com/watch?v=reSPN7mgshI&list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118&index=8
 public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodListHolder> {
 
     private List<MoodEntity> moodList = new ArrayList<>();

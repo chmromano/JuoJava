@@ -17,6 +17,7 @@ import java.util.Date;
  * @author Taranath Pokhrel
  * @version 1.0
  */
+//https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
 public class Receiver extends BroadcastReceiver {
 
     /**

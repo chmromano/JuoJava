@@ -97,7 +97,10 @@ public class SettingsActivity extends AppCompatActivity {
         initialiseAll();
         updateUI(isFirstStartUp);
 
-        //Adapter for gender dropdown menu.
+        /*
+        Adapter for gender dropdown menu.
+        https://www.tutorialspoint.com/how-to-set-adapter-to-auto-complete-text-view
+        */
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, GENDER);
         dropdownMenuGender.setAdapter(adapter);
@@ -358,12 +361,12 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void updateUI(boolean isFirstStartupVariable) {
         if (isFirstStartupVariable) {
+            //https://material.io/components/dialogs/android
             new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.settings_activity_dialog_title))
                     .setMessage(getString(R.string.settings_activity_dialog_content))
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {
             editTextName.setText(sharedPreferences.getString(SHARED_NAME, ""));
@@ -419,6 +422,7 @@ public class SettingsActivity extends AppCompatActivity {
      * Check whether user is using android Oreo or higher. Notification channel classes not
      * available at lower levels.
      */
+    //https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
     private void setNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("notification", "Notification",

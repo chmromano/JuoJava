@@ -123,6 +123,7 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.90" />
 
+                <!-- https://material.io/components/text-fields -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textLayoutName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
         int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
         if (sharedGoal == 999999) {
+            //https://material.io/components/dialogs/android
             new MaterialAlertDialogBuilder(this)
                     .setTitle(getString(R.string.main_activity_dialog_title))
                     .setMessage(getString(R.string.main_activity_dialog_content))
@@ -257,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
                         startActivity(intent);
                     })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             return 999999;
         }
@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to get weather. Loads location from SharedPreferences. Uses OpenWeatherMap API.
      */
+    //https://www.youtube.com/watch?v=tdx9ReYGIoE
     private void getWeather() {
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
         String weatherUrl = API_URL + location;
@@ -414,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
         editTextCustomInput = findViewById(R.id.editTextCustomInput);
         textLayoutLCustomInput = findViewById(R.id.textLayoutCustomInput);
         //ViewModel
+        //Fix for error: https://github.com/googlecodelabs/android-room-with-a-view/issues/150
         juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);

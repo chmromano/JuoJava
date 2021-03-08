@@ -149,6 +149,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
      *
      * @return String of current location.
      */
+    //https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
     private String getCurrentLocation() {
         Location gpsLocation = null;
         Location networkLocation = null;
@@ -203,6 +204,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         Geocoder can be buggy on Android Studio emulator. If it does not work please test on a real
         device. On a real device it always worked!
          */
+        //https://stackoverflow.com/questions/43862079/how-to-get-city-name-using-latitude-and-longitude-in-android
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
         try {
@@ -211,6 +213,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //https://stackoverflow.com/questions/8661857/android-reverse-geocoding-getlocality-returns-often-null
         if (addresses != null && addresses.size() > 0) {
             for (Address cityName : addresses) {
                 if (cityName.getLocality() != null && cityName.getLocality().length() > 0) {
