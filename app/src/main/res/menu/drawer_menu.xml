@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn = "navigation_view">
-    <group android:checkableBehavior="single"
-        android:id="@+id/activities_group">
-        <item android:id="@+id/nav_home"
+    tools:showIn="navigation_view">
+    <group
+        android:id="@+id/activities_group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="Home"/>
-
-        <item android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile"/>
-        <item android:id="@+id/nav_history"
+            android:title="@string/menu_label_home" />
+        <item
+            android:id="@+id/nav_history"
             android:icon="@drawable/ic_bar_chart"
-            android:title="History"/>
-        <item android:id="@+id/nav_mood"
+            android:title="@string/menu_label_history" />
+        <item
+            android:id="@+id/nav_mood"
             android:icon="@drawable/ic_smile"
-            android:title="Mood"/>
-        <item android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings"/>
-        <item android:id="@+id/nav_location"
+            android:title="@string/menu_label_mood" />
+        <item
+            android:id="@+id/nav_location"
             android:icon="@drawable/ic_round_my_location_24"
-            android:title="Location"/>
+            android:title="@string/menu_label_location" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/menu_label_settings" />
     </group>
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/activities_group2">
-    <item android:title="Information">
-        <item android:id="@+id/nav_about"
+    <group
+        android:id="@+id/activities_group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_about"
             android:icon="@drawable/ic_about_icon"
-            android:title="About"/>
-    </item>
+            android:title="@string/menu_label_about" />
     </group>
 </menu>
