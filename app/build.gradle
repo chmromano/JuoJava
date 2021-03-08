@@ -42,19 +42,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //Custom components
+    //Components from Google/Android
+    //Volley HTTP library for networking
     implementation 'com.android.volley:volley:1.1.1'
-    //https://github.com/square/picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
+    //Google Play location services
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    //Chart generator https://github.com/PhilJay/MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation "androidx.viewpager2:viewpager2:1.0.0" //ViewPager2
-    implementation "androidx.cardview:cardview:1.0.0" //CardView
-    //CircularProgressBar https://github.com/lopspower/CircularProgressBar
-    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
-    implementation 'com.google.code.gson:gson:2.8.6' //GSON
     //Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
@@ -62,6 +54,16 @@ dependencies {
     //Room components
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //Components from GitHub libraries
+    //Chart generator https://github.com/PhilJay/MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0" //ViewPager2
+    implementation "androidx.cardview:cardview:1.0.0" //CardView
+    //CircularProgressBar https://github.com/lopspower/CircularProgressBar
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+    implementation 'com.google.code.gson:gson:2.8.6' //GSON
+
 
 
 }
