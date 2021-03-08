@@ -84,7 +84,7 @@
                     android:id="@+id/buttonHistoryList"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@drawable/ic_baseline_more_vert_24"
+                    android:background="@drawable/ic_round_more_vert_24"
                     android:contentDescription="@string/button_list_intake_description"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"

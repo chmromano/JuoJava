@@ -1,24 +1,28 @@
 package fi.metropolia.christro.juo;
 
-import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * About activity of the application.
+ *
+ * @author Christopher Mohan Romano
+ * @author Itale Tabaksmane
+ * @version 1.0
+ */
+//Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class AboutActivity extends AppCompatActivity {
 
     private TextView textViewAbout;
@@ -26,8 +30,12 @@ public class AboutActivity extends AppCompatActivity {
     private DrawerLayout drawerLayoutAboutActivity;
     private Toolbar toolbarAbout;
     private NavigationView navigationViewAbout;
-    private static final String TAG = "Selected Menu Item";
 
+    /**
+     * onCreate() method creates the activity.
+     *
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +43,9 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         textViewAbout = findViewById(R.id.textViewAbout);
-
-
         textViewAbout.setMovementMethod(new ScrollingMovementMethod());
 
-        //navigation
+        //This code is used to implement the navigation menu.
         drawerLayoutAboutActivity = findViewById(R.id.drawerLayoutAboutActivity);
         navigationViewAbout = findViewById(R.id.navigationViewAbout);
         toolbarAbout = findViewById(R.id.toolbarAbout);
@@ -58,10 +64,7 @@ public class AboutActivity extends AppCompatActivity {
         toggle.syncState();
 
         navigationViewAbout.setNavigationItemSelectedListener(item -> {
-            Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
-            //item = navigationView.getCheckedItem();
             Intent intent;
-            //Context context = getApplicationContext();
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     intent = new Intent(AboutActivity.this, MainActivity.class);
@@ -91,6 +94,9 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutAboutActivity.isDrawerOpen(GravityCompat.START)) {

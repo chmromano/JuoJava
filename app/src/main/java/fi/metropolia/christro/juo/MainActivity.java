@@ -42,21 +42,23 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 /**
  * Main activity of the application.
+ *
  * @author Christopher Mohan Romano
  * @author Taranath Pokhrel
  * @author Itale Tabaksmane
  * @version 1.0
  */
+/*
+Taranath Pokhrel - Implemented functionality to get current weather, and method to hide keyboard.
+Itale Tabaksmane - Implemented navigation menu and all related methods.
+ */
 public class MainActivity extends AppCompatActivity {
+
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
-    /**
-     * Name of the shared preferences file
-     */
+
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
-    /**
-     * Extra key to check if the app is being launched for the first time.
-     */
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
+
     private int hydrationGoal;
     private int extraHydrationGoal;
 
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mainActivityButtonTopEnd;
     private Button mainActivityButtonBottomStart;
     private Button mainActivityButtonBottomEnd;
+    private ImageButton buttonMoodInput;
     //Custom input views
     private TextInputEditText editTextCustomInput;
     private TextInputLayout textLayoutLCustomInput;
@@ -81,12 +84,14 @@ public class MainActivity extends AppCompatActivity {
     private JuoViewModel juoViewModel;
     //SharedPreferences
     private SharedPreferences sharedPreferences;
-
+    //Drawer
     private DrawerLayout drawerLayoutMainActivity;
 
     //https://developer.android.com/reference/android/app/Activity#onCreate(android.os.Bundle)
+
     /**
      * onCreate() method creates the activity.
+     *
      * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
     @SuppressLint("NonConstantResourceId")
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         initialiseAll();
         updateUI();
 
+        //Code used to observe if LiveData changes. If it does update UI.
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
@@ -110,22 +116,23 @@ public class MainActivity extends AppCompatActivity {
         };
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
-        textViewWeatherIcon.setOnClickListener((view) -> getWeather());
-
+        //ClickListeners for intake buttons.
         IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
         mainActivityButtonTopStart.setOnClickListener(intakeButtonClick);
         mainActivityButtonTopEnd.setOnClickListener(intakeButtonClick);
         mainActivityButtonBottomStart.setOnClickListener(intakeButtonClick);
         mainActivityButtonBottomEnd.setOnClickListener(intakeButtonClick);
 
-        findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> {
+        //Go to activity to input mood.
+        buttonMoodInput.setOnClickListener((view) -> {
             Intent intent = new Intent(MainActivity.this, MoodActivity.class);
             startActivity(intent);
         });
 
+        //What to do when enter is pressed in custom input TextView.
         editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
 
-        //This code is used to implement the navigation bar.
+        //This code is used to implement the navigation menu.
         drawerLayoutMainActivity = findViewById(R.id.drawerLayoutMainActivity);
         NavigationView navigationViewMain = findViewById(R.id.navigationViewMain);
         Toolbar toolbarMain = findViewById(R.id.toolbarMain);
@@ -177,10 +184,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to validate custom input, add it to the database, close the keyboard, and lose focus
      * when the enter key is pressed.
+     *
      * @param v       The view on which to operate.
      * @param keyCode The code of the pressed key.
      * @param event   The event (key was pressed).
-     * @return Returns a boolean.
+     * @return Returns a true if the event happened, otherwise false.
      */
     private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -211,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * On resume method updates the UI and gets the weather (in case user has changed location in
-     * settings).
+     * onResume() method to update the UI and get the weather.
      */
     @Override
     protected void onResume() {
@@ -225,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to load the hydration goal from SharedPreferences. Hydration goal has default value
      * on first start-up. If value in SharedPreferences is default value shows a dialog with a
      * welcome message and brings you to settings.
+     *
      * @return An integer containing the hydration goal.
      */
     private int loadHydrationGoal() {
@@ -302,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to update the weather UI (text and icon) when weather request is successful.
+     *
      * @param location    String containing the name of the location.
      * @param temperature Double containing the temperature value.
      * @param humidity    String containing humidity value.
@@ -390,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
         mainActivityButtonTopEnd = findViewById(R.id.mainActivityButtonTopEnd);
         mainActivityButtonBottomStart = findViewById(R.id.mainActivityButtonBottomStart);
         mainActivityButtonBottomEnd = findViewById(R.id.mainActivityButtonBottomEnd);
+        buttonMoodInput = findViewById(R.id.buttonMoodInput);
         //Custom input views
         editTextCustomInput = findViewById(R.id.editTextCustomInput);
         textLayoutLCustomInput = findViewById(R.id.textLayoutCustomInput);
@@ -403,12 +413,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Custom private OnClickListener class for intake buttons.
+     *
      * @author Christopher Mohan Romano
      * @version 1.0
      */
     private class IntakeButtonClick implements View.OnClickListener {
         /**
          * Custom OnClick method.
+         *
          * @param view Parameter containing the pressed view.
          */
         @Override
@@ -429,6 +441,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to hide the keyboard.
+     *
      * @param view Parameter containing the given view.
      */
     private void hideSoftKeyboard(View view) {

@@ -1,51 +1,58 @@
 package fi.metropolia.christro.juo;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageButton;
-
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.List;
-
-import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
-import fi.metropolia.christro.juo.database.MoodEntity;
 
+/**
+ * MoodList activity of the application. Display all moods in a RecyclerView.
+ *
+ * @author Christopher Mohan Romano
+ * @author Itale Tabksmane
+ * @version 1.0
+ */
+//Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class MoodListActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayoutMoodListActivity;
 
+    /**
+     * onCreate() method creates the activity.
+     *
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_list);
 
-        RecyclerView recyclerViewMoodList = findViewById(R.id.recyclerViewMoodList);
-        recyclerViewMoodList.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewMoodList.setHasFixedSize(false);
-
-        MoodListAdapter moodListAdapter = new MoodListAdapter();
-        recyclerViewMoodList.setAdapter(moodListAdapter);
-
         JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
-        juoViewModel.getAllMoodInputs().observe(this, moodEntities -> moodListAdapter
-                .setMoodList(moodEntities));
+
+        //Initialise RecyclerView and set custom adapter.
+        RecyclerView recyclerViewMoodList = findViewById(R.id.recyclerViewMoodList);
+        recyclerViewMoodList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewMoodList.setHasFixedSize(false);
+        MoodListAdapter moodListAdapter = new MoodListAdapter();
+        recyclerViewMoodList.setAdapter(moodListAdapter);
+        juoViewModel.getAllMoodInputs().observe(this, moodEntities ->
+                moodListAdapter.setMoodList(moodEntities));
 
         //This code is used to implement the navigation bar.
         drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodListActivity);
@@ -96,6 +103,9 @@ public class MoodListActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutMoodListActivity.isDrawerOpen(GravityCompat.START)) {

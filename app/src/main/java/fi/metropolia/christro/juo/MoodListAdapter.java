@@ -13,29 +13,53 @@ import java.util.List;
 
 import fi.metropolia.christro.juo.database.MoodEntity;
 
+/**
+ * Adapter to adapt list of moods to RecyclerView.
+ *
+ * @author Christopher Mohan Romano
+ * @version 1.0
+ */
 public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodListHolder> {
+
     private List<MoodEntity> moodList = new ArrayList<>();
+
+    /**
+     * Holder for list based on custom layout.
+     *
+     * @param parent   Parent ViewGroup (RecyclerView).
+     * @param viewType View type.
+     * @return The ViewHolder.
+     */
     @NonNull
     @Override
     public MoodListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.mood_list_item, parent,false);
+                .inflate(R.layout.mood_list_item, parent, false);
         return new MoodListHolder(itemView);
     }
 
-    public void setMoodList(List<MoodEntity> intakeList){
-        this.moodList = intakeList;
+    /**
+     * Sets list of moods. Notifies when data in list changes.
+     *
+     * @param moodList List of moods.
+     */
+    public void setMoodList(List<MoodEntity> moodList) {
+        this.moodList = moodList;
         notifyDataSetChanged();
     }
 
-    public MoodEntity getMoodAt(int position){
-        return moodList.get(position);
-    }
+    /**
+     * Sets the information in the custom layout based on mood ID.
+     *
+     * @param holder   The ViewHolder.
+     * @param position Position of the item.
+     */
     @Override
     public void onBindViewHolder(@NonNull MoodListHolder holder, int position) {
+
         MoodEntity currentMood = moodList.get(position);
 
-        if (currentMood.getMood() == 1){
+        if (currentMood.getMood() == 1) {
             holder.textViewMoodListEmoji.setText(R.string.emoji_bad);
         } else if (currentMood.getMood() == 2) {
             holder.textViewMoodListEmoji.setText(R.string.emoji_normal);
@@ -45,15 +69,30 @@ public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodLi
         holder.textViewMoodListDate.setText(currentMood.getDate());
     }
 
+    /**
+     * Method to get item count to set the adapter.
+     *
+     * @return Number of items in list.
+     */
     @Override
     public int getItemCount() {
         return moodList.size();
     }
 
-    class MoodListHolder extends RecyclerView.ViewHolder{
+    /**
+     * Holder using custom layout for each item.
+     *
+     * @author Christopher Mohan Romano
+     * @version 1.0
+     */
+    class MoodListHolder extends RecyclerView.ViewHolder {
         private TextView textViewMoodListEmoji;
         private TextView textViewMoodListDate;
 
+        /**
+         * Initialise views inside the custom layout.
+         * @param itemView The layout to display.
+         */
         public MoodListHolder(@NonNull View itemView) {
             super(itemView);
             textViewMoodListEmoji = itemView.findViewById(R.id.textViewMoodListEmoji);

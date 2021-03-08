@@ -76,15 +76,16 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/buttonMoodInput"
+                    app:layout_constraintEnd_toStartOf="@id/imageButtonNotifications"
                     app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Space
-                    android:id="@+id/buttonMoodInput"
+                <ImageButton
+                    android:id="@+id/imageButtonNotifications"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:contentDescription="@string/mood_button_description"
+                    android:background="@drawable/ic_round_circle_notifications_24"
+                    android:contentDescription="@string/notification_button_description"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintEnd_toEndOf="parent"

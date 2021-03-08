@@ -2,8 +2,13 @@ package fi.metropolia.christro.juo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,8 +27,22 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Calendar;
 import java.util.Objects;
 
+
+/**
+ * Settings activity of the application.
+ *
+ * @author Christopher Mohan Romano
+ * @author Taranath Pokhrel
+ * @author Itale Tabaksmane
+ * @version 1.0
+ */
+/*
+Taranath Pokhrel - Implemented notification service.
+Itale Tabaksmane - Implemented navigation menu and all related methods.
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     public static final String SHARED_NAME = "fi.metropolia.christro.juo.SHARED_USERNAME";
@@ -57,12 +76,19 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
     private Button buttonSaveProfileSettings;
+    private ImageButton imageButtonNotifications;
+
     private boolean isFirstStartUp;
 
     private DrawerLayout drawerLayoutSettings;
     private Toolbar toolbarSettings;
     private NavigationView navigationViewSettings;
 
+    /**
+     * onCreate() method creates the activity.
+     *
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +97,7 @@ public class SettingsActivity extends AppCompatActivity {
         initialiseAll();
         updateUI(isFirstStartUp);
 
+        //Adapter for gender dropdown menu.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, GENDER);
         dropdownMenuGender.setAdapter(adapter);
@@ -81,7 +108,18 @@ public class SettingsActivity extends AppCompatActivity {
             saveSettings();
         });
 
-        //This code is used to implement the navigation bar.
+        //Turn on notifications.
+        imageButtonNotifications.setOnClickListener(v -> {
+            setNotification();
+            Calendar calendar = Calendar.getInstance();
+            Intent intent = new Intent(SettingsActivity.this, Receiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(SettingsActivity.this,
+                    100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 90 * 60 * 1000, pendingIntent);
+        });
+
+        //This code is used to implement the navigation menu.
         setSupportActionBar(toolbarSettings);
         if (savedInstanceState == null) {
             navigationViewSettings.setCheckedItem(R.id.nav_settings);
@@ -127,21 +165,32 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * onResume() method to update the UI.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         updateUI(isFirstStartUp);
     }
 
-    private void saveSettings(){
+    /**
+     * Method to validate all settings inputted by the user and save them to shared preferences. If
+     * user leaves fields blank they will be populated with defaults. If user enters an age and/or a
+     * gender, an appropriate hydration goal will be selected automatically.
+     */
+    private void saveSettings() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        //Get username
         String username = Objects.requireNonNull(editTextName.getText()).toString();
         editor.putString(SHARED_NAME, username);
 
+        //Get gender
         String gender = dropdownMenuGender.getText().toString();
         editor.putString(SHARED_GENDER, gender);
 
+        //Get age and parse to int. Automatically validate input and set errors if any.
         String stringAge = Objects.requireNonNull(editTextAge.getText()).toString().trim();
         int age = 20;
         if (!stringAge.equals("")) {
@@ -159,6 +208,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+        //Get goal and parse to int. Automatically validate input and set errors if any.
         String stringGoal = Objects.requireNonNull(editTextGoal.getText()).toString().trim();
         if (!stringGoal.equals("")) {
             try {
@@ -174,6 +224,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return;
             }
         } else {
+            //If statement to automatically set a goal based on age and/or gender, or default.
             if (age >= 18) {
                 if (gender.toLowerCase().equals("male")) {
                     editor.putInt(SHARED_GOAL, 3700);
@@ -193,16 +244,17 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-        String stringButton1 = Objects.requireNonNull(editTextSettingsButtonTopStart.getText()).toString().trim();
-        if (!stringButton1.equals("")) {
+        //Get buttonTopStart and parse to int. Automatically validate input and set errors if any.
+        String stringButtonTopStart = Objects.requireNonNull(editTextSettingsButtonTopStart.getText()).toString().trim();
+        if (!stringButtonTopStart.equals("")) {
             try {
-                int button1 = Integer.parseInt(stringButton1);
-                if (button1 <= 0) {
+                int buttonTopStart = Integer.parseInt(stringButtonTopStart);
+                if (buttonTopStart <= 0) {
                     textLayoutSettingsButtonTopStart.setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
-                editor.putInt(SHARED_BUTTON_TOP_START, button1);
+                editor.putInt(SHARED_BUTTON_TOP_START, buttonTopStart);
                 textLayoutSettingsButtonTopStart.setError(null);
             } catch (NumberFormatException e) {
                 textLayoutSettingsButtonTopStart.setError(getString(R.string
@@ -213,16 +265,17 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_TOP_START, 250);
         }
 
-        String stringButton2 = Objects.requireNonNull(editTextSettingsButtonTopEnd.getText()).toString().trim();
-        if (!stringButton2.equals("")) {
+        //Get buttonTopEnd and parse to int. Automatically validate input and set errors if any.
+        String stringButtonTopEnd = Objects.requireNonNull(editTextSettingsButtonTopEnd.getText()).toString().trim();
+        if (!stringButtonTopEnd.equals("")) {
             try {
-                int button2 = Integer.parseInt(stringButton2);
-                if (button2 <= 0) {
+                int buttonTopEnd = Integer.parseInt(stringButtonTopEnd);
+                if (buttonTopEnd <= 0) {
                     textLayoutSettingsButtonTopEnd.setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
-                editor.putInt(SHARED_BUTTON_TOP_END, button2);
+                editor.putInt(SHARED_BUTTON_TOP_END, buttonTopEnd);
                 textLayoutSettingsButtonTopEnd.setError(null);
             } catch (NumberFormatException e) {
                 textLayoutSettingsButtonTopEnd.setError(getString(R.string
@@ -233,16 +286,17 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_TOP_END, 500);
         }
 
-        String stringButton3 = Objects.requireNonNull(editTextSettingsButtonBottomStart.getText()).toString().trim();
-        if (!stringButton3.equals("")) {
+        //Get buttonBottomStart and parse to int. Automatically validate input and set errors if any.
+        String stringButtonBottomStart = Objects.requireNonNull(editTextSettingsButtonBottomStart.getText()).toString().trim();
+        if (!stringButtonBottomStart.equals("")) {
             try {
-                int button3 = Integer.parseInt(stringButton3);
-                if (button3 <= 0) {
+                int buttonBottomStart = Integer.parseInt(stringButtonBottomStart);
+                if (buttonBottomStart <= 0) {
                     textLayoutSettingsButtonBottomStart.setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
-                editor.putInt(SHARED_BUTTON_BOTTOM_START, button3);
+                editor.putInt(SHARED_BUTTON_BOTTOM_START, buttonBottomStart);
                 textLayoutSettingsButtonBottomStart.setError(null);
             } catch (NumberFormatException e) {
                 textLayoutSettingsButtonBottomStart.setError(getString(R.string
@@ -253,16 +307,17 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putInt(SHARED_BUTTON_BOTTOM_START, 100);
         }
 
-        String stringButton4 = Objects.requireNonNull(editTextSettingsButtonBottomEnd.getText()).toString().trim();
-        if (!stringButton4.equals("")) {
+        //Get buttonBottomEnd and parse to int. Automatically validate input and set errors if any.
+        String stringButtonBottomEnd = Objects.requireNonNull(editTextSettingsButtonBottomEnd.getText()).toString().trim();
+        if (!stringButtonBottomEnd.equals("")) {
             try {
-                int button4 = Integer.parseInt(stringButton4);
-                if (button4 <= 0) {
+                int buttonBottomEnd = Integer.parseInt(stringButtonBottomEnd);
+                if (buttonBottomEnd <= 0) {
                     textLayoutSettingsButtonBottomEnd.setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
-                editor.putInt(SHARED_BUTTON_BOTTOM_END, button4);
+                editor.putInt(SHARED_BUTTON_BOTTOM_END, buttonBottomEnd);
                 textLayoutSettingsButtonBottomEnd.setError(null);
             } catch (NumberFormatException e) {
                 textLayoutSettingsButtonBottomEnd.setError(getString(R.string
@@ -275,6 +330,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         editor.apply();
 
+        //If is first startup return to main activity on press.
         if (isFirstStartUp) {
             isFirstStartUp = false;
             Intent returnIntent = new Intent(this, MainActivity.class);
@@ -282,6 +338,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to update the UI. If app is launched for the first time leaves everything blank,
+     * otherwise automatically populates settings with what is saved in shared preferences.
+     *
+     * @param isFirstStartupVariable Boolean to check is app is being launched for the first time.
+     */
     private void updateUI(boolean isFirstStartupVariable) {
         if (isFirstStartupVariable) {
             new MaterialAlertDialogBuilder(this)
@@ -307,10 +369,14 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to initialise all views needed by the activity.
+     */
     private void initialiseAll() {
         sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
 
         buttonSaveProfileSettings = findViewById(R.id.buttonSaveProfileSettings);
+        imageButtonNotifications = findViewById(R.id.imageButtonNotifications);
 
         editTextName = findViewById(R.id.editTextName);
         editTextAge = findViewById(R.id.editTextAge);
@@ -337,6 +403,26 @@ public class SettingsActivity extends AppCompatActivity {
         isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
     }
 
+    /**
+     * Check whether user is using android Oreo or higher. Notification channel classes not
+     * available at lower levels.
+     */
+    private void setNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel("notification", "Notification",
+                    NotificationManager.IMPORTANCE_HIGH);
+
+            notificationChannel.setDescription("Reminds User to drink");
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+            Toast.makeText(SettingsActivity.this, "Notifications on", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutSettings.isDrawerOpen(GravityCompat.START)) {

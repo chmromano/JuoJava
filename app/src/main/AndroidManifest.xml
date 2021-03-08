@@ -28,7 +28,6 @@
         <activity
             android:name=".MoodActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".Notification" />
         <activity
             android:name=".IntakeListview"
             android:exported="true"

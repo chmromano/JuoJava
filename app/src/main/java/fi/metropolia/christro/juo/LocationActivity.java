@@ -34,6 +34,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * Location activity of the application.
+ *
+ * @author Taranath Pokhrel
+ * @version 1.0
+ */
+//Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class LocationActivity extends AppCompatActivity implements LocationListener {
 
     public static final String SHARED_LOCATION = "fi.metropolia.christro.juo.SHARED_LOCATION";
@@ -52,6 +59,11 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
     private SharedPreferences sharedPreferences;
 
+    /**
+     * onCreate() method creates the activity.
+     *
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +88,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             startActivity(intent);
         });
 
-        //This code is used to implement the navigation bar.
+        //This code is used to implement the navigation menu.
         setSupportActionBar(toolbarLocation);
         if (savedInstanceState == null) {
             navigationViewLocation.setCheckedItem(R.id.nav_location);
@@ -122,6 +134,11 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         });
     }
 
+    /**
+     * Gets current location.
+     *
+     * @return String of current location.
+     */
     private String getCurrentLocation() {
         Location gpsLocation = null;
         Location networkLocation = null;
@@ -163,6 +180,13 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return getLocationByCoordinates(latitude, longitude);
     }
 
+    /**
+     * Gets current location based on coordinates.
+     *
+     * @param latitude  Double containing latitude.
+     * @param longitude Double containing longitude.
+     * @return City name as String or null.
+     */
     public String getLocationByCoordinates(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
@@ -184,11 +208,17 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         return null;
     }
 
+    /**
+     * Updates the UI.
+     */
     private void updateUI() {
         location = sharedPreferences.getString(SHARED_LOCATION, "No location set");
         editTextLocation.setText(location);
     }
 
+    /**
+     * Initialise all views.
+     */
     private void initialiseAll() {
         editTextLocation = findViewById(R.id.editTextLocation);
         imageButtonLocation = findViewById(R.id.imageButtonLocation);
@@ -202,6 +232,13 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         toolbarLocation = findViewById(R.id.toolbarLocation);
     }
 
+    /**
+     * Request permission for GPS.
+     *
+     * @param requestCode  Request code.
+     * @param permissions  Requested permission.
+     * @param grantResults Permission granted or denied.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -214,26 +251,45 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         }
     }
 
+    /**
+     * Must implement methods but never used.
+     *
+     * @param location Unused parameter.
+     */
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
     }
 
+    /**
+     * Must implement methods but never used.
+     *
+     * @param provider Unused parameter.
+     */
     @Override
     public void onProviderEnabled(@NonNull String provider) {
-
     }
 
+    /**
+     * Must implement methods but never used.
+     *
+     * @param provider Unused parameter.
+     */
     @Override
     public void onProviderDisabled(@NonNull String provider) {
-
     }
 
+    /**
+     * Must implement methods but never used.
+     *
+     * @param hasCapture Unused parameter.
+     */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutLocation.isDrawerOpen(GravityCompat.START)) {
