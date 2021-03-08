@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -146,6 +147,9 @@ public class History extends AppCompatActivity {
         String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
         Log.d(TAG, "getData: " + sDate);
 
+       LiveData<String> data= juoViewModel.getLatestIntake();
+
+
         juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
             public void onChanged(List<IntakeEntity> intakeEntities) {
@@ -184,4 +188,5 @@ public class History extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

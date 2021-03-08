@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Juo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MoodListActivity"></activity>
+        <activity android:name=".MoodListActivity" />
         <activity android:name=".LocationActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".MoodActivity" />
@@ -28,7 +28,7 @@
         <activity android:name=".AboutActivity" />
         <activity
             android:name=".History"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoActionBar">

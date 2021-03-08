@@ -4,7 +4,9 @@
     <string name="hello_welcome">Welcome to our app!</string>
 
     <string name="btnnotification">ON</string>
-    <string name="remind">Notify Me</string>
+    <string name="remind">Reminder</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
 
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
@@ -75,7 +77,8 @@
     <string name="main_activity_extra_intake">+%d</string>
     <string name="input_custom_intake">Input</string>
     <!-- Strings for weather -->
-    <string name="text_view_temperature">%.1f °C\t\t\t\t\t\tH: %s%%</string>
+    <string name="text_view_temperature">%.1f °C</string>
+    <string name="text_view_humidity">H: %s%%</string>
     <string name="not_available">N/A</string>
     <string name="location_not_found">Location not found</string>
     <string name="weather_default">&#x1F30D;</string>
