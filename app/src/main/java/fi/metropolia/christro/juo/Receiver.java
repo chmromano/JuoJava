@@ -37,8 +37,8 @@ public class Receiver extends BroadcastReceiver {
         if (hourOfDay > 7 && hourOfDay < 21) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification")
                     .setSmallIcon(R.drawable.ic_round_circle_notifications_24)
-                    .setContentTitle("Juo! reminder")
-                    .setContentText("Time to drink")
+                    .setContentTitle("Juo!")
+                    .setContentText("Time to drink!")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_REMINDER)
                     .setAutoCancel(true);

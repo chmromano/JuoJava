@@ -112,7 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         //Turn on notifications.
-        imageButtonNotifications.setOnClickListener(v -> {
+        imageButtonNotifications.setOnClickListener((view) -> {
             setNotification();
             Calendar calendar = Calendar.getInstance();
             Intent intent = new Intent(SettingsActivity.this, Receiver.class);
@@ -121,7 +121,8 @@ public class SettingsActivity extends AppCompatActivity {
                     100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 90 * 60 * 1000, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    90 * 60 * 1000, pendingIntent);
         });
 
         /*
