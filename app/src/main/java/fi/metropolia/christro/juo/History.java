@@ -2,17 +2,20 @@ package fi.metropolia.christro.juo;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -20,20 +23,23 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
+import fi.metropolia.christro.juo.database.MoodEntity;
 
 
 public class History extends AppCompatActivity {
     BarChart barChart;
     BarData barData;
-    public BarDataSet barDataSet;
+    BarDataSet barDataSet;
     ArrayList<BarEntry> barEntries;
-    ArrayList<BarEntry> barEntriesList;
-    ViewFlipper vf;
     private static final String TAG = "fi.metropolia.christro.juo.History";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +48,16 @@ public class History extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_history);
         setSupportActionBar(toolbar);
-        //int[] charts = new int[]{R.id.barChartDay};//R.id.barChartMonth,R.id.barChartYear};
-        //for(int chart: charts) {
-            barEntriesList = getData();
-            barDataSet = new BarDataSet(barEntriesList, "day Data set");
-            barChart = findViewById(R.id.barChartDay);
-            barData = new BarData(barDataSet);
-            barChart.setData(barData);
-            barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        //}
-        if(barEntriesList == null) {
-            Log.d(TAG, "onCreateCharts: empty bar chart");
-        }else {
-            //flipperChart();
-        }
 
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
+
+        getData(juoViewModel);
+
+        if(barEntries == null) {
+            Log.d(TAG, "onCreateCharts: empty bar chart");
+        }
     }
 
     @Override
@@ -77,34 +78,46 @@ public class History extends AppCompatActivity {
         }
     }
 
-    public void flipperChart(){
-        vf.setFlipInterval(4000);
-        vf.setAutoStart(true);
-
-        vf.setInAnimation(this, android.R.anim.slide_in_left);
-        vf.setOutAnimation(this, android.R.anim.slide_out_right);
-
-    }
-
-    public ArrayList<BarEntry> getData(){
-        barEntries = new ArrayList();
-        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
-                .AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(JuoViewModel.class);
+    public void getData(JuoViewModel juoViewModel){
+        barEntries = new ArrayList<BarEntry>();
+        Date date = new Date();
+        String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        Log.d(TAG, "getData: "+sDate);
 
         juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
             public void onChanged(List<IntakeEntity> intakeEntities) {
+
                 for(IntakeEntity intake : intakeEntities){
-                    Log.d(TAG, "onChanged: "+intake.getTime()+","+intake.getAmount());
-                    String intakeTime = intake.getTime();
-                    char[] x = new char[5];
-                    intakeTime.replace(":",".").getChars(0,4,x,0);
-                    int y = intake.getAmount();
-                    barEntries.add(new BarEntry(Float.parseFloat(String.valueOf(x)), Float.parseFloat(String.valueOf(y))));
+                    if(intake.getDate().equals(sDate)) {
+                        Log.d(TAG, "onChanged: " + intake.getTime() + "," + intake.getAmount());
+                        String intakeTime = intake.getTime();
+                        char[] hour = new char[3];
+                        intakeTime.getChars(0, 2, hour, 0);
+                        String sHour = String.valueOf(hour);
+                        float x = Float.valueOf(sHour);
+                        Log.d(TAG, "onChanged: x value is" + x);
+                        float y = intake.getAmount();
+                        barEntries.add(new BarEntry(x, y));
+                    }
                 }
+                Log.d(TAG, "onChanged: barentries"+barEntries);
+                barDataSet = new BarDataSet(barEntries, "Day Data set");
+                barChart = findViewById(R.id.barChartDay);
+                barData = new BarData(barDataSet);
+                barChart.setData(barData);
+                barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
             }
+
         });
-        return barEntries;
+
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(History.this, MainActivity.class);
+        startActivity(intent);
+
+    }
+
 }

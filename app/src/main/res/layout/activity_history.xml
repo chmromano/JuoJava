@@ -5,40 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".History"
-    tools:showIn="@layout/activity_history"
     tools:menu="@menu/options_menu"
     android:background="@color/colorFontLight">
 
     <include
         android:id="@+id/toolbar_history"
         layout="@layout/toolbar"/>
+
     <ViewFlipper
         android:id="@+id/chart_slider"
         android:layout_width="371dp"
-        android:layout_height="303dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.202">
+        app:layout_constraintVertical_bias="1.0">
 
         <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChartDay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/barChartDay">
-        </com.github.mikephil.charting.charts.BarChart>
+            android:layout_height="match_parent"></com.github.mikephil.charting.charts.BarChart>
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChartMonth"
+            android:id="@+id/barChartMood"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.github.mikephil.charting.charts.BarChart>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChartYear"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </com.github.mikephil.charting.charts.BarChart>
+            android:layout_height="match_parent"></com.github.mikephil.charting.charts.BarChart>
     </ViewFlipper>
 
 
