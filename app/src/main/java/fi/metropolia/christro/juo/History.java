@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -66,7 +67,7 @@ public class History extends AppCompatActivity {
 
         getData(juoViewModel);
 
-        if(barEntries == null) {
+        if (barEntries == null) {
             Log.d(TAG, "onCreateCharts: empty bar chart");
         }
 
@@ -101,7 +102,7 @@ public class History extends AppCompatActivity {
                 case R.id.nav_history:
                     break;
                 case R.id.nav_mood:
-                    intent = new Intent(History.this, MoodActivity.class);
+                    intent = new Intent(History.this, MoodListActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_location:
@@ -124,34 +125,37 @@ public class History extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu,menu);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.options_menu_intake_list) {
+        if (item.getItemId() == R.id.options_menu_intake_list) {
             Toast.makeText(this, "swipe to delete record", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(History.this, IntakeListview.class);
             startActivity(intent);
             return true;
-        }else{
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    public void getData(JuoViewModel juoViewModel){
+    public void getData(JuoViewModel juoViewModel) {
         barEntries = new ArrayList<BarEntry>();
         Date date = new Date();
         String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
-        Log.d(TAG, "getData: "+sDate);
+        Log.d(TAG, "getData: " + sDate);
+
+       LiveData<String> data= juoViewModel.getLatestIntake();
+
 
         juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
             @Override
             public void onChanged(List<IntakeEntity> intakeEntities) {
 
-                for(IntakeEntity intake : intakeEntities){
-                    if(intake.getDate().equals(sDate)) {
+                for (IntakeEntity intake : intakeEntities) {
+                    if (intake.getDate().equals(sDate)) {
                         Log.d(TAG, "onChanged: " + intake.getTime() + "," + intake.getAmount());
                         String intakeTime = intake.getTime();
                         char[] hour = new char[3];
@@ -163,7 +167,7 @@ public class History extends AppCompatActivity {
                         barEntries.add(new BarEntry(x, y));
                     }
                 }
-                Log.d(TAG, "onChanged: barentries"+barEntries);
+                Log.d(TAG, "onChanged: barentries" + barEntries);
                 barDataSet = new BarDataSet(barEntries, "Day Data set");
                 barChart = findViewById(R.id.barChartDay);
                 barData = new BarData(barDataSet);
@@ -184,4 +188,5 @@ public class History extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

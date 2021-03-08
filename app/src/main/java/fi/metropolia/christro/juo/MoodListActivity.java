@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,12 +26,9 @@ import fi.metropolia.christro.juo.database.MoodEntity;
 
 public class MoodListActivity extends AppCompatActivity {
 
-    private JuoViewModel juoViewModel;
-
     private DrawerLayout drawerLayoutMoodListActivity;
-    private Toolbar toolbarMoodList;
-    private NavigationView navigationViewMoodList;
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +41,16 @@ public class MoodListActivity extends AppCompatActivity {
         MoodListAdapter moodListAdapter = new MoodListAdapter();
         recyclerViewMoodList.setAdapter(moodListAdapter);
 
-        juoViewModel = new ViewModelProvider(this, ViewModelProvider
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
                 .AndroidViewModelFactory.getInstance(this.getApplication()))
                 .get(JuoViewModel.class);
-        juoViewModel.getAllMoodInputs().observe(this, new Observer<List<MoodEntity>>() {
-            @Override
-            public void onChanged(List<MoodEntity> moodEntities) {
-                moodListAdapter.setMoodList(moodEntities);
-            }
-        });
+        juoViewModel.getAllMoodInputs().observe(this, moodEntities -> moodListAdapter
+                .setMoodList(moodEntities));
 
         //This code is used to implement the navigation bar.
         drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodListActivity);
-        navigationViewMoodList = findViewById(R.id.navigationViewMoodList);
-        toolbarMoodList = findViewById(R.id.toolbarMoodList);
+        NavigationView navigationViewMoodList = findViewById(R.id.navigationViewMoodList);
+        Toolbar toolbarMoodList = findViewById(R.id.toolbarMoodList);
         setSupportActionBar(toolbarMoodList);
         if (savedInstanceState == null) {
             navigationViewMoodList.setCheckedItem(R.id.nav_mood);
@@ -72,9 +66,7 @@ public class MoodListActivity extends AppCompatActivity {
         toggle.syncState();
 
         navigationViewMoodList.setNavigationItemSelectedListener(item -> {
-            //item = navigationView.getCheckedItem();
             Intent intent;
-            //Context context = getApplicationContext();
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     intent = new Intent(MoodListActivity.this, MainActivity.class);

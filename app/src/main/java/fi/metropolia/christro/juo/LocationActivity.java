@@ -103,7 +103,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
                     startActivity(intent);
                     break;
                 case R.id.nav_mood:
-                    intent = new Intent(LocationActivity.this, MoodActivity.class);
+                    intent = new Intent(LocationActivity.this, MoodListActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_location:

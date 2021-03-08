@@ -72,7 +72,7 @@ public class AboutActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.nav_mood:
-                    intent = new Intent(AboutActivity.this, MoodActivity.class);
+                    intent = new Intent(AboutActivity.this, MoodListActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_location:

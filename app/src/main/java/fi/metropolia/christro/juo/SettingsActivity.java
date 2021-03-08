@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.nav_mood:
-                    intent = new Intent(SettingsActivity.this, MoodActivity.class);
+                    intent = new Intent(SettingsActivity.this, MoodListActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_location:

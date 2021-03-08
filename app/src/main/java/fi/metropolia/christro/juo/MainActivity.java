@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     //SharedPreferences
     private SharedPreferences sharedPreferences;
 
-    private DrawerLayout drawer;
+    private DrawerLayout drawerLayoutMainActivity;
 
     /**
      * @param savedInstanceState
@@ -118,24 +118,24 @@ public class MainActivity extends AppCompatActivity {
         editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
 
         //This code is used to implement the navigation bar.
-        drawer = findViewById(R.id.drawerLayoutMain);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        drawerLayoutMainActivity = findViewById(R.id.drawerLayoutMainActivity);
+        NavigationView navigationViewMain = findViewById(R.id.navigationViewMain);
+        Toolbar toolbarMain = findViewById(R.id.toolbarMain);
+        setSupportActionBar(toolbarMain);
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_home);
+            navigationViewMain.setCheckedItem(R.id.nav_home);
         }
-        navigationView.bringToFront();
+        navigationViewMain.bringToFront();
 
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
-        menuButton.setOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
+        menuButton.setOnClickListener(view -> drawerLayoutMainActivity.openDrawer(GravityCompat.START));
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity, toolbarMain,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        drawerLayoutMainActivity.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(item -> {
+        navigationViewMain.setNavigationItemSelectedListener(item -> {
             Intent intent;
             switch (item.getItemId()) {
                 case R.id.nav_home:
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
             }
-            drawer.closeDrawer(GravityCompat.START);
+            drawerLayoutMainActivity.closeDrawer(GravityCompat.START);
             return true;
         });
     }
@@ -433,9 +433,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayoutMainActivity.isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawer.closeDrawer(GravityCompat.START);
+            drawerLayoutMainActivity.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
