@@ -68,7 +68,7 @@ public interface JuoDao {
     /**
      * DAO to insert a MoodEntity in the database. In case of a conflict the inserted object will
      * overwrite the old object.
-     * @param moodEntity
+     * @param moodEntity An object containing the MoodEntity.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMood(MoodEntity moodEntity);

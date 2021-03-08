@@ -16,7 +16,7 @@
     <string name="menu_label_home">Home</string>
     <string name="menu_label_profile">Profile</string>
     <string name="menu_label_history">History</string>
-    <string name="menu_label_mood">Mood</string>
+    <string name="menu_label_mood">Moods</string>
     <string name="menu_label_location">Location</string>
     <string name="menu_label_settings">Settings</string>
     <string name="menu_label_about">About</string>
@@ -54,16 +54,17 @@
 
     <!-- Strings for AboutActivity -->
     <string name="about_activity_label">About</string>
-    <string name="about_activity_text">This application uses the library
-        <a href="https://github.com/lopspower/CircularProgressBar">CircularProgressBar</a> by
-        <a href="https://github.com/lopspower">Lopez Mikhael.</a> This library is available under
-        the Apache 2.0 license, which can be obtained
-        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.\n\nThis application uses the
-        library
-        <a href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a> by
-        <a href="https://github.com/PhilJay">Philipp Jahoda</a>. This library is available under
-        the Apache 2.0 license, which can be obtained
-        <a href="http://www.apache.org/licenses/LICENSE-2.0">here</a>.
+    <string name="about_activity_text">This application is licensed under the GNU General Public
+        License v3.0.\n\nThis application uses the libraryCircularProgressBar
+        (<a href="https://github.com/lopspower/CircularProgressBar">https://github.com/lopspower/CircularProgressBar</a>) by
+        Lopez Mikhael (<a href="https://github.com/lopspower">https://github.com/lopspower</a>).
+        This library is available under the Apache 2.0 license, which can be obtained from
+        (<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>).
+        \n\nThis application uses the library MPAndroidChart
+        (<a href="https://github.com/PhilJay/MPAndroidChart">https://github.com/PhilJay/MPAndroidChart</a>)
+        by Philipp Jahoda (<a href="https://github.com/PhilJay">https://github.com/PhilJay</a>). This
+        library is available under the Apache 2.0 license, which can be obtained from
+        (<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>).
     </string>
 
     <!-- Strings for MainActivity -->
@@ -91,6 +92,7 @@
     <string name="clouds">&#x2601;</string>
 
     <!-- Content descriptions -->
+    <string name="button_list_intake_description">Button to view history as list</string>
     <string name="menu_description">Main hamburger menu</string>
     <string name="mood_button_description">Mood button takes you to mood input</string>
     <string name="location_button_description">Location button gets current location</string>

@@ -233,4 +233,14 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayoutLocation.isDrawerOpen(GravityCompat.START)) {
+            //means the drawer is open
+            drawerLayoutLocation.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

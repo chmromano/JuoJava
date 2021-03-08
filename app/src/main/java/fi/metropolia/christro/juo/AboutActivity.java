@@ -23,9 +23,9 @@ public class AboutActivity extends AppCompatActivity {
 
     private TextView textViewAbout;
 
-    private DrawerLayout drawer;
-    private Toolbar toolbar;
-    private NavigationView navigationView;
+    private DrawerLayout drawerLayoutAboutActivity;
+    private Toolbar toolbarAbout;
+    private NavigationView navigationViewAbout;
     private static final String TAG = "Selected Menu Item";
 
     @SuppressLint("NonConstantResourceId")
@@ -40,24 +40,24 @@ public class AboutActivity extends AppCompatActivity {
         textViewAbout.setMovementMethod(new ScrollingMovementMethod());
 
         //navigation
-        drawer = findViewById(R.id.drawerLayoutAboutActivity);
-        navigationView = findViewById(R.id.navigationViewAbout);
-        toolbar = findViewById(R.id.toolbarAbout);
-        setSupportActionBar(toolbar);
+        drawerLayoutAboutActivity = findViewById(R.id.drawerLayoutAboutActivity);
+        navigationViewAbout = findViewById(R.id.navigationViewAbout);
+        toolbarAbout = findViewById(R.id.toolbarAbout);
+        setSupportActionBar(toolbarAbout);
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_home);
+            navigationViewAbout.setCheckedItem(R.id.nav_about);
         }
-        navigationView.bringToFront();
+        navigationViewAbout.bringToFront();
 
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
-        menuButton.setOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
+        menuButton.setOnClickListener(view -> drawerLayoutAboutActivity.openDrawer(GravityCompat.START));
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutAboutActivity, toolbarAbout,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        drawerLayoutAboutActivity.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(item -> {
+        navigationViewAbout.setNavigationItemSelectedListener(item -> {
             Log.d(TAG, "onNavigationItemSelected: " + item.getItemId());
             //item = navigationView.getCheckedItem();
             Intent intent;
@@ -86,8 +86,18 @@ public class AboutActivity extends AppCompatActivity {
                 case R.id.nav_about:
                     break;
             }
-            drawer.closeDrawer(GravityCompat.START);
+            drawerLayoutAboutActivity.closeDrawer(GravityCompat.START);
             return true;
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayoutAboutActivity.isDrawerOpen(GravityCompat.START)) {
+            //means the drawer is open
+            drawerLayoutAboutActivity.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

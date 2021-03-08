@@ -123,7 +123,7 @@
                 android:layout_margin="15dp"
                 android:id="@+id/textViewAbout"
                 android:layout_width="match_parent"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="@string/about_activity_text"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical" />
