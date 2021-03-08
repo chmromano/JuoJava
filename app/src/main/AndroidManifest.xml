@@ -16,22 +16,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Juo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MoodListActivity" />
-        <activity android:name=".LocationActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".MoodActivity" />
-        <activity android:name=".Notification" /> <!-- <activity android:name=".Profile" /> -->
+        <activity
+            android:name=".MoodListActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".LocationActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MoodActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".Notification" />
         <activity
             android:name=".IntakeListview"
             android:exported="true"
             android:parentActivityName=".History" />
-        <activity android:name=".AboutActivity" />
+        <activity
+            android:name=".AboutActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".History"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/NoActionBar">
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
