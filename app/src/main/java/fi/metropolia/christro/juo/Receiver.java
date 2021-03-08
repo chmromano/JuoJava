@@ -19,10 +19,6 @@ import java.util.Date;
  */
 public class Receiver extends BroadcastReceiver {
 
-    Application application;
-
-    Context context;
-
     /**
      *
      *
@@ -31,15 +27,12 @@ public class Receiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        this.context = context;
-        this.application = (Application) context.getApplicationContext();
-
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
+        //Get notifications between 7 and 21.
         if (hourOfDay > 7 && hourOfDay < 21) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification")
                     .setSmallIcon(R.drawable.ic_round_circle_notifications_24)
