@@ -45,7 +45,7 @@ public class AboutActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarAbout);
         setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_home);
+            navigationView.setCheckedItem(R.id.nav_about);
         }
         navigationView.bringToFront();
 

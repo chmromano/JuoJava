@@ -51,7 +51,6 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 /**
  * Main activity of the application.
- *
  * @author Christopher Mohan Romano, Taranath Pokhrel, Itale Tabaksmane
  * @version 1.0
  */
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private int extraHydrationGoal;
 
     //Intake views
+    //Using CircularProgressBar dependency: https://github.com/lopspower/CircularProgressBar
     private CircularProgressBar circularProgressBar;
     private TextView textViewIntake;
     private TextView textViewExtraIntake;
