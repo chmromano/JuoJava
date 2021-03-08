@@ -7,16 +7,18 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Calendar;
 
 import fi.metropolia.christro.juo.database.JuoViewModel;
+
+/**
+ * @author Taranath Pokhrel
+ *
+ */
 
 
 public class Notification extends AppCompatActivity {
