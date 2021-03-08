@@ -15,7 +15,7 @@ import androidx.lifecycle.LiveData;
 
 /**
  * Represents a data access object (if a method operates on an object, then a DAO operates on a
- * database). Interface allows other classes to implement the DAOs desribed here.
+ * database). Interface allows other classes to implement the DAOs described here.
  * @author Christopher Romano
  * @version 1.0
  */

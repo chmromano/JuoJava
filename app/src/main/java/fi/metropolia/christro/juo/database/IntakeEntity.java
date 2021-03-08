@@ -39,7 +39,6 @@ public class IntakeEntity {
         this.time = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Calendar.getInstance().getTime());
     }
 
-
     //Getters and setters.
     /**
      * Getter method for IntakeEntity ID.

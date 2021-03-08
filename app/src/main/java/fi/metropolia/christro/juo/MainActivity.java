@@ -49,7 +49,13 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
+    /**
+     * Name of the shared preferences file
+     */
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
+    /**
+     * Extra key to check if the app is being launched for the first time.
+     */
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
     private int hydrationGoal;
     private int extraHydrationGoal;
@@ -78,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayoutMainActivity;
 
+    //https://developer.android.com/reference/android/app/Activity#onCreate(android.os.Bundle)
     /**
-     * @param savedInstanceState
+     * onCreate() method creates the activity.
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -242,9 +250,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to get the weather. Loads location from SharedPreferences. Uses OpenWeatherMap API.
+     * Method to get weather. Loads location from SharedPreferences. Uses OpenWeatherMap API.
      */
-    public void getWeather() {
+    private void getWeather() {
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
         String weatherUrl = API_URL + location;
 
@@ -284,8 +292,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to update the weather UI (text and icon) with appropriate text when weather request is
-     * unsuccessful.
+     * Method to update the weather UI (text and icon) when weather request is unsuccessful.
      */
     private void updateWeatherUI() {
         textViewWeatherIcon.setText(getString(R.string.not_available));
@@ -431,6 +438,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method overrides normal onBackPressed() in case the drawer menu is open.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayoutMainActivity.isDrawerOpen(GravityCompat.START)) {
