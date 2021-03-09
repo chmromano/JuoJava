@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- https://stackoverflow.com/questions/3723823/i-want-my-android-application-to-be-only-run-in-portrait-mode -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,28 +19,45 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MoodListActivity"
-            android:parentActivityName=".MainActivity" />
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LocationActivity"
-            android:parentActivityName=".MainActivity" />
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MoodActivity"
-            android:parentActivityName=".MainActivity" />
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".IntakeListActivity"
+            android:configChanges="orientation"
             android:exported="true"
-            android:parentActivityName=".HistoryActivity" />
+            android:parentActivityName=".HistoryActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AboutActivity"
-            android:parentActivityName=".MainActivity" />
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HistoryActivity"
+            android:configChanges="orientation"
             android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
