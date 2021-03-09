@@ -28,6 +28,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import java.util.Objects;
 
+import fi.metropolia.christro.juo.utilities.Receiver;
+
 
 /**
  * Settings activity of the application.
@@ -164,7 +166,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_home) {
                 intent = new Intent(SettingsActivity.this, MainActivity.class);
             } else if (item.getItemId() == R.id.nav_history) {
-                intent = new Intent(SettingsActivity.this, History.class);
+                intent = new Intent(SettingsActivity.this, HistoryActivity.class);
             } else if (item.getItemId() == R.id.nav_mood) {
                 intent = new Intent(SettingsActivity.this, MoodListActivity.class);
             } else if (item.getItemId() == R.id.nav_location) {

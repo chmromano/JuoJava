@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = null;
 
             if (item.getItemId() == R.id.nav_history) {
-                intent = new Intent(MainActivity.this, History.class);
+                intent = new Intent(MainActivity.this, HistoryActivity.class);
             } else if (item.getItemId() == R.id.nav_mood) {
                 intent = new Intent(MainActivity.this, MoodListActivity.class);
             } else if (item.getItemId() == R.id.nav_location) {

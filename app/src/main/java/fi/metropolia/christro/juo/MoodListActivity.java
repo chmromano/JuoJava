@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 
 import fi.metropolia.christro.juo.database.JuoViewModel;
+import fi.metropolia.christro.juo.utilities.MoodListAdapter;
 
 /**
  * MoodList activity of the application. Display all moods in a RecyclerView.
@@ -84,9 +85,11 @@ public class MoodListActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.nav_home) {
                 intent = new Intent(MoodListActivity.this, MainActivity.class);
             } else if (item.getItemId() == R.id.nav_history) {
-                intent = new Intent(MoodListActivity.this, History.class);
+                intent = new Intent(MoodListActivity.this, HistoryActivity.class);
             } else if (item.getItemId() == R.id.nav_location) {
                 intent = new Intent(MoodListActivity.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_settings) {
+                intent = new Intent(MoodListActivity.this, SettingsActivity.class);
             } else if (item.getItemId() == R.id.nav_about) {
                 intent = new Intent(MoodListActivity.this, AboutActivity.class);
             }

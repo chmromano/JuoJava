@@ -37,7 +37,7 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
  * @author Itale Tabaksmane
  * @version 1.0
  */
-public class History extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
     //MPAndroid chart library: https://github.com/PhilJay/MPAndroidChart
     /**
@@ -101,7 +101,7 @@ public class History extends AppCompatActivity {
 
         ImageButton buttonHistoryList = findViewById(R.id.buttonHistoryList);
         buttonHistoryList.setOnClickListener((view) -> {
-            Intent intent = new Intent(History.this, IntakeListview.class);
+            Intent intent = new Intent(HistoryActivity.this, IntakeListActivity.class);
             startActivity(intent);
         });
 
@@ -134,15 +134,15 @@ public class History extends AppCompatActivity {
             Intent intent = null;
 
             if (item.getItemId() == R.id.nav_home) {
-                intent = new Intent(History.this, MainActivity.class);
-            } else if (item.getItemId() == R.id.nav_home) {
-                intent = new Intent(History.this, MainActivity.class);
+                intent = new Intent(HistoryActivity.this, MainActivity.class);
             } else if (item.getItemId() == R.id.nav_mood) {
-                intent = new Intent(History.this, MoodListActivity.class);
+                intent = new Intent(HistoryActivity.this, MoodListActivity.class);
             } else if (item.getItemId() == R.id.nav_location) {
-                intent = new Intent(History.this, LocationActivity.class);
+                intent = new Intent(HistoryActivity.this, LocationActivity.class);
+            }else if (item.getItemId() == R.id.nav_settings){
+                intent = new Intent(HistoryActivity.this, SettingsActivity.class);
             } else if (item.getItemId() == R.id.nav_about) {
-                intent = new Intent(History.this, AboutActivity.class);
+                intent = new Intent(HistoryActivity.this, AboutActivity.class);
             }
 
             if (intent != null) {
@@ -202,7 +202,7 @@ public class History extends AppCompatActivity {
             //means the drawer is open
             drawerLayoutHistory.closeDrawer(GravityCompat.START);
         } else {
-            Intent intent = new Intent(History.this, MainActivity.class);
+            Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }

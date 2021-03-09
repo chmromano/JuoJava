@@ -121,7 +121,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
             if (item.getItemId() == R.id.nav_home) {
                 intent = new Intent(LocationActivity.this, MainActivity.class);
             } else if (item.getItemId() == R.id.nav_history) {
-                intent = new Intent(LocationActivity.this, History.class);
+                intent = new Intent(LocationActivity.this, HistoryActivity.class);
             } else if (item.getItemId() == R.id.nav_mood) {
                 intent = new Intent(LocationActivity.this, MoodListActivity.class);
             } else if (item.getItemId() == R.id.nav_settings) {

@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
+import fi.metropolia.christro.juo.utilities.IntakeListAdapter;
 
 /**
  * IntakeListView activity. Calls the adapter for the list then inserts live data of all the intakes.
@@ -20,7 +22,7 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
  * @author Itale Tabaksmane
  * @version 1.0
  */
-public class IntakeListview extends AppCompatActivity {
+public class IntakeListActivity extends AppCompatActivity {
     /**
      * JuoViewModel to use the exiting instance of the database
      */
@@ -34,7 +36,7 @@ public class IntakeListview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intake_listview);
+        setContentView(R.layout.activity_intake_list);
         // This sets the list of records under a flexible view without the limitation on data
         RecyclerView recyclerView = findViewById(R.id.recycler_view_intake_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -51,6 +53,11 @@ public class IntakeListview extends AppCompatActivity {
         // Every change in the records will trigger it
         viewModel.getAllIntakeInputs().observe(this, intakeListAdapter::setIntakeList);
 
+        findViewById(R.id.imageButtonIntakesBack).setOnClickListener((view) -> {
+            Intent intent = new Intent(IntakeListActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
         // This function allows swiping to delete the record
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -62,7 +69,7 @@ public class IntakeListview extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 viewModel.deleteIntake(intakeListAdapter.getIntakeAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(IntakeListview.this, "Record deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IntakeListActivity.this, "Record deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
     }
@@ -74,7 +81,7 @@ public class IntakeListview extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(IntakeListview.this, History.class);
+        Intent intent = new Intent(IntakeListActivity.this, HistoryActivity.class);
         startActivity(intent);
     }
 }

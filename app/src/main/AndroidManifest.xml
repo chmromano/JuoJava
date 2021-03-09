@@ -29,14 +29,14 @@
             android:name=".MoodActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".IntakeListview"
+            android:name=".IntakeListActivity"
             android:exported="true"
-            android:parentActivityName=".History" />
+            android:parentActivityName=".HistoryActivity" />
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".History"
+            android:name=".HistoryActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Receiver" />
+        <receiver android:name=".utilities.Receiver" />
     </application>
 
 </manifest>
