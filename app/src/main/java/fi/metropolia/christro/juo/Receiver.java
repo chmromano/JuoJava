@@ -1,6 +1,5 @@
 package fi.metropolia.christro.juo;
 
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,19 +11,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- *
- *
  * @author Taranath Pokhrel
  * @version 1.0
  */
 //https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
+
+// BroadcastReceiver passes notification to the user when event occurs
 public class Receiver extends BroadcastReceiver {
 
     /**
+     * onReceive() method  sends the notification
      *
-     *
-     * @param context
-     * @param intent
+     * @param context access information  or start an activity
+     * @param intent  checks register of an event
      */
     @Override
     public void onReceive(Context context, Intent intent) {
