@@ -31,7 +31,6 @@ public class AboutActivity extends AppCompatActivity {
      *
      * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

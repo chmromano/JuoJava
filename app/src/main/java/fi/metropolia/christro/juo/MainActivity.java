@@ -249,9 +249,9 @@ public class MainActivity extends AppCompatActivity {
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> {
                         dialog.cancel();
-                        Intent intent = new Intent(this, SettingsActivity.class);
-                        intent.putExtra(EXTRA_IS_FIRST_START_UP, true);
-                        startActivity(intent);
+                        Intent isFirstStartupIntent = new Intent(this, SettingsActivity.class);
+                        isFirstStartupIntent.putExtra(EXTRA_IS_FIRST_START_UP, true);
+                        startActivity(isFirstStartupIntent);
                     })
                     .show();
             return 999999;
@@ -270,7 +270,14 @@ public class MainActivity extends AppCompatActivity {
 
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
 
-        String weatherUrl = API_URL + location;
+        String weatherUrl;
+
+        if (location != null) {
+            weatherUrl = API_URL + location.replaceAll("\\s+", "+");
+        } else {
+            weatherUrl = API_URL + location;
+        }
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
             try {

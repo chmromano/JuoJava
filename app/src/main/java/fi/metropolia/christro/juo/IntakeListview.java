@@ -1,18 +1,16 @@
 package fi.metropolia.christro.juo;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -71,7 +69,7 @@ public class IntakeListview extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 viewModel.deleteIntake(intakeListAdapter.getIntakeAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(IntakeListview.this,"record deleted",Toast.LENGTH_SHORT);
+                Toast.makeText(IntakeListview.this,"Record deleted",Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
     }
