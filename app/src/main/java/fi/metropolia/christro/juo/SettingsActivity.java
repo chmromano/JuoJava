@@ -43,17 +43,27 @@ import java.util.Objects;
  */
 public class SettingsActivity extends AppCompatActivity {
 
-    public static final String SHARED_NAME = "fi.metropolia.christro.juo.SHARED_USERNAME";
+    /** Shared preferences key containing user's name. */
+    public static final String SHARED_NAME = "fi.metropolia.christro.juo.SHARED_NAME";
+    /** Shared preferences key containing hydration goal. */
     public static final String SHARED_GOAL = "fi.metropolia.christro.juo.SHARED_GOAL";
+    /** Shared preferences key containing user's age. */
     public static final String SHARED_AGE = "fi.metropolia.christro.juo.SHARED_AGE";
+    /** Shared preferences key containing button top start amount. */
     public static final String SHARED_BUTTON_TOP_START = "fi.metropolia.christro.juo.SHARED_BUTTON_1";
+    /** Shared preferences key containing button top end amount. */
     public static final String SHARED_BUTTON_TOP_END = "fi.metropolia.christro.juo.SHARED_BUTTON_2";
+    /** Shared preferences key containing button bottom start amount. */
     public static final String SHARED_BUTTON_BOTTOM_START = "fi.metropolia.christro.juo.SHARED_BUTTON_3";
+    /** Shared preferences key containing button bottom end amount. */
     public static final String SHARED_BUTTON_BOTTOM_END = "fi.metropolia.christro.juo.SHARED_BUTTON_4";
+    /** Shared preferences key containing user's gender. */
     public static final String SHARED_GENDER = "fi.metropolia.christro.juo.SHARED_GENDER";
 
-    private static final String[] GENDER = new String[]{"Female", "Male", "N/A"};
+    /** Array of strings containing some preset genders to populate dropdown menu. */
+    private static final String[] GENDERS = new String[]{"Female", "Male", "N/A"};
 
+    /** Boolean stating if the app is started for the first time. */
     private boolean isFirstStartUp;
 
     /**
@@ -73,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         https://www.tutorialspoint.com/how-to-set-adapter-to-auto-complete-text-view
         */
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, GENDER);
+                android.R.layout.simple_dropdown_item_1line, GENDERS);
 
         ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).setAdapter(adapter);
 

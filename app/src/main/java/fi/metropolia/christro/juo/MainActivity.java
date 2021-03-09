@@ -52,16 +52,32 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * String with the API url
+     */
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
 
+    /**
+     * Name of the preference file.
+     */
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
+    /**
+     * Name of boolean extra stating if the app is being started for the first time.
+     */
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
 
+    /**
+     * Integer containing hydration goal.
+     */
     private int hydrationGoal;
+    /**
+     * Integer containing extra goal based on temperature.
+     */
     private int extraHydrationGoal;
+    /**
+     * ViewModel used to access database methods.
+     */
     private JuoViewModel juoViewModel;
-
-    //Using CircularProgressBar dependency: https://github.com/lopspower/CircularProgressBar
 
     /**
      * onCreate() method creates the activity.
@@ -85,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             if (newTotal != null) {
                 ((TextView) findViewById(R.id.textViewIntake)).setText(getString(R.string.main_activity_intake, newTotal,
                         hydrationGoal + extraHydrationGoal));
+                //Using CircularProgressBar dependency: https://github.com/lopspower/CircularProgressBar
                 ((CircularProgressBar) findViewById(R.id.circularProgressBar)).setProgressWithAnimation(newTotal, (long) 300);
             } else {
                 ((TextView) findViewById(R.id.textViewIntake)).setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
@@ -245,8 +262,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to get weather. Loads location from SharedPreferences. Uses OpenWeatherMap API.
-     * https://www.youtube.com/watch?v=tdx9ReYGIoE
      */
+    //https://www.youtube.com/watch?v=tdx9ReYGIoE
     private void getWeather() {
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
                 Activity.MODE_PRIVATE);
