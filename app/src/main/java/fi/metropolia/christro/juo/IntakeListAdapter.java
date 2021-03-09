@@ -37,41 +37,45 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
     /**
      * This method uses the card layout for a single record
      * it uses this layout for every record
-     * @param parent
-     * @param viewType
+     *
+     * @param parent   Parent ViewGroup (RecyclerView).
+     * @param viewType View type.
      * @return IntakeListHolder object with the card layout view
      */
     @NonNull
     @Override
     public IntakeListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_view_item, parent,false);
+                .inflate(R.layout.list_view_item, parent, false);
         return new IntakeListHolder(itemView);
     }
 
     /**
      * Calls notifyDataSetChanged() to present the most recent data in the list
-     * @param intakeList
+     *
+     * @param intakeList List of intakes.
      */
-    public void setIntakeList(List<IntakeEntity> intakeList){
+    public void setIntakeList(List<IntakeEntity> intakeList) {
         this.intakeList = intakeList;
         notifyDataSetChanged();
     }
 
     /**
      * Getter - gets the Intake entity at a certain position in the list
-     * @param position
+     *
+     * @param position Position of the IntakeEntity.
      * @return IntakeEntity
      */
-    public IntakeEntity getIntakeAt(int position){
+    public IntakeEntity getIntakeAt(int position) {
         return intakeList.get(position);
     }
 
     /**
      * Overrides onBindViewHolder
      * Binds the view with the data from the database
-     * @param holder
-     * @param position
+     *
+     * @param holder   The ViewHolder.
+     * @param position Position of the item in the list.
      */
     @Override
     public void onBindViewHolder(@NonNull IntakeListHolder holder, int position) {
@@ -83,7 +87,8 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
 
     /**
      * Getter- the length of the list
-     * @return int
+     *
+     * @return Integer size of list.
      */
     @Override
     public int getItemCount() {
@@ -95,26 +100,30 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
      * The class extends RecyclerView.ViewHolder
      * The class gets the textview from the layout and uses
      * that data in the constructor of the IntakeListHolder
+     *
+     * @author Itale Tabaksmane
+     * @version 1.0
      */
-    class IntakeListHolder extends RecyclerView.ViewHolder{
+    static class IntakeListHolder extends RecyclerView.ViewHolder {
         /**
          * TextView for title in the card record
          */
-        private TextView textViewTitle;
+        private final TextView textViewTitle;
 
         /**
          * TextView for description in the card record
          */
-        private TextView textViewDescription;
+        private final TextView textViewDescription;
 
         /**
          * TextView for priority in the card record
          */
-        private TextView textViewPriority;
+        private final TextView textViewPriority;
 
         /**
          * Constructor for the IntakeListHolder
-         * @param itemView
+         *
+         * @param itemView The layout to display.
          */
         public IntakeListHolder(@NonNull View itemView) {
             super(itemView);

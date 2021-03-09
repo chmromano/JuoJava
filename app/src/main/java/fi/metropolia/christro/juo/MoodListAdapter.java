@@ -22,6 +22,9 @@ import fi.metropolia.christro.juo.database.MoodEntity;
 //https://www.youtube.com/watch?v=reSPN7mgshI&list=PLrnPJCHvNZuDihTpkRs6SpZhqgBqPU118&index=8
 public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodListHolder> {
 
+    /**
+     * List of MoodEntities.
+     */
     private List<MoodEntity> moodList = new ArrayList<>();
 
     /**
@@ -53,7 +56,7 @@ public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodLi
      * Sets the information in the custom layout based on mood ID.
      *
      * @param holder   The ViewHolder.
-     * @param position Position of the item.
+     * @param position Position of the item in the list.
      */
     @Override
     public void onBindViewHolder(@NonNull MoodListHolder holder, int position) {
@@ -86,12 +89,19 @@ public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodLi
      * @author Christopher Mohan Romano
      * @version 1.0
      */
-    class MoodListHolder extends RecyclerView.ViewHolder {
-        private TextView textViewMoodListEmoji;
-        private TextView textViewMoodListDate;
+    static class MoodListHolder extends RecyclerView.ViewHolder {
+        /**
+         * TextView with the emoji to display.
+         */
+        private final TextView textViewMoodListEmoji;
+        /**
+         * TextView with the date.
+         */
+        private final TextView textViewMoodListDate;
 
         /**
          * Initialise views inside the custom layout.
+         *
          * @param itemView The layout to display.
          */
         public MoodListHolder(@NonNull View itemView) {

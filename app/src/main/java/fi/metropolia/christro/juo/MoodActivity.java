@@ -1,13 +1,11 @@
 package fi.metropolia.christro.juo;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import fi.metropolia.christro.juo.database.JuoViewModel;
 import fi.metropolia.christro.juo.database.MoodEntity;

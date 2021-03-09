@@ -8,7 +8,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * BroadcastReceiver passes notification to the user when event occurs
@@ -22,8 +21,8 @@ public class Receiver extends BroadcastReceiver {
     /**
      * onReceive() method  sends the notification
      *
-     * @param context access information  or start an activity
-     * @param intent  checks register of an event
+     * @param context Access information  or start an activity
+     * @param intent  Checks register of an event
      */
     @Override
     public void onReceive(Context context, Intent intent) {

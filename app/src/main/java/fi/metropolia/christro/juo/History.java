@@ -2,20 +2,15 @@ package fi.metropolia.christro.juo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-
-import android.util.Log;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -42,7 +37,6 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
  * @author Itale Tabaksmane
  * @version 1.0
  */
-
 public class History extends AppCompatActivity {
 
     //MPAndroid chart library: https://github.com/PhilJay/MPAndroidChart
@@ -77,26 +71,18 @@ public class History extends AppCompatActivity {
     private DrawerLayout drawerLayoutHistory;
 
     /**
-     * NavigationView to set up the navigation drawer in history activity
-     */
-    private NavigationView navigationViewHistory;
-
-    /**
-     * Toolbar to utilize the UI toolbar
-     */
-    private Toolbar toolbarHistory;
-
-    /**
      * onCreate() method creates the activity.
-     * @param savedInstanceState
+     *
+     * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
         // Hooking widgets to local variables
-        toolbarHistory = findViewById(R.id.toolbarHistory);
-        navigationViewHistory = findViewById(R.id.navigationViewHistory);
+        Toolbar toolbarHistory = findViewById(R.id.toolbarHistory);
+        NavigationView navigationViewHistory = findViewById(R.id.navigationViewHistory);
         drawerLayoutHistory = findViewById(R.id.drawerLayoutHistory);
 
         setSupportActionBar(toolbarHistory);
@@ -170,7 +156,8 @@ public class History extends AppCompatActivity {
     /**
      * getData(juoViewModel) uses the JuoViewModel instance to get live data from the database
      * and build a bar chart based on the live data.
-     * @param juoViewModel
+     *
+     * @param juoViewModel The ViewModel from which to get the data.
      */
     public void getData(JuoViewModel juoViewModel) {
         barEntries = new ArrayList<>();
@@ -190,7 +177,7 @@ public class History extends AppCompatActivity {
                     intakeTime.getChars(0, 2, hour, 0);
                     String sHour = String.valueOf(hour);
                     //
-                    float x = Float.valueOf(sHour);
+                    float x = Float.parseFloat(sHour);
                     Log.d(TAG, "onChanged: x value is" + x);
                     float y = intake.getAmount();
                     barEntries.add(new BarEntry(x, y));

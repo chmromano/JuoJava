@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         if (location != null) {
             weatherUrl = API_URL + location.replaceAll("\\s+", "+");
         } else {
-            weatherUrl = API_URL + location;
+            weatherUrl = API_URL + null;
         }
 
 
