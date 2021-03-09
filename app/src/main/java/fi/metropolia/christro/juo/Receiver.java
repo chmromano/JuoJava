@@ -11,12 +11,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * BroadcastReceiver passes notification to the user when event occurs
+ *
  * @author Taranath Pokhrel
  * @version 1.0
  */
 //https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
-
-// BroadcastReceiver passes notification to the user when event occurs
 public class Receiver extends BroadcastReceiver {
 
     /**
@@ -27,9 +27,9 @@ public class Receiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Date date = new Date();
+        //Date date = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        //calendar.setTime(date);
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
         //Get notifications between 7 and 21.

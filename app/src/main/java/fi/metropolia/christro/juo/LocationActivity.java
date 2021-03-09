@@ -58,7 +58,6 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
      *
      * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,12 +121,12 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
             if (item.getItemId() == R.id.nav_home) {
                 intent = new Intent(LocationActivity.this, MainActivity.class);
-            } else if (item.getItemId() == R.id.nav_home) {
-                intent = new Intent(LocationActivity.this, MainActivity.class);
             } else if (item.getItemId() == R.id.nav_history) {
                 intent = new Intent(LocationActivity.this, History.class);
             } else if (item.getItemId() == R.id.nav_mood) {
                 intent = new Intent(LocationActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_settings) {
+                intent = new Intent(LocationActivity.this, SettingsActivity.class);
             } else if (item.getItemId() == R.id.nav_about) {
                 intent = new Intent(LocationActivity.this, AboutActivity.class);
             }

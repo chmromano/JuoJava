@@ -28,7 +28,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.Set;
 
 
 /**
@@ -92,7 +91,6 @@ public class SettingsActivity extends AppCompatActivity {
      *
      * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
