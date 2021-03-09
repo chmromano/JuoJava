@@ -295,7 +295,7 @@
                     app:boxCornerRadiusTopEnd="20dp"
                     app:boxCornerRadiusTopStart="20dp"
                     app:errorEnabled="true"
-                    app:layout_constraintBottom_toTopOf="@id/buttonSaveProfileSettings"
+                    app:layout_constraintBottom_toTopOf="@id/buttonSaveSettings"
                     app:layout_constraintEnd_toStartOf="@+id/textLayoutSettingsButtonBottomEnd"
                     app:layout_constraintStart_toStartOf="@id/settingsGuidelineMainStart"
                     app:layout_constraintTop_toBottomOf="@id/textLayoutSettingsButtonTopStart">
@@ -336,7 +336,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/buttonSaveProfileSettings"
+                    android:id="@+id/buttonSaveSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"

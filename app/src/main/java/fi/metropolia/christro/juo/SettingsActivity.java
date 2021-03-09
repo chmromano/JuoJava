@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -34,14 +33,13 @@ import java.util.Objects;
 /**
  * Settings activity of the application.
  *
+ * Taranath Pokhrel - Implemented notification service.
+ * Itale Tabaksmane - Implemented navigation menu and all related methods.
+ *
  * @author Christopher Mohan Romano
  * @author Taranath Pokhrel
  * @author Itale Tabaksmane
  * @version 1.0
- */
-/*
-Taranath Pokhrel - Implemented notification service.
-Itale Tabaksmane - Implemented navigation menu and all related methods.
  */
 public class SettingsActivity extends AppCompatActivity {
 
@@ -53,36 +51,9 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String SHARED_BUTTON_BOTTOM_START = "fi.metropolia.christro.juo.SHARED_BUTTON_3";
     public static final String SHARED_BUTTON_BOTTOM_END = "fi.metropolia.christro.juo.SHARED_BUTTON_4";
     public static final String SHARED_GENDER = "fi.metropolia.christro.juo.SHARED_GENDER";
-
     private static final String[] GENDER = new String[]{"Female", "Male", "N/A"};
 
-    private TextInputEditText editTextName;
-    private TextInputEditText editTextAge;
-    private TextInputEditText editTextGoal;
-    private TextInputEditText editTextSettingsButtonTopStart;
-    private TextInputEditText editTextSettingsButtonTopEnd;
-    private TextInputEditText editTextSettingsButtonBottomStart;
-    private TextInputEditText editTextSettingsButtonBottomEnd;
-
-    private TextInputLayout textLayoutAge;
-    private TextInputLayout textLayoutGoal;
-    private TextInputLayout textLayoutSettingsButtonTopStart;
-    private TextInputLayout textLayoutSettingsButtonTopEnd;
-    private TextInputLayout textLayoutSettingsButtonBottomStart;
-    private TextInputLayout textLayoutSettingsButtonBottomEnd;
-
-    private AutoCompleteTextView dropdownMenuGender;
-
-    private SharedPreferences sharedPreferences;
-
-    private Button buttonSaveProfileSettings;
-    private ImageButton imageButtonNotifications;
-
     private boolean isFirstStartUp;
-
-    private DrawerLayout drawerLayoutSettings;
-    private Toolbar toolbarSettings;
-    private NavigationView navigationViewSettings;
 
     /**
      * onCreate() method creates the activity.
@@ -94,7 +65,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        initialiseAll();
         updateUI(isFirstStartUp);
 
         /*
@@ -103,16 +73,19 @@ public class SettingsActivity extends AppCompatActivity {
         */
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, GENDER);
-        dropdownMenuGender.setAdapter(adapter);
-        dropdownMenuGender.setOnClickListener((view) -> dropdownMenuGender.showDropDown());
 
-        buttonSaveProfileSettings.setOnClickListener((view) -> {
+        ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).setAdapter(adapter);
+
+        findViewById(R.id.dropdownMenuGender).setOnClickListener((view) ->
+                ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).showDropDown());
+
+        findViewById(R.id.buttonSaveSettings).setOnClickListener((view) -> {
             Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
             saveSettings();
         });
 
         //Turn on notifications.
-        imageButtonNotifications.setOnClickListener((view) -> {
+        findViewById(R.id.imageButtonNotifications).setOnClickListener((view) -> {
             setNotification();
             Calendar calendar = Calendar.getInstance();
             Intent intent = new Intent(SettingsActivity.this, Receiver.class);
@@ -133,6 +106,9 @@ public class SettingsActivity extends AppCompatActivity {
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
+        DrawerLayout drawerLayoutSettings = findViewById(R.id.drawerLayoutSettings);
+        NavigationView navigationViewSettings = findViewById(R.id.navigationViewSettings);
+        Toolbar toolbarSettings = findViewById(R.id.toolbarSettings);
         setSupportActionBar(toolbarSettings);
         if (savedInstanceState == null) {
             navigationViewSettings.setCheckedItem(R.id.nav_settings);
@@ -196,47 +172,48 @@ public class SettingsActivity extends AppCompatActivity {
      * gender, an appropriate hydration goal will be selected automatically.
      */
     private void saveSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //Get username
-        String username = Objects.requireNonNull(editTextName.getText()).toString();
+        String username = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextName)).getText()).toString();
         editor.putString(SHARED_NAME, username);
 
         //Get gender
-        String gender = dropdownMenuGender.getText().toString();
+        String gender = ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).getText().toString();
         editor.putString(SHARED_GENDER, gender);
 
         //Get age and parse to int. Automatically validate input and set errors if any.
-        String stringAge = Objects.requireNonNull(editTextAge.getText()).toString().trim();
+        String stringAge = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextAge)).getText()).toString().trim();
         int age = 20;
         if (!stringAge.equals("")) {
             try {
                 age = Integer.parseInt(stringAge);
                 if (age < 0) {
-                    textLayoutAge.setError(getString(R.string.settings_error_negative));
+                    ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(getString(R.string.settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_AGE, age);
-                textLayoutAge.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(null);
             } catch (Exception e) {
-                textLayoutAge.setError(getString(R.string.settings_error_exception));
+                ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(getString(R.string.settings_error_exception));
                 return;
             }
         }
 
         //Get goal and parse to int. Automatically validate input and set errors if any.
-        String stringGoal = Objects.requireNonNull(editTextGoal.getText()).toString().trim();
+        String stringGoal = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextGoal)).getText()).toString().trim();
         if (!stringGoal.equals("")) {
             try {
                 int goal = Integer.parseInt(stringGoal);
                 if (goal <= 0) {
-                    textLayoutGoal.setError(getString(R.string.settings_error_negative));
+                    ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(getString(R.string.settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_GOAL, goal);
-                textLayoutGoal.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(null);
             } catch (NumberFormatException e) {
-                textLayoutGoal.setError(getString(R.string.settings_error_exception));
+                ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(getString(R.string.settings_error_exception));
                 return;
             }
         } else {
@@ -261,19 +238,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonTopStart and parse to int. Automatically validate input and set errors if any.
-        String stringButtonTopStart = Objects.requireNonNull(editTextSettingsButtonTopStart.getText()).toString().trim();
+        String stringButtonTopStart = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopStart)).getText()).toString().trim();
         if (!stringButtonTopStart.equals("")) {
             try {
                 int buttonTopStart = Integer.parseInt(stringButtonTopStart);
                 if (buttonTopStart <= 0) {
-                    textLayoutSettingsButtonTopStart.setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_START, buttonTopStart);
-                textLayoutSettingsButtonTopStart.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(null);
             } catch (NumberFormatException e) {
-                textLayoutSettingsButtonTopStart.setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -282,19 +259,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonTopEnd and parse to int. Automatically validate input and set errors if any.
-        String stringButtonTopEnd = Objects.requireNonNull(editTextSettingsButtonTopEnd.getText()).toString().trim();
+        String stringButtonTopEnd = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopEnd)).getText()).toString().trim();
         if (!stringButtonTopEnd.equals("")) {
             try {
                 int buttonTopEnd = Integer.parseInt(stringButtonTopEnd);
                 if (buttonTopEnd <= 0) {
-                    textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_END, buttonTopEnd);
-                textLayoutSettingsButtonTopEnd.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(null);
             } catch (NumberFormatException e) {
-                textLayoutSettingsButtonTopEnd.setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -303,19 +280,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonBottomStart and parse to int. Automatically validate input and set errors if any.
-        String stringButtonBottomStart = Objects.requireNonNull(editTextSettingsButtonBottomStart.getText()).toString().trim();
+        String stringButtonBottomStart = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomStart)).getText()).toString().trim();
         if (!stringButtonBottomStart.equals("")) {
             try {
                 int buttonBottomStart = Integer.parseInt(stringButtonBottomStart);
                 if (buttonBottomStart <= 0) {
-                    textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_START, buttonBottomStart);
-                textLayoutSettingsButtonBottomStart.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(null);
             } catch (NumberFormatException e) {
-                textLayoutSettingsButtonBottomStart.setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -324,19 +301,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonBottomEnd and parse to int. Automatically validate input and set errors if any.
-        String stringButtonBottomEnd = Objects.requireNonNull(editTextSettingsButtonBottomEnd.getText()).toString().trim();
+        String stringButtonBottomEnd = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomEnd)).getText()).toString().trim();
         if (!stringButtonBottomEnd.equals("")) {
             try {
                 int buttonBottomEnd = Integer.parseInt(stringButtonBottomEnd);
                 if (buttonBottomEnd <= 0) {
-                    textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_END, buttonBottomEnd);
-                textLayoutSettingsButtonBottomEnd.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(null);
             } catch (NumberFormatException e) {
-                textLayoutSettingsButtonBottomEnd.setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -370,53 +347,23 @@ public class SettingsActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())
                     .show();
         } else {
-            editTextName.setText(sharedPreferences.getString(SHARED_NAME, ""));
-            editTextAge.setText(String.valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
-            editTextGoal.setText(String.valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
-            editTextSettingsButtonTopStart.setText(String.valueOf(sharedPreferences
-                    .getInt(SHARED_BUTTON_TOP_START, 0)));
-            editTextSettingsButtonTopEnd.setText(String.valueOf(sharedPreferences
-                    .getInt(SHARED_BUTTON_TOP_END, 0)));
-            editTextSettingsButtonBottomStart.setText(String.valueOf(sharedPreferences
-                    .getInt(SHARED_BUTTON_BOTTOM_START, 0)));
-            editTextSettingsButtonBottomEnd.setText(String.valueOf(sharedPreferences
-                    .getInt(SHARED_BUTTON_BOTTOM_END, 0)));
-            dropdownMenuGender.setText(sharedPreferences.getString(SHARED_GENDER, ""));
+            SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+            ((TextInputEditText) findViewById(R.id.editTextName)).setText(sharedPreferences.getString(SHARED_NAME, ""));
+
+            ((TextInputEditText) findViewById(R.id.editTextAge)).setText(String.valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
+
+            ((TextInputEditText) findViewById(R.id.editTextGoal)).setText(String.valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
+
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopStart)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_START, 0)));
+
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopEnd)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_END, 0)));
+
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomStart)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_START, 0)));
+
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomEnd)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_END, 0)));
+
+            ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).setText(sharedPreferences.getString(SHARED_GENDER, ""));
         }
-    }
-
-    /**
-     * Method to initialise all views needed by the activity.
-     */
-    private void initialiseAll() {
-        sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
-
-        buttonSaveProfileSettings = findViewById(R.id.buttonSaveProfileSettings);
-        imageButtonNotifications = findViewById(R.id.imageButtonNotifications);
-
-        editTextName = findViewById(R.id.editTextName);
-        editTextAge = findViewById(R.id.editTextAge);
-        editTextGoal = findViewById(R.id.editTextGoal);
-        editTextSettingsButtonTopStart = findViewById(R.id.editTextSettingsButtonTopStart);
-        editTextSettingsButtonTopEnd = findViewById(R.id.editTextSettingsButtonTopEnd);
-        editTextSettingsButtonBottomStart = findViewById(R.id.editTextSettingsButtonBottomStart);
-        editTextSettingsButtonBottomEnd = findViewById(R.id.editTextSettingsButtonBottomEnd);
-
-        dropdownMenuGender = findViewById(R.id.dropdownMenuGender);
-
-        textLayoutAge = findViewById(R.id.textLayoutAge);
-        textLayoutGoal = findViewById(R.id.textLayoutGoal);
-        textLayoutSettingsButtonTopStart = findViewById(R.id.textLayoutSettingsButtonTopStart);
-        textLayoutSettingsButtonTopEnd = findViewById(R.id.textLayoutSettingsButtonTopEnd);
-        textLayoutSettingsButtonBottomStart = findViewById(R.id.textLayoutSettingsButtonBottomStart);
-        textLayoutSettingsButtonBottomEnd = findViewById(R.id.textLayoutSettingsButtonBottomEnd);
-        //Navigation views
-        drawerLayoutSettings = findViewById(R.id.drawerLayoutSettings);
-        navigationViewSettings = findViewById(R.id.navigationViewSettings);
-        toolbarSettings = findViewById(R.id.toolbarSettings);
-
-        Intent intent = getIntent();
-        isFirstStartUp = intent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
     }
 
     /**
@@ -444,9 +391,9 @@ public class SettingsActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutSettings.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutSettings)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutSettings.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutSettings)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
