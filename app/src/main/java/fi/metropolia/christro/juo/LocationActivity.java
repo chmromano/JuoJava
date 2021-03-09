@@ -196,7 +196,7 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
      * @param longitude Double containing longitude.
      * @return City name as String or null.
      */
-    public String getLocationByCoordinates(double latitude, double longitude) {
+    private String getLocationByCoordinates(double latitude, double longitude) {
         /*
         PLEASE READ!
         Geocoder can be buggy on Android Studio emulator. If it does not work please test on a real
