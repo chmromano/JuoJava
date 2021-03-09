@@ -118,31 +118,24 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewLocation.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(LocationActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(LocationActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(LocationActivity.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(LocationActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(LocationActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(LocationActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(LocationActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(LocationActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(LocationActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(LocationActivity.this, AboutActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutLocation.closeDrawer(GravityCompat.START);
             return true;
         });

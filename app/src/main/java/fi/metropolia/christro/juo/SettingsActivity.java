@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -43,27 +44,47 @@ import java.util.Objects;
  */
 public class SettingsActivity extends AppCompatActivity {
 
-    /** Shared preferences key containing user's name. */
+    /**
+     * Shared preferences key containing user's name.
+     */
     public static final String SHARED_NAME = "fi.metropolia.christro.juo.SHARED_NAME";
-    /** Shared preferences key containing hydration goal. */
+    /**
+     * Shared preferences key containing hydration goal.
+     */
     public static final String SHARED_GOAL = "fi.metropolia.christro.juo.SHARED_GOAL";
-    /** Shared preferences key containing user's age. */
+    /**
+     * Shared preferences key containing user's age.
+     */
     public static final String SHARED_AGE = "fi.metropolia.christro.juo.SHARED_AGE";
-    /** Shared preferences key containing button top start amount. */
+    /**
+     * Shared preferences key containing button top start amount.
+     */
     public static final String SHARED_BUTTON_TOP_START = "fi.metropolia.christro.juo.SHARED_BUTTON_1";
-    /** Shared preferences key containing button top end amount. */
+    /**
+     * Shared preferences key containing button top end amount.
+     */
     public static final String SHARED_BUTTON_TOP_END = "fi.metropolia.christro.juo.SHARED_BUTTON_2";
-    /** Shared preferences key containing button bottom start amount. */
+    /**
+     * Shared preferences key containing button bottom start amount.
+     */
     public static final String SHARED_BUTTON_BOTTOM_START = "fi.metropolia.christro.juo.SHARED_BUTTON_3";
-    /** Shared preferences key containing button bottom end amount. */
+    /**
+     * Shared preferences key containing button bottom end amount.
+     */
     public static final String SHARED_BUTTON_BOTTOM_END = "fi.metropolia.christro.juo.SHARED_BUTTON_4";
-    /** Shared preferences key containing user's gender. */
+    /**
+     * Shared preferences key containing user's gender.
+     */
     public static final String SHARED_GENDER = "fi.metropolia.christro.juo.SHARED_GENDER";
 
-    /** Array of strings containing some preset genders to populate dropdown menu. */
+    /**
+     * Array of strings containing some preset genders to populate dropdown menu.
+     */
     private static final String[] GENDERS = new String[]{"Female", "Male", "N/A"};
 
-    /** Boolean stating if the app is started for the first time. */
+    /**
+     * Boolean stating if the app is started for the first time.
+     */
     private boolean isFirstStartUp;
 
     /**
@@ -138,31 +159,24 @@ public class SettingsActivity extends AppCompatActivity {
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewSettings.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(SettingsActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(SettingsActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(SettingsActivity.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    intent = new Intent(SettingsActivity.this, LocationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_settings:
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(SettingsActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(SettingsActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(SettingsActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(SettingsActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_location) {
+                intent = new Intent(SettingsActivity.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(SettingsActivity.this, AboutActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutSettings.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -268,7 +282,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (buttonTopStart <= 0) {
                     ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart))
                             .setError(getString(R.string
-                            .settings_error_negative));
+                                    .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_START, buttonTopStart);
@@ -276,7 +290,7 @@ public class SettingsActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart))
                         .setError(getString(R.string
-                        .settings_error_exception));
+                                .settings_error_exception));
                 return;
             }
         } else {
@@ -292,7 +306,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (buttonTopEnd <= 0) {
                     ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd))
                             .setError(getString(R.string
-                            .settings_error_negative));
+                                    .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_END, buttonTopEnd);
@@ -300,7 +314,7 @@ public class SettingsActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd))
                         .setError(getString(R.string
-                        .settings_error_exception));
+                                .settings_error_exception));
                 return;
             }
         } else {
@@ -316,7 +330,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (buttonBottomStart <= 0) {
                     ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart))
                             .setError(getString(R.string
-                            .settings_error_negative));
+                                    .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_START, buttonBottomStart);
@@ -324,7 +338,7 @@ public class SettingsActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart))
                         .setError(getString(R.string
-                        .settings_error_exception));
+                                .settings_error_exception));
                 return;
             }
         } else {
@@ -340,7 +354,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (buttonBottomEnd <= 0) {
                     ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd))
                             .setError(getString(R.string
-                            .settings_error_negative));
+                                    .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_END, buttonBottomEnd);
@@ -348,7 +362,7 @@ public class SettingsActivity extends AppCompatActivity {
             } catch (NumberFormatException e) {
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd))
                         .setError(getString(R.string
-                        .settings_error_exception));
+                                .settings_error_exception));
                 return;
             }
         } else {

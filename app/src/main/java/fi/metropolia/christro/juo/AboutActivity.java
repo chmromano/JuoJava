@@ -68,31 +68,25 @@ public class AboutActivity extends AppCompatActivity {
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewAbout.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(AboutActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(AboutActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(AboutActivity.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    intent = new Intent(AboutActivity.this, LocationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(AboutActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    break;
+
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(AboutActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(AboutActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(AboutActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_location) {
+                intent = new Intent(AboutActivity.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_settings) {
+                intent = new Intent(AboutActivity.this, SettingsActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutAboutActivity.closeDrawer(GravityCompat.START);
             return true;
         });
