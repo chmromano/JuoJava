@@ -47,7 +47,7 @@ public class IntakeListAdapter extends RecyclerView.Adapter<IntakeListAdapter.In
     @Override
     public IntakeListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_view_item, parent, false);
+                .inflate(R.layout.intake_list_item, parent, false);
         return new IntakeListHolder(itemView);
     }
 
