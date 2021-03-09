@@ -38,12 +38,13 @@ import java.util.Objects;
 
 /**
  * Location activity of the application.
+ * <p>
+ * Itale Tabaksmane - Implemented navigation menu and all related methods.
  *
  * @author Taranath Pokhrel
  * @author Itale Tabaksmane
  * @version 1.0
  */
-//Itale Tabaksmane - Implemented navigation menu and all related methods.
 //Extends - Normal arrowhead solid line
 //Implements - Normal arrowhead dashed line
 public class LocationActivity extends AppCompatActivity implements LocationListener {

@@ -28,8 +28,6 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 //Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class MoodListActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayoutMoodListActivity;
-
     /**
      * onCreate() method creates the activity.
      *
@@ -62,7 +60,7 @@ public class MoodListActivity extends AppCompatActivity {
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
-        drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodListActivity);
+        DrawerLayout drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodList);
         NavigationView navigationViewMoodList = findViewById(R.id.navigationViewMoodList);
         Toolbar toolbarMoodList = findViewById(R.id.toolbarMoodList);
         setSupportActionBar(toolbarMoodList);
@@ -117,9 +115,9 @@ public class MoodListActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutMoodListActivity.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutMoodList)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutMoodListActivity.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutMoodList)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

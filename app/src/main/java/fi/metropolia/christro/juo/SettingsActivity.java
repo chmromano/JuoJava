@@ -32,7 +32,7 @@ import java.util.Objects;
 
 /**
  * Settings activity of the application.
- *
+ * <p>
  * Taranath Pokhrel - Implemented notification service.
  * Itale Tabaksmane - Implemented navigation menu and all related methods.
  *
@@ -51,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String SHARED_BUTTON_BOTTOM_START = "fi.metropolia.christro.juo.SHARED_BUTTON_3";
     public static final String SHARED_BUTTON_BOTTOM_END = "fi.metropolia.christro.juo.SHARED_BUTTON_4";
     public static final String SHARED_GENDER = "fi.metropolia.christro.juo.SHARED_GENDER";
+
     private static final String[] GENDER = new String[]{"Female", "Male", "N/A"};
 
     private boolean isFirstStartUp;
@@ -172,48 +173,59 @@ public class SettingsActivity extends AppCompatActivity {
      * gender, an appropriate hydration goal will be selected automatically.
      */
     private void saveSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //Get username
-        String username = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextName)).getText()).toString();
+        String username = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextName)).getText()).toString();
+
         editor.putString(SHARED_NAME, username);
 
         //Get gender
         String gender = ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).getText().toString();
+
         editor.putString(SHARED_GENDER, gender);
 
         //Get age and parse to int. Automatically validate input and set errors if any.
-        String stringAge = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextAge)).getText()).toString().trim();
+        String stringAge = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextAge)).getText()).toString().trim();
         int age = 20;
         if (!stringAge.equals("")) {
             try {
                 age = Integer.parseInt(stringAge);
                 if (age < 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(getString(R.string.settings_error_negative));
+                    ((TextInputLayout) findViewById(R.id.textLayoutAge))
+                            .setError(getString(R.string.settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_AGE, age);
                 ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(null);
             } catch (Exception e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutAge)).setError(getString(R.string.settings_error_exception));
+                ((TextInputLayout) findViewById(R.id.textLayoutAge))
+                        .setError(getString(R.string.settings_error_exception));
                 return;
             }
         }
 
         //Get goal and parse to int. Automatically validate input and set errors if any.
-        String stringGoal = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextGoal)).getText()).toString().trim();
+        String stringGoal = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextGoal)).getText()).toString().trim();
         if (!stringGoal.equals("")) {
             try {
                 int goal = Integer.parseInt(stringGoal);
                 if (goal <= 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(getString(R.string.settings_error_negative));
+                    ((TextInputLayout) findViewById(R.id.textLayoutGoal))
+                            .setError(getString(R.string.settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_GOAL, goal);
                 ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(null);
             } catch (NumberFormatException e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutGoal)).setError(getString(R.string.settings_error_exception));
+                ((TextInputLayout) findViewById(R.id.textLayoutGoal))
+                        .setError(getString(R.string.settings_error_exception));
                 return;
             }
         } else {
@@ -238,19 +250,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonTopStart and parse to int. Automatically validate input and set errors if any.
-        String stringButtonTopStart = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopStart)).getText()).toString().trim();
+        String stringButtonTopStart = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextSettingsButtonTopStart)).getText()).toString().trim();
         if (!stringButtonTopStart.equals("")) {
             try {
                 int buttonTopStart = Integer.parseInt(stringButtonTopStart);
                 if (buttonTopStart <= 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart))
+                            .setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_START, buttonTopStart);
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(null);
             } catch (NumberFormatException e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart)).setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopStart))
+                        .setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -259,19 +274,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonTopEnd and parse to int. Automatically validate input and set errors if any.
-        String stringButtonTopEnd = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopEnd)).getText()).toString().trim();
+        String stringButtonTopEnd = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextSettingsButtonTopEnd)).getText()).toString().trim();
         if (!stringButtonTopEnd.equals("")) {
             try {
                 int buttonTopEnd = Integer.parseInt(stringButtonTopEnd);
                 if (buttonTopEnd <= 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd))
+                            .setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_TOP_END, buttonTopEnd);
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(null);
             } catch (NumberFormatException e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd)).setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonTopEnd))
+                        .setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -280,19 +298,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonBottomStart and parse to int. Automatically validate input and set errors if any.
-        String stringButtonBottomStart = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomStart)).getText()).toString().trim();
+        String stringButtonBottomStart = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextSettingsButtonBottomStart)).getText()).toString().trim();
         if (!stringButtonBottomStart.equals("")) {
             try {
                 int buttonBottomStart = Integer.parseInt(stringButtonBottomStart);
                 if (buttonBottomStart <= 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart))
+                            .setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_START, buttonBottomStart);
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(null);
             } catch (NumberFormatException e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart)).setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomStart))
+                        .setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -301,19 +322,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //Get buttonBottomEnd and parse to int. Automatically validate input and set errors if any.
-        String stringButtonBottomEnd = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomEnd)).getText()).toString().trim();
+        String stringButtonBottomEnd = Objects.requireNonNull(((TextInputEditText)
+                findViewById(R.id.editTextSettingsButtonBottomEnd)).getText()).toString().trim();
         if (!stringButtonBottomEnd.equals("")) {
             try {
                 int buttonBottomEnd = Integer.parseInt(stringButtonBottomEnd);
                 if (buttonBottomEnd <= 0) {
-                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(getString(R.string
+                    ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd))
+                            .setError(getString(R.string
                             .settings_error_negative));
                     return;
                 }
                 editor.putInt(SHARED_BUTTON_BOTTOM_END, buttonBottomEnd);
                 ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(null);
             } catch (NumberFormatException e) {
-                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd)).setError(getString(R.string
+                ((TextInputLayout) findViewById(R.id.textLayoutSettingsButtonBottomEnd))
+                        .setError(getString(R.string
                         .settings_error_exception));
                 return;
             }
@@ -347,22 +371,32 @@ public class SettingsActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())
                     .show();
         } else {
-            SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
-            ((TextInputEditText) findViewById(R.id.editTextName)).setText(sharedPreferences.getString(SHARED_NAME, ""));
+            SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                    Activity.MODE_PRIVATE);
 
-            ((TextInputEditText) findViewById(R.id.editTextAge)).setText(String.valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextName)).setText(sharedPreferences
+                    .getString(SHARED_NAME, ""));
 
-            ((TextInputEditText) findViewById(R.id.editTextGoal)).setText(String.valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextAge)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_AGE, 0)));
 
-            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopStart)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_START, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextGoal)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_GOAL, 0)));
 
-            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopEnd)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_END, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopStart)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_START, 0)));
 
-            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomStart)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_START, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonTopEnd)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_BUTTON_TOP_END, 0)));
 
-            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomEnd)).setText(String.valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_END, 0)));
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomStart)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_START, 0)));
 
-            ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).setText(sharedPreferences.getString(SHARED_GENDER, ""));
+            ((TextInputEditText) findViewById(R.id.editTextSettingsButtonBottomEnd)).setText(String
+                    .valueOf(sharedPreferences.getInt(SHARED_BUTTON_BOTTOM_END, 0)));
+
+            ((AutoCompleteTextView) findViewById(R.id.dropdownMenuGender)).setText(sharedPreferences
+                    .getString(SHARED_GENDER, ""));
         }
     }
 
@@ -373,8 +407,8 @@ public class SettingsActivity extends AppCompatActivity {
     //https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
     private void setNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("notification", "Notification",
-                    NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel = new NotificationChannel("notification",
+                    "Notification", NotificationManager.IMPORTANCE_HIGH);
 
             notificationChannel.setDescription("Reminds User to drink");
 

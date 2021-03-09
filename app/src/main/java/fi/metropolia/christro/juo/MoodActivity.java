@@ -25,18 +25,6 @@ public class MoodActivity extends AppCompatActivity {
     public static final int MOOD_NORMAL_ID = 2;
     public static final int MOOD_BAD_ID = 1;
 
-    private RadioGroup radioGroupMood;
-
-    private JuoViewModel juoViewModel;
-
-    private Button buttonMoodCancel;
-    private Button buttonMoodSubmit;
-    private ImageButton buttonNavigationBack;
-
-    private Intent intent;
-
-    private int selectedRadioButtonId;
-
     /**
      * onCreate() method creates the activity.
      *
@@ -46,16 +34,18 @@ public class MoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood);
-        initialiseViews();
 
-        intent = new Intent(this, MainActivity.class);
+        JuoViewModel juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
 
-        buttonNavigationBack.setOnClickListener((view) -> startActivity(intent));
+        Intent intent = new Intent(this, MainActivity.class);
 
-        buttonMoodCancel.setOnClickListener((view) -> startActivity(intent));
+        findViewById(R.id.imageButtonMoodBack).setOnClickListener((view) -> startActivity(intent));
+        findViewById(R.id.buttonMoodCancel).setOnClickListener((view) -> startActivity(intent));
 
-        buttonMoodSubmit.setOnClickListener((view) -> {
-            selectedRadioButtonId = radioGroupMood.getCheckedRadioButtonId();
+        findViewById(R.id.buttonMoodSubmit).setOnClickListener((view) -> {
+            int selectedRadioButtonId = ((RadioGroup) findViewById(R.id.radioGroupMood)).getCheckedRadioButtonId();
             if (selectedRadioButtonId == R.id.radioButtonGood) {
                 juoViewModel.insertMood(new MoodEntity(MOOD_GOOD_ID));
             } else if (selectedRadioButtonId == R.id.radioButtonNormal) {
@@ -65,18 +55,5 @@ public class MoodActivity extends AppCompatActivity {
             }
             startActivity(intent);
         });
-    }
-
-    /**
-     * Initialise all views.
-     */
-    private void initialiseViews() {
-        radioGroupMood = findViewById(R.id.radioGroupMood);
-        buttonNavigationBack = findViewById(R.id.buttonNavigationBack);
-        buttonMoodCancel = findViewById(R.id.buttonMoodCancel);
-        buttonMoodSubmit = findViewById(R.id.buttonMoodSubmit);
-        juoViewModel = new ViewModelProvider(this, ViewModelProvider
-                .AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(JuoViewModel.class);
     }
 }

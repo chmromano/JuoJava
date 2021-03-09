@@ -17,19 +17,14 @@ import com.google.android.material.navigation.NavigationView;
 
 /**
  * About activity of the application.
+ * <p>
+ * Itale Tabaksmane - Implemented navigation menu and all related methods.
  *
  * @author Christopher Mohan Romano
  * @author Itale Tabaksmane
  * @version 1.0
  */
-//Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class AboutActivity extends AppCompatActivity {
-
-    private TextView textViewAbout;
-
-    private DrawerLayout drawerLayoutAboutActivity;
-    private Toolbar toolbarAbout;
-    private NavigationView navigationViewAbout;
 
     /**
      * onCreate() method creates the activity.
@@ -42,8 +37,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        textViewAbout = findViewById(R.id.textViewAbout);
-        textViewAbout.setMovementMethod(new ScrollingMovementMethod());
+        ((TextView) findViewById(R.id.textViewAbout)).setMovementMethod(new ScrollingMovementMethod());
 
         /*
         This code is used to implement the navigation menu.
@@ -53,9 +47,9 @@ public class AboutActivity extends AppCompatActivity {
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
-        drawerLayoutAboutActivity = findViewById(R.id.drawerLayoutAboutActivity);
-        navigationViewAbout = findViewById(R.id.navigationViewAbout);
-        toolbarAbout = findViewById(R.id.toolbarAbout);
+        DrawerLayout drawerLayoutAboutActivity = findViewById(R.id.drawerLayoutAbout);
+        NavigationView navigationViewAbout = findViewById(R.id.navigationViewAbout);
+        Toolbar toolbarAbout = findViewById(R.id.toolbarAbout);
         setSupportActionBar(toolbarAbout);
         if (savedInstanceState == null) {
             navigationViewAbout.setCheckedItem(R.id.nav_about);
@@ -67,8 +61,8 @@ public class AboutActivity extends AppCompatActivity {
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> drawerLayoutAboutActivity.openDrawer(GravityCompat.START));
         // using animation whenever the menu opens, by swiping or clicking
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutAboutActivity, toolbarAbout,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutAboutActivity,
+                toolbarAbout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutAboutActivity.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -109,9 +103,9 @@ public class AboutActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutAboutActivity.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutAbout)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutAboutActivity.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutAbout)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

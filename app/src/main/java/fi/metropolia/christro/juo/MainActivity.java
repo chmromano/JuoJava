@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> drawerLayoutMainActivity.openDrawer(GravityCompat.START));
         // using animation whenever the menu opens, by swiping or clicking
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity, toolbarMain,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity,
+                toolbarMain, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutMainActivity.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -173,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-            String stringCustomInput = Objects.requireNonNull(((TextView) findViewById(R.id.editTextCustomInput)).getText()).toString();
+            String stringCustomInput = Objects.requireNonNull(((TextView)
+                    findViewById(R.id.editTextCustomInput)).getText()).toString();
+
             int customInput = 0;
             try {
                 customInput = Integer.parseInt(stringCustomInput);
@@ -217,7 +219,9 @@ public class MainActivity extends AppCompatActivity {
      * @return An integer containing the hydration goal.
      */
     private int loadHydrationGoal() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
         if (sharedGoal == 999999) {
@@ -244,8 +248,11 @@ public class MainActivity extends AppCompatActivity {
      * https://www.youtube.com/watch?v=tdx9ReYGIoE
      */
     private void getWeather() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
+
         String weatherUrl = API_URL + location;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
@@ -317,7 +324,8 @@ public class MainActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.textViewExtraIntake)).setText(getString(R.string.main_activity_extra_intake, extraHydrationGoal));
         }
 
-        ((CircularProgressBar) findViewById(R.id.circularProgressBar)).setProgressMax((float) hydrationGoal + extraHydrationGoal);
+        ((CircularProgressBar) findViewById(R.id.circularProgressBar))
+                .setProgressMax((float) hydrationGoal + extraHydrationGoal);
 
         ((TextView) findViewById(R.id.textViewCity)).setText(location.replaceAll("\\+", " "));
         ((TextView) findViewById(R.id.textViewTemperature)).setText(getString(R.string.text_view_temperature,
@@ -353,11 +361,13 @@ public class MainActivity extends AppCompatActivity {
      * Method to update the UI.
      */
     private void updateUI() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
 
         hydrationGoal = loadHydrationGoal();
 
-        ((CircularProgressBar) findViewById(R.id.circularProgressBar)).setProgressMax((float) hydrationGoal);
+        ((CircularProgressBar) findViewById(R.id.circularProgressBar))
+                .setProgressMax((float) hydrationGoal);
 
         int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
         ((Button) findViewById(R.id.mainActivityButtonTopStart)).setText(String.valueOf(sharedButtonTopStart));
@@ -389,13 +399,17 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             int intake = 0;
             if (view.getId() == R.id.mainActivityButtonTopStart) {
-                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopStart)).getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopStart))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonTopEnd) {
-                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopEnd)).getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopEnd))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonBottomStart) {
-                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomStart)).getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomStart))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonBottomEnd) {
-                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomEnd)).getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomEnd))
+                        .getText().toString());
             }
             juoViewModel.insertIntake(new IntakeEntity(intake));
         }
@@ -407,7 +421,9 @@ public class MainActivity extends AppCompatActivity {
      * @param view Parameter containing the given view.
      */
     private void hideSoftKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext()
+                .getSystemService(INPUT_METHOD_SERVICE);
+
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
