@@ -1,6 +1,5 @@
 package fi.metropolia.christro.juo;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -95,8 +94,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        updateUI(isFirstStartUp);
 
+        Intent isFirstStartupIntent = getIntent();
+        isFirstStartUp = isFirstStartupIntent.getBooleanExtra(MainActivity.EXTRA_IS_FIRST_START_UP, false);
+
+        updateUI(isFirstStartUp);
         /*
         Adapter for gender dropdown menu.
         https://www.tutorialspoint.com/how-to-set-adapter-to-auto-complete-text-view

@@ -1,7 +1,6 @@
 package fi.metropolia.christro.juo;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -213,9 +212,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         if (addresses != null && addresses.size() > 0) {
             for (Address cityName : addresses) {
                 if (cityName.getLocality() != null && cityName.getLocality().length() > 0) {
-                    return cityName.getLocality().replaceAll("\\s+", "+");
+                    return cityName.getLocality();
                 } else if (cityName.getSubLocality() != null && cityName.getSubLocality().length() > 0) {
-                    return cityName.getSubLocality().replaceAll("\\s+", "+");
+                    return cityName.getSubLocality();
                 }
             }
         }
