@@ -16,7 +16,7 @@
     <string name="menu_label_home">Home</string>
     <string name="menu_label_profile">Profile</string>
     <string name="menu_label_history">History</string>
-    <string name="menu_label_mood">Moods</string>
+    <string name="menu_label_moods">Moods</string>
     <string name="menu_label_location">Location</string>
     <string name="menu_label_settings">Settings</string>
     <string name="menu_label_about">About</string>
@@ -55,7 +55,7 @@
     <!-- Strings for AboutActivity -->
     <string name="about_activity_label">About</string>
     <string name="about_activity_text">This application is licensed under the GNU General Public
-        License v3.0.\n\nThis application uses the libraryCircularProgressBar
+        License v3.0.\n\nThis application uses the library CircularProgressBar
         (<a href="https://github.com/lopspower/CircularProgressBar">https://github.com/lopspower/CircularProgressBar</a>) by
         Lopez Mikhael (<a href="https://github.com/lopspower">https://github.com/lopspower</a>).
         This library is available under the Apache 2.0 license, which can be obtained from

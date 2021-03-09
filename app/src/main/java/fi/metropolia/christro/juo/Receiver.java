@@ -27,9 +27,7 @@ public class Receiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Date date = new Date();
         Calendar calendar = Calendar.getInstance();
-        //calendar.setTime(date);
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
         //Get notifications between 7 and 21.
