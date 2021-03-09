@@ -1,6 +1,5 @@
 package fi.metropolia.christro.juo;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,93 +41,90 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 
 /**
  * Main activity of the application.
+ * <p>
+ * Taranath Pokhrel - Implemented functionality to get current weather, and method to hide keyboard.
+ * Itale Tabaksmane - Implemented navigation menu and all related methods.
  *
  * @author Christopher Mohan Romano
  * @author Taranath Pokhrel
  * @author Itale Tabaksmane
  * @version 1.0
  */
-/*
-Taranath Pokhrel - Implemented functionality to get current weather, and method to hide keyboard.
-Itale Tabaksmane - Implemented navigation menu and all related methods.
- */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * String with the API url
+     */
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
 
+    /**
+     * Name of the preference file.
+     */
     public static final String PREFERENCE_FILE = "fi.metropolia.christro.juo";
+    /**
+     * Name of boolean extra stating if the app is being started for the first time.
+     */
     public static final String EXTRA_IS_FIRST_START_UP = "fi.metropolia.christro.juo.EXTRA_IS_FIRST_START_UP";
 
+    /**
+     * Integer containing hydration goal.
+     */
     private int hydrationGoal;
+    /**
+     * Integer containing extra goal based on temperature.
+     */
     private int extraHydrationGoal;
-
-    //Intake views
-    //Using CircularProgressBar dependency: https://github.com/lopspower/CircularProgressBar
-    private CircularProgressBar circularProgressBar;
-    private TextView textViewIntake;
-    private TextView textViewExtraIntake;
-    //Weather views
-    private TextView textViewTemperature;
-    private TextView textViewCity;
-    private TextView textViewWeatherIcon;
-    //Button views
-    private Button mainActivityButtonTopStart;
-    private Button mainActivityButtonTopEnd;
-    private Button mainActivityButtonBottomStart;
-    private Button mainActivityButtonBottomEnd;
-    private ImageButton buttonMoodInput;
-    //Custom input views
-    private TextInputEditText editTextCustomInput;
-    private TextInputLayout textLayoutLCustomInput;
-    //ViewModel
+    /**
+     * ViewModel used to access database methods.
+     */
     private JuoViewModel juoViewModel;
-    //SharedPreferences
-    private SharedPreferences sharedPreferences;
-    //Drawer
-    private DrawerLayout drawerLayoutMainActivity;
 
     /**
      * onCreate() method creates the activity.
      *
      * @param savedInstanceState Contains data most recently supplied in onSaveInstanceState(Bundle).
      */
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initialiseAll();
+
         updateUI();
+
+        juoViewModel = new ViewModelProvider(this, ViewModelProvider
+                .AndroidViewModelFactory.getInstance(this.getApplication()))
+                .get(JuoViewModel.class);
 
         //Code used to observe if LiveData changes. If it does update UI.
         final Observer<Integer> dailyTotalObserver = newTotal -> {
             // Update the UI, in this case, a TextView.
             if (newTotal != null) {
-                textViewIntake.setText(getString(R.string.main_activity_intake, newTotal,
+                ((TextView) findViewById(R.id.textViewIntake)).setText(getString(R.string.main_activity_intake, newTotal,
                         hydrationGoal + extraHydrationGoal));
-                circularProgressBar.setProgressWithAnimation(newTotal, (long) 300);
+                //Using CircularProgressBar dependency: https://github.com/lopspower/CircularProgressBar
+                ((CircularProgressBar) findViewById(R.id.circularProgressBar)).setProgressWithAnimation(newTotal, (long) 300);
             } else {
-                textViewIntake.setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
-                circularProgressBar.setProgress(0);
+                ((TextView) findViewById(R.id.textViewIntake)).setText(getString(R.string.main_activity_intake, 0, hydrationGoal));
+                ((CircularProgressBar) findViewById(R.id.circularProgressBar)).setProgress(0);
             }
         };
         juoViewModel.getDailyTotal().observe(this, dailyTotalObserver);
 
         //ClickListeners for intake buttons.
         IntakeButtonClick intakeButtonClick = new IntakeButtonClick();
-        mainActivityButtonTopStart.setOnClickListener(intakeButtonClick);
-        mainActivityButtonTopEnd.setOnClickListener(intakeButtonClick);
-        mainActivityButtonBottomStart.setOnClickListener(intakeButtonClick);
-        mainActivityButtonBottomEnd.setOnClickListener(intakeButtonClick);
+        findViewById(R.id.mainActivityButtonTopStart).setOnClickListener(intakeButtonClick);
+        findViewById(R.id.mainActivityButtonTopEnd).setOnClickListener(intakeButtonClick);
+        findViewById(R.id.mainActivityButtonBottomStart).setOnClickListener(intakeButtonClick);
+        findViewById(R.id.mainActivityButtonBottomEnd).setOnClickListener(intakeButtonClick);
 
         //Go to activity to input mood.
-        buttonMoodInput.setOnClickListener((view) -> {
+        findViewById(R.id.buttonMoodInput).setOnClickListener((view) -> {
             Intent intent = new Intent(MainActivity.this, MoodActivity.class);
             startActivity(intent);
         });
 
         //What to do when enter is pressed in custom input TextView.
-        editTextCustomInput.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
+        findViewById(R.id.editTextCustomInput).setOnKeyListener(this::onKeyEnter);
 
         /*
         This code is used to implement the navigation menu.
@@ -138,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
-        drawerLayoutMainActivity = findViewById(R.id.drawerLayoutMainActivity);
+        DrawerLayout drawerLayoutMainActivity = findViewById(R.id.drawerLayoutMainActivity);
         NavigationView navigationViewMain = findViewById(R.id.navigationViewMain);
         Toolbar toolbarMain = findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbarMain);
@@ -152,38 +148,32 @@ public class MainActivity extends AppCompatActivity {
         ImageButton menuButton = findViewById(R.id.buttonNavigationMenu);
         menuButton.setOnClickListener(view -> drawerLayoutMainActivity.openDrawer(GravityCompat.START));
         // using animation whenever the menu opens, by swiping or clicking
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity, toolbarMain,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayoutMainActivity,
+                toolbarMain, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayoutMainActivity.addDrawerListener(toggle);
         toggle.syncState();
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewMain.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(MainActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(MainActivity.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    intent = new Intent(MainActivity.this, LocationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(MainActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(MainActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_location) {
+                intent = new Intent(MainActivity.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_settings) {
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(MainActivity.this, AboutActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutMainActivity.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -200,27 +190,29 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean onKeyEnter(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-            String stringCustomInput = Objects.requireNonNull(editTextCustomInput.getText()).toString();
+            String stringCustomInput = Objects.requireNonNull(((TextView)
+                    findViewById(R.id.editTextCustomInput)).getText()).toString();
+
             int customInput = 0;
             try {
                 customInput = Integer.parseInt(stringCustomInput);
                 if (customInput <= 0) {
-                    textLayoutLCustomInput.setError(" ");
-                    textLayoutLCustomInput.setErrorIconDrawable(0);
+                    ((TextInputLayout) findViewById(R.id.textLayoutCustomInput)).setError(" ");
+                    ((TextInputLayout) findViewById(R.id.textLayoutCustomInput)).setErrorIconDrawable(0);
                     return false;
                 }
-                textLayoutLCustomInput.setError(null);
+                ((TextInputLayout) findViewById(R.id.textLayoutCustomInput)).setError(null);
             } catch (Exception e) {
-                textLayoutLCustomInput.setError(" ");
-                textLayoutLCustomInput.setErrorIconDrawable(0);
+                ((TextInputLayout) findViewById(R.id.textLayoutCustomInput)).setError(" ");
+                ((TextInputLayout) findViewById(R.id.textLayoutCustomInput)).setErrorIconDrawable(0);
             }
             juoViewModel.insertIntake(new IntakeEntity(customInput));
-            editTextCustomInput.setText("");
+            ((TextInputEditText) findViewById(R.id.editTextCustomInput)).setText("");
             MainActivity.this.hideSoftKeyboard(v);
-            editTextCustomInput.clearFocus();
+            findViewById(R.id.editTextCustomInput).clearFocus();
             return true;
         } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            editTextCustomInput.clearFocus();
+            findViewById(R.id.editTextCustomInput).clearFocus();
             return true;
         }
         return false;
@@ -244,6 +236,9 @@ public class MainActivity extends AppCompatActivity {
      * @return An integer containing the hydration goal.
      */
     private int loadHydrationGoal() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         int sharedGoal = sharedPreferences.getInt(SettingsActivity.SHARED_GOAL, 999999);
 
         if (sharedGoal == 999999) {
@@ -270,7 +265,11 @@ public class MainActivity extends AppCompatActivity {
      */
     //https://www.youtube.com/watch?v=tdx9ReYGIoE
     private void getWeather() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         String location = sharedPreferences.getString(LocationActivity.SHARED_LOCATION, null);
+
         String weatherUrl = API_URL + location;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, weatherUrl, response -> {
@@ -312,9 +311,9 @@ public class MainActivity extends AppCompatActivity {
      * Method to update the weather UI (text and icon) when weather request is unsuccessful.
      */
     private void updateWeatherUI() {
-        textViewWeatherIcon.setText(getString(R.string.not_available));
-        textViewCity.setText((getString(R.string.location_not_found)));
-        textViewTemperature.setText(getString(R.string.not_available));
+        ((TextView) findViewById(R.id.textViewTemperature)).setText(getString(R.string.not_available));
+        ((TextView) findViewById(R.id.textViewCity)).setText((getString(R.string.location_not_found)));
+        ((TextView) findViewById(R.id.textViewTemperature)).setText(getString(R.string.not_available));
     }
 
     /**
@@ -327,26 +326,29 @@ public class MainActivity extends AppCompatActivity {
      * @param weatherId   Integer containing the weather ID.
      */
     private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
+
         if (temperature > 40f) {
             extraHydrationGoal = 1000;
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 1000));
         } else if (temperature > 35f) {
             extraHydrationGoal = 500;
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 500));
         } else if (temperature > 30f) {
             extraHydrationGoal = 250;
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 250));
         } else if (temperature > 24f) {
             extraHydrationGoal = 100;
-            textViewExtraIntake.setText(getString(R.string.main_activity_extra_intake, 100));
         }
 
-        circularProgressBar.setProgressMax((float) hydrationGoal + extraHydrationGoal);
+        if (extraHydrationGoal > 0) {
+            ((TextView) findViewById(R.id.textViewExtraIntake)).setText(getString(R.string.main_activity_extra_intake, extraHydrationGoal));
+        }
 
-        textViewCity.setText(location.replaceAll("\\+", " "));
-        textViewTemperature.setText(getString(R.string.text_view_temperature,
+        ((CircularProgressBar) findViewById(R.id.circularProgressBar))
+                .setProgressMax((float) hydrationGoal + extraHydrationGoal);
+
+        ((TextView) findViewById(R.id.textViewCity)).setText(location.replaceAll("\\+", " "));
+        ((TextView) findViewById(R.id.textViewTemperature)).setText(getString(R.string.text_view_temperature,
                 temperature, humidity));
 
+        TextView textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
         if (weatherId >= 200 && weatherId <= 232) {
             textViewWeatherIcon.setText(getString(R.string.thunderstorm));
         } else if (weatherId >= 300 && weatherId <= 321) {
@@ -376,51 +378,25 @@ public class MainActivity extends AppCompatActivity {
      * Method to update the UI.
      */
     private void updateUI() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE,
+                Activity.MODE_PRIVATE);
+
         hydrationGoal = loadHydrationGoal();
 
-        circularProgressBar.setProgressMax((float) hydrationGoal);
+        ((CircularProgressBar) findViewById(R.id.circularProgressBar))
+                .setProgressMax((float) hydrationGoal);
 
         int sharedButtonTopStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_START, 250);
-        mainActivityButtonTopStart.setText(String.valueOf(sharedButtonTopStart));
+        ((Button) findViewById(R.id.mainActivityButtonTopStart)).setText(String.valueOf(sharedButtonTopStart));
 
         int sharedButtonTopEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_TOP_END, 500);
-        mainActivityButtonTopEnd.setText(String.valueOf(sharedButtonTopEnd));
+        ((Button) findViewById(R.id.mainActivityButtonTopEnd)).setText(String.valueOf(sharedButtonTopEnd));
 
         int sharedButtonBottomStart = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_START, 100);
-        mainActivityButtonBottomStart.setText(String.valueOf(sharedButtonBottomStart));
+        ((Button) findViewById(R.id.mainActivityButtonBottomStart)).setText(String.valueOf(sharedButtonBottomStart));
 
         int sharedButtonBottomEnd = sharedPreferences.getInt(SettingsActivity.SHARED_BUTTON_BOTTOM_END, 750);
-        mainActivityButtonBottomEnd.setText(String.valueOf(sharedButtonBottomEnd));
-    }
-
-    /**
-     * Method to initialise all views needed by the activity.
-     */
-    private void initialiseAll() {
-        //Intake view
-        textViewIntake = findViewById(R.id.intakeText);
-        circularProgressBar = findViewById(R.id.circularProgressBar);
-        textViewExtraIntake = findViewById(R.id.textViewExtraIntake);
-        //Weather views
-        textViewTemperature = findViewById(R.id.textViewTemperature);
-        textViewWeatherIcon = findViewById(R.id.textViewWeatherIcon);
-        textViewCity = findViewById(R.id.textViewCity);
-        //Button views
-        mainActivityButtonTopStart = findViewById(R.id.mainActivityButtonTopStart);
-        mainActivityButtonTopEnd = findViewById(R.id.mainActivityButtonTopEnd);
-        mainActivityButtonBottomStart = findViewById(R.id.mainActivityButtonBottomStart);
-        mainActivityButtonBottomEnd = findViewById(R.id.mainActivityButtonBottomEnd);
-        buttonMoodInput = findViewById(R.id.buttonMoodInput);
-        //Custom input views
-        editTextCustomInput = findViewById(R.id.editTextCustomInput);
-        textLayoutLCustomInput = findViewById(R.id.textLayoutCustomInput);
-        //ViewModel
-        //Fix for error: https://github.com/googlecodelabs/android-room-with-a-view/issues/150
-        juoViewModel = new ViewModelProvider(this, ViewModelProvider
-                .AndroidViewModelFactory.getInstance(this.getApplication()))
-                .get(JuoViewModel.class);
-        //SharedPreferences
-        sharedPreferences = getSharedPreferences(PREFERENCE_FILE, Activity.MODE_PRIVATE);
+        ((Button) findViewById(R.id.mainActivityButtonBottomEnd)).setText(String.valueOf(sharedButtonBottomEnd));
     }
 
     /**
@@ -440,13 +416,17 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             int intake = 0;
             if (view.getId() == R.id.mainActivityButtonTopStart) {
-                intake = Integer.parseInt(mainActivityButtonTopStart.getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopStart))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonTopEnd) {
-                intake = Integer.parseInt(mainActivityButtonTopEnd.getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonTopEnd))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonBottomStart) {
-                intake = Integer.parseInt(mainActivityButtonBottomStart.getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomStart))
+                        .getText().toString());
             } else if (view.getId() == R.id.mainActivityButtonBottomEnd) {
-                intake = Integer.parseInt(mainActivityButtonBottomEnd.getText().toString());
+                intake = Integer.parseInt(((Button) findViewById(R.id.mainActivityButtonBottomEnd))
+                        .getText().toString());
             }
             juoViewModel.insertIntake(new IntakeEntity(intake));
         }
@@ -458,7 +438,9 @@ public class MainActivity extends AppCompatActivity {
      * @param view Parameter containing the given view.
      */
     private void hideSoftKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext()
+                .getSystemService(INPUT_METHOD_SERVICE);
+
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
@@ -469,9 +451,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutMainActivity.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutMainActivity)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutMainActivity.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutMainActivity)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

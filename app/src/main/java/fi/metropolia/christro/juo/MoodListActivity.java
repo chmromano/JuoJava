@@ -28,8 +28,6 @@ import fi.metropolia.christro.juo.database.JuoViewModel;
 //Itale Tabaksmane - Implemented navigation menu and all related methods.
 public class MoodListActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayoutMoodListActivity;
-
     /**
      * onCreate() method creates the activity.
      *
@@ -51,8 +49,7 @@ public class MoodListActivity extends AppCompatActivity {
         recyclerViewMoodList.setHasFixedSize(false);
         MoodListAdapter moodListAdapter = new MoodListAdapter();
         recyclerViewMoodList.setAdapter(moodListAdapter);
-        juoViewModel.getAllMoodInputs().observe(this, moodEntities ->
-                moodListAdapter.setMoodList(moodEntities));
+        juoViewModel.getAllMoodInputs().observe(this, moodListAdapter::setMoodList);
 
         /*
         This code is used to implement the navigation menu.
@@ -62,7 +59,7 @@ public class MoodListActivity extends AppCompatActivity {
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
-        drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodListActivity);
+        DrawerLayout drawerLayoutMoodListActivity = findViewById(R.id.drawerLayoutMoodList);
         NavigationView navigationViewMoodList = findViewById(R.id.navigationViewMoodList);
         Toolbar toolbarMoodList = findViewById(R.id.toolbarMoodList);
         setSupportActionBar(toolbarMoodList);
@@ -82,31 +79,24 @@ public class MoodListActivity extends AppCompatActivity {
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewMoodList.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(MoodListActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(MoodListActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    break;
-                case R.id.nav_location:
-                    intent = new Intent(MoodListActivity.this, LocationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(MoodListActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(MoodListActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(MoodListActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(MoodListActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(MoodListActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_location) {
+                intent = new Intent(MoodListActivity.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(MoodListActivity.this, AboutActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutMoodListActivity.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -117,9 +107,9 @@ public class MoodListActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutMoodListActivity.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutMoodList)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutMoodListActivity.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutMoodList)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

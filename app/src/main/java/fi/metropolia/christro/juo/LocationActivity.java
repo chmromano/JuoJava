@@ -1,13 +1,5 @@
 package fi.metropolia.christro.juo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,9 +17,16 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,33 +36,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import fi.metropolia.christro.juo.database.IntakeEntity;
-
 /**
  * Location activity of the application.
+ * <p>
+ * Itale Tabaksmane - Implemented navigation menu and all related methods.
  *
  * @author Taranath Pokhrel
  * @author Itale Tabaksmane
  * @version 1.0
  */
-//Itale Tabaksmane - Implemented navigation menu and all related methods.
+//Extends - Normal arrowhead solid line
+//Implements - Normal arrowhead dashed line
 public class LocationActivity extends AppCompatActivity implements LocationListener {
 
     public static final String SHARED_LOCATION = "fi.metropolia.christro.juo.SHARED_LOCATION";
 
     private String location;
-    private Intent intent;
-
-    private TextInputEditText editTextLocation;
-    private ImageButton imageButtonLocation;
-    private Button buttonLocationCancel;
-    private Button buttonLocationSubmit;
-
-    private DrawerLayout drawerLayoutLocation;
-    private Toolbar toolbarLocation;
-    private NavigationView navigationViewLocation;
-
-    private SharedPreferences sharedPreferences;
 
     /**
      * onCreate() method creates the activity.
@@ -76,24 +64,28 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        initialiseAll();
         updateUI();
 
         //When enter is pressed
-        editTextLocation.setOnKeyListener((v, keyCode, event) -> onKeyEnter(v, keyCode, event));
+        findViewById(R.id.editTextLocation).setOnKeyListener(this::onKeyEnter);
 
-        imageButtonLocation.setOnClickListener((view) -> {
+        findViewById(R.id.imageButtonLocation).setOnClickListener((view) -> {
             location = getCurrentLocation();
-            editTextLocation.setText(location);
+            ((TextInputEditText) findViewById(R.id.editTextLocation)).setText(location);
         });
 
-        buttonLocationCancel.setOnClickListener((view) -> startActivity(intent));
+        findViewById(R.id.buttonLocationCancel).setOnClickListener((view) -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
 
-        buttonLocationSubmit.setOnClickListener((view) -> {
+        findViewById(R.id.buttonLocationSubmit).setOnClickListener((view) -> {
+            SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            location = Objects.requireNonNull(editTextLocation.getText()).toString();
+            location = Objects.requireNonNull(((TextInputEditText) findViewById(R.id.editTextLocation)).getText()).toString();
             sharedPreferencesEditor.putString(SHARED_LOCATION, location);
             sharedPreferencesEditor.apply();
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
 
@@ -105,6 +97,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
         https://www.youtube.com/watch?v=bjYstsO1PgI
         https://www.youtube.com/watch?v=lt6xbth-yQo
          */
+        DrawerLayout drawerLayoutLocation = findViewById(R.id.drawerLayoutLocation);
+        Toolbar toolbarLocation = findViewById(R.id.toolbarLocation);
+        NavigationView navigationViewLocation = findViewById(R.id.navigationViewLocation);
         setSupportActionBar(toolbarLocation);
         if (savedInstanceState == null) {
             navigationViewLocation.setCheckedItem(R.id.nav_location);
@@ -123,31 +118,24 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewLocation.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(LocationActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    intent = new Intent(LocationActivity.this, History.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(LocationActivity.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(LocationActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(LocationActivity.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(LocationActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(LocationActivity.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_history) {
+                intent = new Intent(LocationActivity.this, History.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(LocationActivity.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(LocationActivity.this, AboutActivity.class);
             }
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
             drawerLayoutLocation.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -239,24 +227,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
      * Updates the UI.
      */
     private void updateUI() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
         location = sharedPreferences.getString(SHARED_LOCATION, "No location set");
-        editTextLocation.setText(location);
-    }
-
-    /**
-     * Initialise all views.
-     */
-    private void initialiseAll() {
-        editTextLocation = findViewById(R.id.editTextLocation);
-        imageButtonLocation = findViewById(R.id.imageButtonLocation);
-        buttonLocationCancel = findViewById(R.id.buttonLocationCancel);
-        buttonLocationSubmit = findViewById(R.id.buttonLocationSubmit);
-        sharedPreferences = getSharedPreferences(MainActivity.PREFERENCE_FILE, Activity.MODE_PRIVATE);
-        intent = new Intent(this, MainActivity.class);
-        //Navigation views
-        drawerLayoutLocation = findViewById(R.id.drawerLayoutLocation);
-        navigationViewLocation = findViewById(R.id.navigationViewLocation);
-        toolbarLocation = findViewById(R.id.toolbarLocation);
+        ((TextInputEditText) findViewById(R.id.editTextLocation)).setText(location);
     }
 
     /**
@@ -348,9 +321,9 @@ public class LocationActivity extends AppCompatActivity implements LocationListe
      */
     @Override
     public void onBackPressed() {
-        if (drawerLayoutLocation.isDrawerOpen(GravityCompat.START)) {
+        if (((DrawerLayout) findViewById(R.id.drawerLayoutMainActivity)).isDrawerOpen(GravityCompat.START)) {
             //means the drawer is open
-            drawerLayoutLocation.closeDrawer(GravityCompat.START);
+            ((DrawerLayout) findViewById(R.id.drawerLayoutMainActivity)).closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

@@ -60,11 +60,11 @@ public class MoodListAdapter extends RecyclerView.Adapter<MoodListAdapter.MoodLi
 
         MoodEntity currentMood = moodList.get(position);
 
-        if (currentMood.getMood() == 1) {
+        if (currentMood.getMood() == MoodActivity.MOOD_BAD_ID) {
             holder.textViewMoodListEmoji.setText(R.string.emoji_bad);
-        } else if (currentMood.getMood() == 2) {
+        } else if (currentMood.getMood() == MoodActivity.MOOD_NORMAL_ID) {
             holder.textViewMoodListEmoji.setText(R.string.emoji_normal);
-        } else if (currentMood.getMood() == 3) {
+        } else if (currentMood.getMood() == MoodActivity.MOOD_GOOD_ID) {
             holder.textViewMoodListEmoji.setText(R.string.emoji_good);
         }
         holder.textViewMoodListDate.setText(currentMood.getDate());

@@ -108,30 +108,22 @@ public class History extends AppCompatActivity {
 
         // creates an intent for the appropriate activity by matching with item ID
         navigationViewHistory.setNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    intent = new Intent(History.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_history:
-                    break;
-                case R.id.nav_mood:
-                    intent = new Intent(History.this, MoodListActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_location:
-                    intent = new Intent(History.this, LocationActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_settings:
-                    intent = new Intent(History.this, SettingsActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.nav_about:
-                    intent = new Intent(History.this, AboutActivity.class);
-                    startActivity(intent);
-                    break;
+            Intent intent = null;
+
+            if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(History.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_home) {
+                intent = new Intent(History.this, MainActivity.class);
+            } else if (item.getItemId() == R.id.nav_mood) {
+                intent = new Intent(History.this, MoodListActivity.class);
+            } else if (item.getItemId() == R.id.nav_location) {
+                intent = new Intent(History.this, LocationActivity.class);
+            } else if (item.getItemId() == R.id.nav_about) {
+                intent = new Intent(History.this, AboutActivity.class);
+            }
+
+            if (intent != null) {
+                startActivity(intent);
             }
             drawerLayoutHistory.closeDrawer(GravityCompat.START);
             return true;
@@ -139,42 +131,38 @@ public class History extends AppCompatActivity {
     }
 
     public void getData(JuoViewModel juoViewModel) {
-        barEntries = new ArrayList<BarEntry>();
+        barEntries = new ArrayList<>();
         Date date = new Date();
         String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
         Log.d(TAG, "getData: " + sDate);
 
-       LiveData<String> data= juoViewModel.getLatestIntake();
+        LiveData<String> data = juoViewModel.getLatestIntake();
 
         // Using the observe method to get the live data from the database
-        juoViewModel.getAllIntakeInputs().observe(this, new Observer<List<IntakeEntity>>() {
-            @Override
-            // The chart will update every time a change in records will occur
-            public void onChanged(List<IntakeEntity> intakeEntities) {
-                for (IntakeEntity intake : intakeEntities) {
-                    // Taking only the intakes from today
-                    if (intake.getDate().equals(sDate)) {
-                        Log.d(TAG, "onChanged: " + intake.getTime() + "," + intake.getAmount());
-                        // data manipulation for the chart
-                        String intakeTime = intake.getTime();
-                        char[] hour = new char[3];
-                        intakeTime.getChars(0, 2, hour, 0);
-                        String sHour = String.valueOf(hour);
-                        //
-                        float x = Float.valueOf(sHour);
-                        Log.d(TAG, "onChanged: x value is" + x);
-                        float y = intake.getAmount();
-                        barEntries.add(new BarEntry(x, y));
-                    }
+        // The chart will update every time a change in records will occur
+        juoViewModel.getAllIntakeInputs().observe(this, intakeEntities -> {
+            for (IntakeEntity intake : intakeEntities) {
+                // Taking only the intakes from today
+                if (intake.getDate().equals(sDate)) {
+                    Log.d(TAG, "onChanged: " + intake.getTime() + "," + intake.getAmount());
+                    // data manipulation for the chart
+                    String intakeTime = intake.getTime();
+                    char[] hour = new char[3];
+                    intakeTime.getChars(0, 2, hour, 0);
+                    String sHour = String.valueOf(hour);
+                    //
+                    float x = Float.valueOf(sHour);
+                    Log.d(TAG, "onChanged: x value is" + x);
+                    float y = intake.getAmount();
+                    barEntries.add(new BarEntry(x, y));
                 }
-                Log.d(TAG, "onChanged: barentries" + barEntries);
-                barDataSet = new BarDataSet(barEntries, "Day Data set");
-                barChart = findViewById(R.id.barChartDay);
-                barData = new BarData(barDataSet);
-                barChart.setData(barData);
-                barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
             }
-
+            Log.d(TAG, "onChanged: barentries" + barEntries);
+            barDataSet = new BarDataSet(barEntries, "Day Data set");
+            barChart = findViewById(R.id.barChartDay);
+            barData = new BarData(barDataSet);
+            barChart.setData(barData);
+            barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         });
 
     }
@@ -188,7 +176,7 @@ public class History extends AppCompatActivity {
             //means the drawer is open
             drawerLayoutHistory.closeDrawer(GravityCompat.START);
         } else {
-            Intent intent = new Intent(History.this,MainActivity.class);
+            Intent intent = new Intent(History.this, MainActivity.class);
             startActivity(intent);
         }
     }
