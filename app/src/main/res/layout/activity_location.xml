@@ -76,13 +76,15 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/buttonMoodInput"
+                    app:layout_constraintEnd_toStartOf="@id/imageButtonLocation"
                     app:layout_constraintStart_toEndOf="@id/buttonNavigationMenu"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/buttonMoodInput"
+                <ImageButton
+                    android:contentDescription="@string/location_button_description"
+                    android:id="@+id/imageButtonLocation"
                     android:layout_width="0dp"
+                    android:background="@drawable/ic_round_my_location_24"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"
@@ -133,18 +135,6 @@
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageButton
-                    android:contentDescription="@string/location_button_description"
-                    android:id="@+id/imageButtonLocation"
-                    android:layout_width="60dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/ic_round_my_location_24"
-                    app:layout_constraintDimensionRatio="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textLayoutLocation" />
 
                 <Button
                     android:id="@+id/buttonLocationCancel"

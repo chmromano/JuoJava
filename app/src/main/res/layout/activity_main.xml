@@ -135,7 +135,7 @@
                 app:cpb_round_border="true" />
 
             <TextView
-                android:id="@+id/intakeText"
+                android:id="@+id/textViewIntake"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
