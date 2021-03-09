@@ -18,9 +18,17 @@ import fi.metropolia.christro.juo.database.MoodEntity;
  */
 public class MoodActivity extends AppCompatActivity {
 
-    //IDs  of moods
+    /**
+     * Integer ID for good mood.
+     */
     public static final int MOOD_GOOD_ID = 3;
+    /**
+     * Integer ID for normal mood.
+     */
     public static final int MOOD_NORMAL_ID = 2;
+    /**
+     * Integer ID for bad mood.
+     */
     public static final int MOOD_BAD_ID = 1;
 
     /**
