@@ -391,7 +391,6 @@ public class SettingsActivity extends AppCompatActivity {
         if (isFirstStartupVariable) {
             //https://material.io/components/dialogs/android
             new MaterialAlertDialogBuilder(this)
-                    .setTitle(getString(R.string.settings_activity_dialog_title))
                     .setMessage(getString(R.string.settings_activity_dialog_content))
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> dialog.cancel())

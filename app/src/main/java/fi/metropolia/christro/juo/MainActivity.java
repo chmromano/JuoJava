@@ -244,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
         if (sharedGoal == 999999) {
             //https://material.io/components/dialogs/android
             new MaterialAlertDialogBuilder(this)
-                    .setTitle(getString(R.string.main_activity_dialog_title))
                     .setMessage(getString(R.string.main_activity_dialog_content))
                     // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(getString(R.string.dialog_ok), (dialog, which) -> {
@@ -335,13 +334,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateWeatherUI(String location, double temperature, String humidity, int weatherId) {
 
         if (temperature > 40f) {
-            extraHydrationGoal = 1000;
+            extraHydrationGoal = 2000;
         } else if (temperature > 35f) {
-            extraHydrationGoal = 500;
+            extraHydrationGoal = 1500;
         } else if (temperature > 30f) {
-            extraHydrationGoal = 250;
+            extraHydrationGoal = 1000;
         } else if (temperature > 24f) {
-            extraHydrationGoal = 100;
+            extraHydrationGoal = 500;
         }
 
         if (extraHydrationGoal > 0) {

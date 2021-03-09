@@ -44,8 +44,11 @@ import java.util.Objects;
  * @author Itale Tabaksmane
  * @version 1.0
  */
-//Extends - Normal arrowhead solid line
-//Implements - Normal arrowhead dashed line
+/*
+We understand that implements at class level is not ideal and that implementing a method would have
+been better, but we knew too late and couldn't refactor and test all functionality on time, so have
+to turn in with this implementation.
+ */
 public class LocationActivity extends AppCompatActivity implements LocationListener {
 
     public static final String SHARED_LOCATION = "fi.metropolia.christro.juo.SHARED_LOCATION";
