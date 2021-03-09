@@ -17,8 +17,22 @@ import java.util.List;
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
 
+/**
+ * IntakeListView activity
+ * Calls the adapter for the list then
+ * inserts live data of all the intakes
+ * Allows swiping for deleting records
+ */
 public class IntakeListview extends AppCompatActivity {
+    /**
+     * JuoViewModel to use the exiting instance of the database
+     */
     private JuoViewModel viewModel;
+
+    /**
+     * onCreate() - creates the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +74,11 @@ public class IntakeListview extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
     }
 
+    /**
+     * Overrides onBackPressed()
+     * uses the method to return to the history activity
+     * when the user presses the 'back' button on their phone
+     */
     @Override
     public void onBackPressed(){
         Intent intent = new Intent(IntakeListview.this,History.class);

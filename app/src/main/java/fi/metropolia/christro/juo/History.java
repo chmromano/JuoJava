@@ -3,7 +3,6 @@ package fi.metropolia.christro.juo;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,12 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -32,27 +27,69 @@ import com.google.android.material.navigation.NavigationView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import fi.metropolia.christro.juo.database.IntakeEntity;
 import fi.metropolia.christro.juo.database.JuoViewModel;
-import fi.metropolia.christro.juo.database.MoodEntity;
 
+/**
+ * History activity
+ * <p>
+ * The activity uses MPAndroidChart API,
+ * it shows the user their water intakes during the day
+ * intakes are grouped by hour
+ *
+ * @author Itale Tabaksmane
+ * @version 1.0
+ */
 
 public class History extends AppCompatActivity {
 
     //MPAndroid chart library: https://github.com/PhilJay/MPAndroidChart
+    /**
+     * BarChart object to construct and edit the bar type chart
+     */
     BarChart barChart;
+
+    /**
+     * BarData object to take the data from one/several data sets into the chart
+     */
     BarData barData;
+
+    /**
+     * BarDataSet holds the entries array and a label for a data set,
+     */
     BarDataSet barDataSet;
+
+    /**
+     * ArrayList<BarEntry> to store a list of entries made of float x, float y values
+     */
     ArrayList<BarEntry> barEntries;
+
+    /**
+     * String for log context
+     */
     private static final String TAG = "fi.metropolia.christro.juo.History";
+
+    /**
+     * DrawerLayout object to control the navigation drawer
+     */
     private DrawerLayout drawerLayoutHistory;
+
+    /**
+     * NavigationView to set up the navigation drawer in history activity
+     */
     private NavigationView navigationViewHistory;
+
+    /**
+     * Toolbar to utilize the UI toolbar
+     */
     private Toolbar toolbarHistory;
 
+    /**
+     * onCreate() method creates the activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,13 +167,15 @@ public class History extends AppCompatActivity {
         });
     }
 
+    /**
+     * getData(juoViewModel) uses the JuoViewModel instance to get live data from the database
+     * and build a bar chart based on the live data.
+     * @param juoViewModel
+     */
     public void getData(JuoViewModel juoViewModel) {
         barEntries = new ArrayList<>();
-        Date date = new Date();
         String sDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().getTime());
         Log.d(TAG, "getData: " + sDate);
-
-        LiveData<String> data = juoViewModel.getLatestIntake();
 
         // Using the observe method to get the live data from the database
         // The chart will update every time a change in records will occur
