@@ -43,22 +43,22 @@ public class HistoryActivity extends AppCompatActivity {
     /**
      * BarChart object to construct and edit the bar type chart
      */
-    BarChart barChart;
+    private BarChart barChart;
 
     /**
      * BarData object to take the data from one/several data sets into the chart
      */
-    BarData barData;
+    private BarData barData;
 
     /**
      * BarDataSet holds the entries array and a label for a data set,
      */
-    BarDataSet barDataSet;
+    private BarDataSet barDataSet;
 
     /**
      * ArrayList<BarEntry> to store a list of entries made of float x, float y values
      */
-    ArrayList<BarEntry> barEntries;
+    private ArrayList<BarEntry> barEntries;
 
     /**
      * String for log context

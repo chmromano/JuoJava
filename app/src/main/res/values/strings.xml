@@ -91,14 +91,13 @@
     <string name="clear_night">&#x1F311;</string>
     <string name="clouds">&#x2601;</string>
 
-    <!-- Content descriptions -->
-    <string name="button_list_intake_description">Button to view history as list</string>
-    <string name="menu_description">Main hamburger menu</string>
-    <string name="mood_button_description">Mood button takes you to mood input</string>
-    <string name="location_button_description">Location button gets current location</string>
-    <string name="notification_button_description">Button to enable notifications.</string>
-
     <!-- For the visually impaired people o know the menu is open-->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="glass_icon_description">Just an icon of a glass.</string>
+    <string name="button_list_intake_description">Button to view history as list.</string>
+    <string name="menu_description">Main hamburger menu.</string>
+    <string name="mood_button_description">Mood button takes you to mood input.</string>
+    <string name="location_button_description">Location button gets current location.</string>
+    <string name="notification_button_description">Button to enable notifications.</string>
+    <string name="navigation_drawer_open">Open navigation drawer.</string>
+    <string name="navigation_drawer_close">Close navigation drawer.</string>
 </resources>

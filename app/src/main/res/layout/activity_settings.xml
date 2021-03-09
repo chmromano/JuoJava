@@ -84,7 +84,7 @@
                     android:id="@+id/imageButtonNotifications"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@drawable/ic_round_circle_notifications_24"
+                    android:background="@drawable/ic_round_notifications_24"
                     android:contentDescription="@string/notification_button_description"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1"
