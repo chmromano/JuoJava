@@ -1,4 +1,3 @@
-
 Juo! - An app to track your water intake.
 
 Developed by:
@@ -8,7 +7,7 @@ Developed by:
 - Taranath Pokhrel
 
 This application uses the library CircularProgressBar
-([https://github.com/lopspowerCircularProgressBar](https://github.com/lopspowerCircularProgressBar)) by Lopez Mikhael ([https://github.com/lopspower](https://github.com/lopspower)).
+([https://github.com/lopspowerCircularProgressBar](https://github.com/lopspower/CircularProgressBar)) by Lopez Mikhael ([https://github.com/lopspower](https://github.com/lopspower)).
 
 This application uses the library MPAndroidChart
 ([https://github.com/PhilJay/MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)) by Philipp Jahoda ([https://github.com/PhilJay](https://github.com/PhilJay)).
