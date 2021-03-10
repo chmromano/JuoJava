@@ -1,5 +1,7 @@
 Juo! - An app to track your water intake.
 
+![picture](img/JuoHomeScreenshot.png)
+
 Developed as a university project by:
 
 - Christopher Romano
