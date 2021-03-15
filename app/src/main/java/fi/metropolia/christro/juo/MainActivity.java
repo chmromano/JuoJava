@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * String with the API url
      */
-    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=35be7f414814f513a3bdf6ce70e1fcec&q=";
+    //Put your weather API url here as a string (the app is intended to use OpenWeatherMap, other APIs are not tested).
+    private static final String API_URL = "";
 
     /**
      * Name of the preference file.
